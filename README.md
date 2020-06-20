@@ -1,2 +1,4 @@
 # ocaml-tree-sitter-lang
-Generated C/OCaml parsers for multiple programming languages
+
+C/OCaml parsers for multiple programming languages, generated
+by [ocaml-tree-sitter](https://github.com/returntocorp/ocaml-tree-sitter).
