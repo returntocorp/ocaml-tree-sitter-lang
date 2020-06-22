@@ -1,14 +1,14 @@
 (library
-  (public_name tree-sitter-ruby)
+  (public_name tree-sitter-lang.ruby)
   (name tree_sitter_ruby)
   (preprocess (pps ppx_sexp_conv))
   (libraries atdgen-runtime tree-sitter.run)
   (foreign_stubs
     (language c)
     (names parser bindings)
-    (flags -fPIC
-           -I .
-           -I %{env:TREESITTER_INCLUDE_DIR=/usr/local/include})
+    (flags -std=c99
+           -fPIC
+           -I .)
   )
   (c_library_flags (-L%{env:TREESITTER_LIBRARY_DIR=/usr/local/lib}
                     -lstdc++
@@ -18,7 +18,6 @@
     (language cxx)
     (names scanner)
     (flags -fPIC
-           -I .
-           -I %{env:TREESITTER_INCLUDE_DIR=/usr/local/include})
+           -I .)
   )
 )

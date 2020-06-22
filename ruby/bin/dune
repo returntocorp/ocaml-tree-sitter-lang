@@ -1,5 +1,6 @@
 (executable
+  (package tree-sitter-lang)
   (public_name parse-ruby)
   (name Main)
-  (libraries tree-sitter-ruby)
+  (libraries tree-sitter-lang.ruby)
 )
