@@ -1249,11 +1249,7 @@ let parse_input_tree input_tree : CST.program option =
             (
               Combine.parse_seq
                 (parse_node_integer)
-                (
-                  Combine.parse_seq
-                    (_parse_leaf_rule "r")
-                    (_parse_tail)
-                )
+                (Combine.parse_seq(_parse_leaf_rule "r")(_parse_tail))
             ) nodes
           with
           | Some ((e0, (e1, tail)), nodes) ->
@@ -1347,11 +1343,7 @@ let parse_input_tree input_tree : CST.program option =
             (
               Combine.parse_seq
                 (_parse_leaf_rule "**")
-                (
-                  Combine.parse_optional
-                    (parse_node_identifier)
-                    (_parse_tail)
-                )
+                (Combine.parse_optional(parse_node_identifier)(_parse_tail))
             ) nodes
           with
           | Some ((e0, (e1, tail)), nodes) ->
@@ -1382,11 +1374,7 @@ let parse_input_tree input_tree : CST.program option =
             (
               Combine.parse_seq
                 (_parse_leaf_rule "*")
-                (
-                  Combine.parse_optional
-                    (parse_node_identifier)
-                    (_parse_tail)
-                )
+                (Combine.parse_optional(parse_node_identifier)(_parse_tail))
             ) nodes
           with
           | Some ((e0, (e1, tail)), nodes) ->
@@ -1417,11 +1405,7 @@ let parse_input_tree input_tree : CST.program option =
             (
               Combine.parse_seq
                 (parse_node_identifier)
-                (
-                  Combine.parse_seq
-                    (_parse_leaf_rule "=")
-                    (_parse_tail)
-                )
+                (Combine.parse_seq(_parse_leaf_rule "=")(_parse_tail))
             ) nodes
           with
           | Some ((e0, (e1, tail)), nodes) ->
@@ -1452,11 +1436,7 @@ let parse_input_tree input_tree : CST.program option =
             (
               Combine.parse_seq
                 (_parse_leaf_rule "&")
-                (
-                  Combine.parse_seq
-                    (parse_node_identifier)
-                    (_parse_tail)
-                )
+                (Combine.parse_seq(parse_node_identifier)(_parse_tail))
             ) nodes
           with
           | Some ((e0, (e1, tail)), nodes) ->
@@ -2045,11 +2025,7 @@ let parse_input_tree input_tree : CST.program option =
                               _parse_Empty_stmt nodes
                         )
                       )
-                      (
-                        Combine.parse_optional
-                          (parse_node_statement)
-                          (_parse_tail)
-                      )
+                      (Combine.parse_optional(parse_node_statement)(_parse_tail))
                   ) nodes
                 with
                 | Some ((e0, (e1, tail)), nodes) ->
@@ -2107,11 +2083,7 @@ let parse_input_tree input_tree : CST.program option =
                     (
                       Combine.parse_optional
                         (parse_node_statements)
-                        (
-                          Combine.parse_seq
-                            (_parse_leaf_rule "}")
-                            (_parse_tail)
-                        )
+                        (Combine.parse_seq(_parse_leaf_rule "}")(_parse_tail))
                     )
                 )
             ) nodes
@@ -2145,11 +2117,7 @@ let parse_input_tree input_tree : CST.program option =
                     (
                       Combine.parse_optional
                         (parse_node_statements)
-                        (
-                          Combine.parse_seq
-                            (_parse_leaf_rule "}")
-                            (_parse_tail)
-                        )
+                        (Combine.parse_seq(_parse_leaf_rule "}")(_parse_tail))
                     )
                 )
             ) nodes
@@ -2379,11 +2347,7 @@ let parse_input_tree input_tree : CST.program option =
             (
               Combine.parse_seq
                 (_parse_leaf_rule "def")
-                (
-                  Combine.parse_seq
-                    (parse_node_method_rest)
-                    (_parse_tail)
-                )
+                (Combine.parse_seq(parse_node_method_rest)(_parse_tail))
             ) nodes
           with
           | Some ((e0, (e1, tail)), nodes) ->
@@ -2478,11 +2442,7 @@ let parse_input_tree input_tree : CST.program option =
                               (
                                 Combine.parse_seq
                                   (parse_node_arg)
-                                  (
-                                    Combine.parse_seq
-                                      (_parse_leaf_rule ")")
-                                      (_parse_tail)
-                                  )
+                                  (Combine.parse_seq(_parse_leaf_rule ")")(_parse_tail))
                               )
                           ) nodes
                         with
@@ -2536,11 +2496,7 @@ let parse_input_tree input_tree : CST.program option =
                           (
                             Combine.parse_seq
                               (parse_node_parameters)
-                              (
-                                Combine.parse_optional
-                                  (parse_node_terminator)
-                                  (_parse_tail)
-                              )
+                              (Combine.parse_optional(parse_node_terminator)(_parse_tail))
                           ) nodes
                         with
                         | Some ((e0, (e1, tail)), nodes) ->
@@ -2555,11 +2511,7 @@ let parse_input_tree input_tree : CST.program option =
                           (
                             Combine.parse_optional
                               (parse_node_bare_parameters)
-                              (
-                                Combine.parse_seq
-                                  (parse_node_terminator)
-                                  (_parse_tail)
-                              )
+                              (Combine.parse_seq(parse_node_terminator)(_parse_tail))
                           ) nodes
                         with
                         | Some ((e0, (e1, tail)), nodes) ->
@@ -2626,11 +2578,7 @@ let parse_input_tree input_tree : CST.program option =
                         )
                       )
                     )
-                    (
-                      Combine.parse_seq
-                        (_parse_leaf_rule ")")
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(_parse_leaf_rule ")")(_parse_tail))
                 )
             ) nodes
           with
@@ -2752,11 +2700,7 @@ let parse_input_tree input_tree : CST.program option =
                                 )
                               )
                             )
-                            (
-                              Combine.parse_seq
-                                (_parse_leaf_rule "|")
-                                (_parse_tail)
-                            )
+                            (Combine.parse_seq(_parse_leaf_rule "|")(_parse_tail))
                         )
                     )
                 )
@@ -2976,11 +2920,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_seq
                     (_parse_leaf_rule ":")
-                    (
-                      Combine.parse_optional
-                        (parse_node_arg)
-                        (_parse_tail)
-                    )
+                    (Combine.parse_optional(parse_node_arg)(_parse_tail))
                 )
             ) nodes
           with
@@ -3010,11 +2950,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_seq
                     (_parse_leaf_rule "=")
-                    (
-                      Combine.parse_seq
-                        (parse_node_arg)
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(parse_node_arg)(_parse_tail))
                 )
             ) nodes
           with
@@ -3049,11 +2985,7 @@ let parse_input_tree input_tree : CST.program option =
                         (
                           Combine.parse_seq
                             (parse_node_terminator)
-                            (
-                              Combine.parse_seq
-                                (parse_node_body_statement)
-                                (_parse_tail)
-                            )
+                            (Combine.parse_seq(parse_node_body_statement)(_parse_tail))
                         )
                     in
                     let _parse_Cst nodes =
@@ -3117,11 +3049,7 @@ let parse_input_tree input_tree : CST.program option =
             (
               Combine.parse_seq
                 (_parse_leaf_rule "<")
-                (
-                  Combine.parse_seq
-                    (parse_node_arg)
-                    (_parse_tail)
-                )
+                (Combine.parse_seq(parse_node_arg)(_parse_tail))
             ) nodes
           with
           | Some ((e0, (e1, tail)), nodes) ->
@@ -3156,11 +3084,7 @@ let parse_input_tree input_tree : CST.program option =
                         (
                           Combine.parse_seq
                             (parse_node_terminator)
-                            (
-                              Combine.parse_seq
-                                (parse_node_body_statement)
-                                (_parse_tail)
-                            )
+                            (Combine.parse_seq(parse_node_body_statement)(_parse_tail))
                         )
                     )
                 )
@@ -3202,11 +3126,7 @@ let parse_input_tree input_tree : CST.program option =
                               (
                                 Combine.parse_seq
                                   (parse_node_terminator)
-                                  (
-                                    Combine.parse_seq
-                                      (parse_node_body_statement)
-                                      (_parse_tail)
-                                  )
+                                  (Combine.parse_seq(parse_node_body_statement)(_parse_tail))
                               ) nodes
                             with
                             | Some ((e0, (e1, tail)), nodes) ->
@@ -3600,11 +3520,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_seq
                     (_parse_leaf_rule "if")
-                    (
-                      Combine.parse_seq
-                        (parse_node_expression)
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(parse_node_expression)(_parse_tail))
                 )
             ) nodes
           with
@@ -3634,11 +3550,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_seq
                     (_parse_leaf_rule "unless")
-                    (
-                      Combine.parse_seq
-                        (parse_node_expression)
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(parse_node_expression)(_parse_tail))
                 )
             ) nodes
           with
@@ -3668,11 +3580,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_seq
                     (_parse_leaf_rule "while")
-                    (
-                      Combine.parse_seq
-                        (parse_node_expression)
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(parse_node_expression)(_parse_tail))
                 )
             ) nodes
           with
@@ -3702,11 +3610,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_seq
                     (_parse_leaf_rule "until")
-                    (
-                      Combine.parse_seq
-                        (parse_node_expression)
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(parse_node_expression)(_parse_tail))
                 )
             ) nodes
           with
@@ -3736,11 +3640,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_seq
                     (_parse_leaf_rule "rescue")
-                    (
-                      Combine.parse_seq
-                        (parse_node_expression)
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(parse_node_expression)(_parse_tail))
                 )
             ) nodes
           with
@@ -3776,11 +3676,7 @@ let parse_input_tree input_tree : CST.program option =
                         (
                           Combine.parse_optional
                             (parse_node_statements)
-                            (
-                              Combine.parse_seq
-                                (_parse_leaf_rule "end")
-                                (_parse_tail)
-                            )
+                            (Combine.parse_seq(_parse_leaf_rule "end")(_parse_tail))
                         )
                     )
                 )
@@ -3818,11 +3714,7 @@ let parse_input_tree input_tree : CST.program option =
                         (
                           Combine.parse_optional
                             (parse_node_statements)
-                            (
-                              Combine.parse_seq
-                                (_parse_leaf_rule "end")
-                                (_parse_tail)
-                            )
+                            (Combine.parse_seq(_parse_leaf_rule "end")(_parse_tail))
                         )
                     )
                 )
@@ -3863,11 +3755,7 @@ let parse_input_tree input_tree : CST.program option =
                             (
                               Combine.parse_optional
                                 (parse_node_statements)
-                                (
-                                  Combine.parse_seq
-                                    (_parse_leaf_rule "end")
-                                    (_parse_tail)
-                                )
+                                (Combine.parse_seq(_parse_leaf_rule "end")(_parse_tail))
                             )
                         )
                     )
@@ -3897,11 +3785,7 @@ let parse_input_tree input_tree : CST.program option =
             (
               Combine.parse_seq
                 (_parse_leaf_rule "in")
-                (
-                  Combine.parse_seq
-                    (parse_node_arg)
-                    (_parse_tail)
-                )
+                (Combine.parse_seq(parse_node_arg)(_parse_tail))
             ) nodes
           with
           | Some ((e0, (e1, tail)), nodes) ->
@@ -3942,11 +3826,7 @@ let parse_input_tree input_tree : CST.program option =
                                 (
                                   Combine.parse_optional
                                     (parse_node_else_)
-                                    (
-                                      Combine.parse_seq
-                                        (_parse_leaf_rule "end")
-                                        (_parse_tail)
-                                    )
+                                    (Combine.parse_seq(_parse_leaf_rule "end")(_parse_tail))
                                 )
                             )
                         )
@@ -4154,11 +4034,7 @@ let parse_input_tree input_tree : CST.program option =
                                     _parse_Elsif nodes
                               )
                             )
-                            (
-                              Combine.parse_seq
-                                (_parse_leaf_rule "end")
-                                (_parse_tail)
-                            )
+                            (Combine.parse_seq(_parse_leaf_rule "end")(_parse_tail))
                         in
                         let _parse_Term nodes =
                           (
@@ -4263,11 +4139,7 @@ let parse_input_tree input_tree : CST.program option =
                                     _parse_Elsif nodes
                               )
                             )
-                            (
-                              Combine.parse_seq
-                                (_parse_leaf_rule "end")
-                                (_parse_tail)
-                            )
+                            (Combine.parse_seq(_parse_leaf_rule "end")(_parse_tail))
                         in
                         let _parse_Term nodes =
                           (
@@ -4439,11 +4311,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_optional
                     (parse_node_terminator)
-                    (
-                      Combine.parse_optional
-                        (parse_node_statements)
-                        (_parse_tail)
-                    )
+                    (Combine.parse_optional(parse_node_statements)(_parse_tail))
                 )
             ) nodes
           with
@@ -4476,11 +4344,7 @@ let parse_input_tree input_tree : CST.program option =
                   (
                     Combine.parse_seq
                       (parse_node_terminator)
-                      (
-                        Combine.parse_seq
-                          (parse_node_statements)
-                          (_parse_tail)
-                      )
+                      (Combine.parse_seq(parse_node_statements)(_parse_tail))
                   ) nodes
                 with
                 | Some ((e0, (e1, tail)), nodes) ->
@@ -4498,11 +4362,7 @@ let parse_input_tree input_tree : CST.program option =
                       (
                         Combine.parse_seq
                           (_parse_leaf_rule "then")
-                          (
-                            Combine.parse_optional
-                              (parse_node_statements)
-                              (_parse_tail)
-                          )
+                          (Combine.parse_optional(parse_node_statements)(_parse_tail))
                       )
                   ) nodes
                 with
@@ -4543,11 +4403,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_optional
                     (parse_node_terminator)
-                    (
-                      Combine.parse_seq
-                        (parse_node_body_statement)
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(parse_node_body_statement)(_parse_tail))
                 )
             ) nodes
           with
@@ -4574,11 +4430,7 @@ let parse_input_tree input_tree : CST.program option =
             (
               Combine.parse_seq
                 (_parse_leaf_rule "ensure")
-                (
-                  Combine.parse_optional
-                    (parse_node_statements)
-                    (_parse_tail)
-                )
+                (Combine.parse_optional(parse_node_statements)(_parse_tail))
             ) nodes
           with
           | Some ((e0, (e1, tail)), nodes) ->
@@ -4775,11 +4627,7 @@ let parse_input_tree input_tree : CST.program option =
             (
               Combine.parse_seq
                 (_parse_leaf_rule "=>")
-                (
-                  Combine.parse_seq
-                    (parse_node_lhs)
-                    (_parse_tail)
-                )
+                (Combine.parse_seq(parse_node_lhs)(_parse_tail))
             ) nodes
           with
           | Some ((e0, (e1, tail)), nodes) ->
@@ -4857,11 +4705,7 @@ let parse_input_tree input_tree : CST.program option =
                                 _parse_Ensu nodes
                       )
                     )
-                    (
-                      Combine.parse_seq
-                        (_parse_leaf_rule "end")
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(_parse_leaf_rule "end")(_parse_tail))
                 )
             ) nodes
           with
@@ -5929,11 +5773,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_optional
                     (parse_node_statements)
-                    (
-                      Combine.parse_seq
-                        (_parse_leaf_rule ")")
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(_parse_leaf_rule ")")(_parse_tail))
                 )
             ) nodes
           with
@@ -5966,11 +5806,7 @@ let parse_input_tree input_tree : CST.program option =
                     (
                       Combine.parse_optional
                         (parse_node_argument_list_with_trailing_comma)
-                        (
-                          Combine.parse_seq
-                            (_parse_leaf_rule "]")
-                            (_parse_tail)
-                        )
+                        (Combine.parse_seq(_parse_leaf_rule "]")(_parse_tail))
                     )
                 )
             ) nodes
@@ -6057,11 +5893,7 @@ let parse_input_tree input_tree : CST.program option =
                   (
                     Combine.parse_seq
                       (parse_node_primary)
-                      (
-                        Combine.parse_seq
-                          (_parse_leaf_rule "::")
-                          (_parse_tail)
-                      )
+                      (Combine.parse_seq(_parse_leaf_rule "::")(_parse_tail))
                   ) nodes
                 with
                 | Some ((e0, (e1, tail)), nodes) ->
@@ -6311,11 +6143,7 @@ let parse_input_tree input_tree : CST.program option =
                   let _parse_tail =
                     Combine.parse_seq
                       (parse_node_command_argument_list)
-                      (
-                        Combine.parse_seq
-                          (parse_node_block)
-                          (_parse_tail)
-                      )
+                      (Combine.parse_seq(parse_node_block)(_parse_tail))
                   in
                   let _parse_Var nodes =
                     (
@@ -6382,11 +6210,7 @@ let parse_input_tree input_tree : CST.program option =
                   let _parse_tail =
                     Combine.parse_seq
                       (parse_node_command_argument_list)
-                      (
-                        Combine.parse_seq
-                          (parse_node_do_block)
-                          (_parse_tail)
-                      )
+                      (Combine.parse_seq(parse_node_do_block)(_parse_tail))
                   in
                   let _parse_Var nodes =
                     (
@@ -6551,11 +6375,7 @@ let parse_input_tree input_tree : CST.program option =
                   let _parse_tail =
                     Combine.parse_seq
                       (parse_node_argument_list)
-                      (
-                        Combine.parse_seq
-                          (parse_node_block)
-                          (_parse_tail)
-                      )
+                      (Combine.parse_seq(parse_node_block)(_parse_tail))
                   in
                   let _parse_Var nodes =
                     (
@@ -6622,11 +6442,7 @@ let parse_input_tree input_tree : CST.program option =
                   let _parse_tail =
                     Combine.parse_seq
                       (parse_node_argument_list)
-                      (
-                        Combine.parse_seq
-                          (parse_node_do_block)
-                          (_parse_tail)
-                      )
+                      (Combine.parse_seq(parse_node_do_block)(_parse_tail))
                   in
                   let _parse_Var nodes =
                     (
@@ -6927,11 +6743,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_optional
                     (parse_node_argument_list_with_trailing_comma)
-                    (
-                      Combine.parse_seq
-                        (_parse_leaf_rule ")")
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(_parse_leaf_rule ")")(_parse_tail))
                 )
             ) nodes
           with
@@ -6965,11 +6777,7 @@ let parse_input_tree input_tree : CST.program option =
                         (_parse_leaf_rule ",")
                         (parse_node_argument)
                     )
-                    (
-                      Combine.parse_optional
-                        (_parse_leaf_rule ",")
-                        (_parse_tail)
-                    )
+                    (Combine.parse_optional(_parse_leaf_rule ",")(_parse_tail))
                 )
             ) nodes
           with
@@ -7108,11 +6916,7 @@ let parse_input_tree input_tree : CST.program option =
             (
               Combine.parse_seq
                 (parse_node_splat_star)
-                (
-                  Combine.parse_seq
-                    (parse_node_arg)
-                    (_parse_tail)
-                )
+                (Combine.parse_seq(parse_node_arg)(_parse_tail))
             ) nodes
           with
           | Some ((e0, (e1, tail)), nodes) ->
@@ -7138,11 +6942,7 @@ let parse_input_tree input_tree : CST.program option =
             (
               Combine.parse_seq
                 (_parse_leaf_rule "**")
-                (
-                  Combine.parse_seq
-                    (parse_node_arg)
-                    (_parse_tail)
-                )
+                (Combine.parse_seq(parse_node_arg)(_parse_tail))
             ) nodes
           with
           | Some ((e0, (e1, tail)), nodes) ->
@@ -7168,11 +6968,7 @@ let parse_input_tree input_tree : CST.program option =
             (
               Combine.parse_seq
                 (parse_node_block_ampersand)
-                (
-                  Combine.parse_seq
-                    (parse_node_arg)
-                    (_parse_tail)
-                )
+                (Combine.parse_seq(parse_node_arg)(_parse_tail))
             ) nodes
           with
           | Some ((e0, (e1, tail)), nodes) ->
@@ -7224,11 +7020,7 @@ let parse_input_tree input_tree : CST.program option =
                             )
                           )
                         )
-                        (
-                          Combine.parse_seq
-                            (parse_node_body_statement)
-                            (_parse_tail)
-                        )
+                        (Combine.parse_seq(parse_node_body_statement)(_parse_tail))
                     )
                 )
             ) nodes
@@ -7262,11 +7054,7 @@ let parse_input_tree input_tree : CST.program option =
                     (
                       Combine.parse_optional
                         (parse_node_statements)
-                        (
-                          Combine.parse_seq
-                            (_parse_leaf_rule "}")
-                            (_parse_tail)
-                        )
+                        (Combine.parse_seq(_parse_leaf_rule "}")(_parse_tail))
                     )
                 )
             ) nodes
@@ -7432,11 +7220,7 @@ let parse_input_tree input_tree : CST.program option =
                   let _parse_tail =
                     Combine.parse_seq
                       (_parse_leaf_rule "=")
-                      (
-                        Combine.parse_seq
-                          (parse_node_expression)
-                          (_parse_tail)
-                      )
+                      (Combine.parse_seq(parse_node_expression)(_parse_tail))
                   in
                   let _parse_Lhs nodes =
                     (
@@ -8045,11 +7829,7 @@ let parse_input_tree input_tree : CST.program option =
                         (
                           Combine.parse_seq
                             (_parse_leaf_rule ":")
-                            (
-                              Combine.parse_seq
-                                (parse_node_arg)
-                                (_parse_tail)
-                            )
+                            (Combine.parse_seq(parse_node_arg)(_parse_tail))
                         )
                     )
                 )
@@ -8155,11 +7935,7 @@ let parse_input_tree input_tree : CST.program option =
                       (
                         Combine.parse_seq
                           (_parse_leaf_rule "and")
-                          (
-                            Combine.parse_seq
-                              (parse_node_arg)
-                              (_parse_tail)
-                          )
+                          (Combine.parse_seq(parse_node_arg)(_parse_tail))
                       )
                   ) nodes
                 with
@@ -8178,11 +7954,7 @@ let parse_input_tree input_tree : CST.program option =
                       (
                         Combine.parse_seq
                           (_parse_leaf_rule "or")
-                          (
-                            Combine.parse_seq
-                              (parse_node_arg)
-                              (_parse_tail)
-                          )
+                          (Combine.parse_seq(parse_node_arg)(_parse_tail))
                       )
                   ) nodes
                 with
@@ -8201,11 +7973,7 @@ let parse_input_tree input_tree : CST.program option =
                       (
                         Combine.parse_seq
                           (_parse_leaf_rule "||")
-                          (
-                            Combine.parse_seq
-                              (parse_node_arg)
-                              (_parse_tail)
-                          )
+                          (Combine.parse_seq(parse_node_arg)(_parse_tail))
                       )
                   ) nodes
                 with
@@ -8224,11 +7992,7 @@ let parse_input_tree input_tree : CST.program option =
                       (
                         Combine.parse_seq
                           (_parse_leaf_rule "&&")
-                          (
-                            Combine.parse_seq
-                              (parse_node_arg)
-                              (_parse_tail)
-                          )
+                          (Combine.parse_seq(parse_node_arg)(_parse_tail))
                       )
                   ) nodes
                 with
@@ -8397,11 +8161,7 @@ let parse_input_tree input_tree : CST.program option =
                       (
                         Combine.parse_seq
                           (_parse_leaf_rule "&")
-                          (
-                            Combine.parse_seq
-                              (parse_node_arg)
-                              (_parse_tail)
-                          )
+                          (Combine.parse_seq(parse_node_arg)(_parse_tail))
                       )
                   ) nodes
                 with
@@ -8738,11 +8498,7 @@ let parse_input_tree input_tree : CST.program option =
                       (
                         Combine.parse_seq
                           (_parse_leaf_rule "**")
-                          (
-                            Combine.parse_seq
-                              (parse_node_arg)
-                              (_parse_tail)
-                          )
+                          (Combine.parse_seq(parse_node_arg)(_parse_tail))
                       )
                   ) nodes
                 with
@@ -8884,11 +8640,7 @@ let parse_input_tree input_tree : CST.program option =
                   (
                     Combine.parse_seq
                       (_parse_leaf_rule "defined?")
-                      (
-                        Combine.parse_seq
-                          (parse_node_arg)
-                          (_parse_tail)
-                      )
+                      (Combine.parse_seq(parse_node_arg)(_parse_tail))
                   ) nodes
                 with
                 | Some ((e0, (e1, tail)), nodes) ->
@@ -8903,11 +8655,7 @@ let parse_input_tree input_tree : CST.program option =
                   (
                     Combine.parse_seq
                       (_parse_leaf_rule "not")
-                      (
-                        Combine.parse_seq
-                          (parse_node_arg)
-                          (_parse_tail)
-                      )
+                      (Combine.parse_seq(parse_node_arg)(_parse_tail))
                   ) nodes
                 with
                 | Some ((e0, (e1, tail)), nodes) ->
@@ -9284,11 +9032,7 @@ let parse_input_tree input_tree : CST.program option =
                       )
                     )
                 )
-                (
-                  Combine.parse_optional
-                    (_parse_leaf_rule ",")
-                    (_parse_tail)
-                )
+                (Combine.parse_optional(_parse_leaf_rule ",")(_parse_tail))
             in
             let _parse_Lhs nodes =
               (
@@ -9369,11 +9113,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_seq
                     (parse_node_mlhs)
-                    (
-                      Combine.parse_seq
-                        (_parse_leaf_rule ")")
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(_parse_leaf_rule ")")(_parse_tail))
                 )
             ) nodes
           with
@@ -9400,11 +9140,7 @@ let parse_input_tree input_tree : CST.program option =
             (
               Combine.parse_seq
                 (_parse_leaf_rule "*")
-                (
-                  Combine.parse_optional
-                    (parse_node_lhs)
-                    (_parse_tail)
-                )
+                (Combine.parse_optional(parse_node_lhs)(_parse_tail))
             ) nodes
           with
           | Some ((e0, (e1, tail)), nodes) ->
@@ -9803,11 +9539,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_seq
                     (parse_node_method_name)
-                    (
-                      Combine.parse_seq
-                        (parse_node_method_name)
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(parse_node_method_name)(_parse_tail))
                 )
             ) nodes
           with
@@ -9834,11 +9566,7 @@ let parse_input_tree input_tree : CST.program option =
             (
               Combine.parse_seq
                 (parse_node_string_)
-                (
-                  Combine.parse_repeat1
-                    (parse_node_string_)
-                    (_parse_tail)
-                )
+                (Combine.parse_repeat1(parse_node_string_)(_parse_tail))
             ) nodes
           with
           | Some ((e0, (e1, tail)), nodes) ->
@@ -9867,11 +9595,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_seq
                     (parse_node_statement)
-                    (
-                      Combine.parse_seq
-                        (_parse_leaf_rule "}")
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(_parse_leaf_rule "}")(_parse_tail))
                 )
             ) nodes
           with
@@ -9901,11 +9625,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_optional
                     (parse_node_literal_contents)
-                    (
-                      Combine.parse_seq
-                        (parse_node_string_end)
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(parse_node_string_end)(_parse_tail))
                 )
             ) nodes
           with
@@ -9935,11 +9655,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_optional
                     (parse_node_literal_contents)
-                    (
-                      Combine.parse_seq
-                        (parse_node_string_end)
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(parse_node_string_end)(_parse_tail))
                 )
             ) nodes
           with
@@ -9999,11 +9715,7 @@ let parse_input_tree input_tree : CST.program option =
                         (
                           Combine.parse_optional
                             (Combine.parse_success)
-                            (
-                              Combine.parse_seq
-                                (parse_node_string_end)
-                                (_parse_tail)
-                            )
+                            (Combine.parse_seq(parse_node_string_end)(_parse_tail))
                         )
                     )
                 )
@@ -10065,11 +9777,7 @@ let parse_input_tree input_tree : CST.program option =
                         (
                           Combine.parse_optional
                             (Combine.parse_success)
-                            (
-                              Combine.parse_seq
-                                (parse_node_string_end)
-                                (_parse_tail)
-                            )
+                            (Combine.parse_seq(parse_node_string_end)(_parse_tail))
                         )
                     )
                 )
@@ -10122,11 +9830,7 @@ let parse_input_tree input_tree : CST.program option =
                       (
                         Combine.parse_optional
                           (parse_node_literal_contents)
-                          (
-                            Combine.parse_seq
-                              (parse_node_string_end)
-                              (_parse_tail)
-                          )
+                          (Combine.parse_seq(parse_node_string_end)(_parse_tail))
                       )
                   ) nodes
                 with
@@ -10167,11 +9871,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_optional
                     (parse_node_literal_contents)
-                    (
-                      Combine.parse_seq
-                        (parse_node_string_end)
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(parse_node_string_end)(_parse_tail))
                 )
             ) nodes
           with
@@ -10276,11 +9976,7 @@ let parse_input_tree input_tree : CST.program option =
                 (
                   Combine.parse_optional
                     (parse_node_argument_list_with_trailing_comma)
-                    (
-                      Combine.parse_seq
-                        (_parse_leaf_rule "]")
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(_parse_leaf_rule "]")(_parse_tail))
                 )
             ) nodes
           with
@@ -10401,11 +10097,7 @@ let parse_input_tree input_tree : CST.program option =
                         )
                       )
                     )
-                    (
-                      Combine.parse_seq
-                        (_parse_leaf_rule "}")
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(_parse_leaf_rule "}")(_parse_tail))
                 )
             ) nodes
           with
@@ -10441,11 +10133,7 @@ let parse_input_tree input_tree : CST.program option =
                       (
                         Combine.parse_seq
                           (_parse_leaf_rule "=>")
-                          (
-                            Combine.parse_seq
-                              (parse_node_arg)
-                              (_parse_tail)
-                          )
+                          (Combine.parse_seq(parse_node_arg)(_parse_tail))
                       )
                   ) nodes
                 with
@@ -10461,11 +10149,7 @@ let parse_input_tree input_tree : CST.program option =
                   let _parse_tail =
                     Combine.parse_seq
                       (_parse_leaf_rule ":")
-                      (
-                        Combine.parse_seq
-                          (parse_node_arg)
-                          (_parse_tail)
-                      )
+                      (Combine.parse_seq(parse_node_arg)(_parse_tail))
                   in
                   let _parse_Id_hash_key nodes =
                     (
@@ -10785,11 +10469,7 @@ let parse_input_tree input_tree : CST.program option =
                                 _parse_Esc_seq nodes
                       )
                     )
-                    (
-                      Combine.parse_seq
-                        (parse_node_heredoc_end)
-                        (_parse_tail)
-                    )
+                    (Combine.parse_seq(parse_node_heredoc_end)(_parse_tail))
                 )
             ) nodes
           with

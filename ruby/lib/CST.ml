@@ -8,32 +8,32 @@
 open! Sexplib.Conv
 open Tree_sitter_run
 
-type uninterpreted = Token.t (* "(.|\\s)*" pattern *)
+type uninterpreted = Token.t (* pattern (.|\s)* *)
 [@@deriving sexp_of]
 
-type binary_star = Token.t (* external *)
+type binary_star = Token.t
 [@@deriving sexp_of]
 
-type singleton_class_left_angle_left_langle = Token.t (* external *)
+type singleton_class_left_angle_left_langle = Token.t
 [@@deriving sexp_of]
 
-type instance_variable = Token.t (* complex token *)
+type instance_variable = Token.t
 [@@deriving sexp_of]
 
-type binary_minus = Token.t (* external *)
+type binary_minus = Token.t
 [@@deriving sexp_of]
 
-type simple_symbol = Token.t (* external *)
+type simple_symbol = Token.t
 [@@deriving sexp_of]
 
-type complex = Token.t (* "(\\d+)?(\\+|-)?(\\d+)i" pattern *)
+type complex = Token.t (* pattern (\d+)?(\+|-)?(\d+)i *)
 [@@deriving sexp_of]
 
 type character =
-  Token.t (* "\\?(\\\\\\S({[0-9]*}|[0-9]*|-\\S([MC]-\\S)?)?|\\S)" pattern *)
+  Token.t (* pattern \?(\\\S({[0-9]*}|[0-9]*|-\S([MC]-\S)?)?|\S) *)
 [@@deriving sexp_of]
 
-type escape_sequence = Token.t (* complex token *)
+type escape_sequence = Token.t
 [@@deriving sexp_of]
 
 type false_ = [
@@ -42,53 +42,53 @@ type false_ = [
 ]
 [@@deriving sexp_of]
 
-type subshell_start = Token.t (* external *)
+type subshell_start = Token.t
 [@@deriving sexp_of]
 
-type regex_start = Token.t (* external *)
+type regex_start = Token.t
 [@@deriving sexp_of]
 
-type constant = Token.t (* complex token *)
+type constant = Token.t
 [@@deriving sexp_of]
 
-type symbol_start = Token.t (* external *)
+type symbol_start = Token.t
 [@@deriving sexp_of]
 
-type unary_minus = Token.t (* external *)
+type unary_minus = Token.t
 [@@deriving sexp_of]
 
-type block_ampersand = Token.t (* external *)
+type block_ampersand = Token.t
 [@@deriving sexp_of]
 
-type class_variable = Token.t (* complex token *)
+type class_variable = Token.t
 [@@deriving sexp_of]
 
-type string_array_start = Token.t (* external *)
+type string_array_start = Token.t
 [@@deriving sexp_of]
 
-type splat_star = Token.t (* external *)
+type splat_star = Token.t
 [@@deriving sexp_of]
 
 type integer =
-  Token.t (* "0[bB][01](_?[01])*|0[oO]?[0-7](_?[0-7])*|(0[dD])?\\d(_?\\d)*|0x[0-9a-fA-F](_?[0-9a-fA-F])*" pattern *)
+  Token.t (* pattern 0[bB][01](_?[01])*|0[oO]?[0-7](_?[0-7])*|(0[dD])?\d(_?\d)*|0x[0-9a-fA-F](_?[0-9a-fA-F])* *)
 [@@deriving sexp_of]
 
-type heredoc_content = Token.t (* external *)
+type heredoc_content = Token.t
 [@@deriving sexp_of]
 
-type string_end = Token.t (* external *)
+type string_end = Token.t
 [@@deriving sexp_of]
 
-type line_break = Token.t (* external *)
+type line_break = Token.t
 [@@deriving sexp_of]
 
-type identifier = Token.t (* complex token *)
+type identifier = Token.t
 [@@deriving sexp_of]
 
-type string_content = Token.t (* external *)
+type string_content = Token.t
 [@@deriving sexp_of]
 
-type heredoc_end = Token.t (* external *)
+type heredoc_end = Token.t
 [@@deriving sexp_of]
 
 type nil = [
@@ -97,24 +97,24 @@ type nil = [
 ]
 [@@deriving sexp_of]
 
-type heredoc_beginning = Token.t (* external *)
+type heredoc_beginning = Token.t
 [@@deriving sexp_of]
 
 type float_ =
-  Token.t (* "\\d(_?\\d)*(\\.\\d)?(_?\\d)*([eE][\\+-]?\\d(_?\\d)*\
-  )?" pattern *)
+  Token.t (* pattern \d(_?\d)*(\.\d)?(_?\d)*([eE][\+-]?\d(_?\d)*\
+  )? *)
 [@@deriving sexp_of]
 
 type global_variable =
-  Token.t (* "\\$-?(([!@&`'+~=/\\\\,;.<>*$?:\"])|([0-9]*\
+  Token.t (* pattern "\\$-?(([!@&`'+~=/\\\\,;.<>*$?:\"])|([0-9]*\
   )|([a-zA-Z_][a-zA-Z0-9_]*\
-  ))" pattern *)
+  ))" *)
 [@@deriving sexp_of]
 
-type symbol_array_start = Token.t (* external *)
+type symbol_array_start = Token.t
 [@@deriving sexp_of]
 
-type heredoc_body_start = Token.t (* external *)
+type heredoc_body_start = Token.t
 [@@deriving sexp_of]
 
 type operator = [
@@ -155,10 +155,10 @@ type true_ = [
 ]
 [@@deriving sexp_of]
 
-type string_start = Token.t (* external *)
+type string_start = Token.t
 [@@deriving sexp_of]
 
-type identifier_hash_key = Token.t (* external *)
+type identifier_hash_key = Token.t
 [@@deriving sexp_of]
 
 type terminator = [
@@ -272,7 +272,7 @@ and simple_formal_parameter = [
   | `Simple_form_param_blk_param of (Token.t (* "&" *) * identifier (*tok*))
   | `Simple_form_param_kw_param of (
         identifier (*tok*)
-      * Token.t (* complex token *)
+      * Token.t (* ":" *)
       * arg option
     )
   | `Simple_form_param_opt_param of (
@@ -557,7 +557,7 @@ and parenthesized_statements = (
 and scope_resolution = (
     [
         `COLONCOLON of Token.t (* "::" *)
-      | `Prim_COLONCOLON of (primary * Token.t (* complex token *))
+      | `Prim_COLONCOLON of (primary * Token.t (* "::" *))
     ]
   * [ `Id of identifier (*tok*) | `Cst of constant (*tok*) ]
 )
@@ -651,7 +651,7 @@ and command_argument_list = [
   | `Cmd_arg_list_cmd_call of command_call
 ]
 and argument_list = (
-    Token.t (* complex token *)
+    Token.t (* "(" *)
   * argument_list_with_trailing_comma option
   * Token.t (* ")" *)
 )
@@ -800,7 +800,7 @@ and lhs = [
   | `Scope_resol of scope_resolution
   | `Elem_ref of (
         primary
-      * Token.t (* complex token *)
+      * Token.t (* "[" *)
       * argument_list_with_trailing_comma option
       * Token.t (* "]" *)
     )
@@ -847,7 +847,7 @@ and pair = [
           | `Cst of constant (*tok*)
           | `Str of string_
         ]
-      * Token.t (* complex token *)
+      * Token.t (* ":" *)
       * arg
     )
 ]
@@ -866,7 +866,7 @@ type self (* inlined *) = Token.t (* "self" *)
 type empty_statement (* inlined *) = Token.t (* ";" *)
 [@@deriving sexp_of]
 
-type comment (* inlined *) = Token.t (* complex token *)
+type comment (* inlined *) = Token.t
 [@@deriving sexp_of]
 
 type super (* inlined *) = Token.t (* "super" *)
@@ -931,7 +931,7 @@ type singleton_method (* inlined *) = (
 
 type keyword_parameter (* inlined *) = (
     identifier (*tok*)
-  * Token.t (* complex token *)
+  * Token.t (* ":" *)
   * arg option
 )
 [@@deriving sexp_of]
@@ -1095,7 +1095,7 @@ type begin_ (* inlined *) = (
 
 type element_reference (* inlined *) = (
     primary
-  * Token.t (* complex token *)
+  * Token.t (* "[" *)
   * argument_list_with_trailing_comma option
   * Token.t (* "]" *)
 )
