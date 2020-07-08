@@ -14,171 +14,177 @@ let blank () = failwith "not implemented"
 let todo _ = failwith "not implemented"
 
 let map_uninterpreted (tok : CST.uninterpreted) =
-  token tok
+  token tok (* pattern (.|\s)* *)
 
 let map_binary_star (tok : CST.binary_star) =
-  token tok
+  token tok (* binary_star *)
 
 let map_singleton_class_left_angle_left_langle (tok : CST.singleton_class_left_angle_left_langle) =
-  token tok
+  token tok (* singleton_class_left_angle_left_langle *)
 
 let map_instance_variable (tok : CST.instance_variable) =
-  token tok
+  token tok (* instance_variable *)
 
 let map_binary_minus (tok : CST.binary_minus) =
-  token tok
+  token tok (* binary_minus *)
 
 let map_simple_symbol (tok : CST.simple_symbol) =
-  token tok
+  token tok (* simple_symbol *)
 
 let map_complex (tok : CST.complex) =
-  token tok
+  token tok (* pattern (\d+)?(\+|-)?(\d+)i *)
 
 let map_character (tok : CST.character) =
-  token tok
+  token tok (* pattern \?(\\\S({[0-9]*}|[0-9]*|-\S([MC]-\S)?)?|\S) *)
 
 let map_escape_sequence (tok : CST.escape_sequence) =
-  token tok
+  token tok (* escape_sequence *)
 
 let map_false_ (x : CST.false_) =
   (match x with
-  | `False_false tok -> token tok
-  | `False_FALSE tok -> token tok
+  | `False_false tok -> token tok (* "false" *)
+  | `False_FALSE tok -> token tok (* "FALSE" *)
   )
 
 let map_subshell_start (tok : CST.subshell_start) =
-  token tok
+  token tok (* subshell_start *)
 
 let map_regex_start (tok : CST.regex_start) =
-  token tok
+  token tok (* regex_start *)
 
 let map_constant (tok : CST.constant) =
-  token tok
+  token tok (* constant *)
 
 let map_symbol_start (tok : CST.symbol_start) =
-  token tok
+  token tok (* symbol_start *)
 
 let map_unary_minus (tok : CST.unary_minus) =
-  token tok
+  token tok (* unary_minus *)
 
 let map_block_ampersand (tok : CST.block_ampersand) =
-  token tok
+  token tok (* block_ampersand *)
 
 let map_class_variable (tok : CST.class_variable) =
-  token tok
+  token tok (* class_variable *)
 
 let map_string_array_start (tok : CST.string_array_start) =
-  token tok
+  token tok (* string_array_start *)
 
 let map_splat_star (tok : CST.splat_star) =
-  token tok
+  token tok (* splat_star *)
 
 let map_integer (tok : CST.integer) =
-  token tok
+  token tok (* pattern 0[bB][01](_?[01])*|0[oO]?[0-7](_?[0-7])*|(0[dD])?\d(_?\d)*|0x[0-9a-fA-F](_?[0-9a-fA-F])* *)
 
 let map_heredoc_content (tok : CST.heredoc_content) =
-  token tok
+  token tok (* heredoc_content *)
 
 let map_string_end (tok : CST.string_end) =
-  token tok
+  token tok (* string_end *)
 
 let map_line_break (tok : CST.line_break) =
-  token tok
+  token tok (* line_break *)
 
 let map_identifier (tok : CST.identifier) =
-  token tok
+  token tok (* identifier *)
 
 let map_string_content (tok : CST.string_content) =
-  token tok
+  token tok (* string_content *)
 
 let map_heredoc_end (tok : CST.heredoc_end) =
-  token tok
+  token tok (* heredoc_end *)
 
 let map_nil (x : CST.nil) =
   (match x with
-  | `Nil_nil tok -> token tok
-  | `Nil_NIL tok -> token tok
+  | `Nil_nil tok -> token tok (* "nil" *)
+  | `Nil_NIL tok -> token tok (* "NIL" *)
   )
 
 let map_heredoc_beginning (tok : CST.heredoc_beginning) =
-  token tok
+  token tok (* heredoc_beginning *)
 
 let map_float_ (tok : CST.float_) =
-  token tok
+  token tok (* pattern \d(_?\d)*(\.\d)?(_?\d)*([eE][\+-]?\d(_?\d)*\
+  )? *)
 
 let map_global_variable (tok : CST.global_variable) =
-  token tok
+  token tok (* pattern "\\$-?(([!@&`'+~=\\/\\\\,;.<>*$?:\"])|([0-9]*\
+  )|([a-zA-Z_][a-zA-Z0-9_]*\
+  ))" *)
 
 let map_symbol_array_start (tok : CST.symbol_array_start) =
-  token tok
+  token tok (* symbol_array_start *)
 
 let map_heredoc_body_start (tok : CST.heredoc_body_start) =
-  token tok
+  token tok (* heredoc_body_start *)
 
 let map_operator (x : CST.operator) =
   (match x with
-  | `Op_DOTDOT tok -> token tok
-  | `Op_BAR tok -> token tok
-  | `Op_HAT tok -> token tok
-  | `Op_AMP tok -> token tok
-  | `Op_LTEQGT tok -> token tok
-  | `Op_EQEQ tok -> token tok
-  | `Op_EQEQEQ tok -> token tok
-  | `Op_EQTILDE tok -> token tok
-  | `Op_GT tok -> token tok
-  | `Op_GTEQ tok -> token tok
-  | `Op_LT tok -> token tok
-  | `Op_LTEQ tok -> token tok
-  | `Op_PLUS tok -> token tok
-  | `Op_DASH tok -> token tok
-  | `Op_STAR tok -> token tok
-  | `Op_SLASH tok -> token tok
-  | `Op_PERC tok -> token tok
-  | `Op_BANG tok -> token tok
-  | `Op_BANGTILDE tok -> token tok
-  | `Op_STARSTAR tok -> token tok
-  | `Op_LTLT tok -> token tok
-  | `Op_GTGT tok -> token tok
-  | `Op_TILDE tok -> token tok
-  | `Op_PLUSAT tok -> token tok
-  | `Op_DASHAT tok -> token tok
-  | `Op_LBRACKRBRACK tok -> token tok
-  | `Op_LBRACKRBRACKEQ tok -> token tok
-  | `Op_BQUOT tok -> token tok
+  | `Op_DOTDOT tok -> token tok (* ".." *)
+  | `Op_BAR tok -> token tok (* "|" *)
+  | `Op_HAT tok -> token tok (* "^" *)
+  | `Op_AMP tok -> token tok (* "&" *)
+  | `Op_LTEQGT tok -> token tok (* "<=>" *)
+  | `Op_EQEQ tok -> token tok (* "==" *)
+  | `Op_EQEQEQ tok -> token tok (* "===" *)
+  | `Op_EQTILDE tok -> token tok (* "=~" *)
+  | `Op_GT tok -> token tok (* ">" *)
+  | `Op_GTEQ tok -> token tok (* ">=" *)
+  | `Op_LT tok -> token tok (* "<" *)
+  | `Op_LTEQ tok -> token tok (* "<=" *)
+  | `Op_PLUS tok -> token tok (* "+" *)
+  | `Op_DASH tok -> token tok (* "-" *)
+  | `Op_STAR tok -> token tok (* "*" *)
+  | `Op_SLASH tok -> token tok (* "/" *)
+  | `Op_PERC tok -> token tok (* "%" *)
+  | `Op_BANG tok -> token tok (* "!" *)
+  | `Op_BANGTILDE tok -> token tok (* "!~" *)
+  | `Op_STARSTAR tok -> token tok (* "**" *)
+  | `Op_LTLT tok -> token tok (* "<<" *)
+  | `Op_GTGT tok -> token tok (* ">>" *)
+  | `Op_TILDE tok -> token tok (* "~" *)
+  | `Op_PLUSAT tok -> token tok (* "+@" *)
+  | `Op_DASHAT tok -> token tok (* "-@" *)
+  | `Op_LBRACKRBRACK tok -> token tok (* "[]" *)
+  | `Op_LBRACKRBRACKEQ tok -> token tok (* "[]=" *)
+  | `Op_BQUOT tok -> token tok (* "`" *)
   )
 
 let map_true_ (x : CST.true_) =
   (match x with
-  | `True_true tok -> token tok
-  | `True_TRUE tok -> token tok
+  | `True_true tok -> token tok (* "true" *)
+  | `True_TRUE tok -> token tok (* "TRUE" *)
   )
 
 let map_string_start (tok : CST.string_start) =
-  token tok
+  token tok (* string_start *)
 
 let map_identifier_hash_key (tok : CST.identifier_hash_key) =
-  token tok
+  token tok (* identifier_hash_key *)
 
 let map_terminator (x : CST.terminator) =
   (match x with
-  | `Term_line_brk tok -> token tok
-  | `Term_SEMI tok -> token tok
+  | `Term_line_brk tok -> token tok (* line_break *)
+  | `Term_SEMI tok -> token tok (* ";" *)
   )
 
 let map_variable (x : CST.variable) =
   (match x with
-  | `Self tok -> token tok
-  | `Super tok -> token tok
-  | `Inst_var tok -> token tok
-  | `Class_var tok -> token tok
-  | `Glob_var tok -> token tok
-  | `Id tok -> token tok
-  | `Cst tok -> token tok
+  | `Self tok -> token tok (* "self" *)
+  | `Super tok -> token tok (* "super" *)
+  | `Inst_var tok -> token tok (* instance_variable *)
+  | `Class_var tok -> token tok (* class_variable *)
+  | `Glob_var tok ->
+      token tok (* pattern "\\$-?(([!@&`'+~=\\/\\\\,;.<>*$?:\"])|([0-9]*\
+  )|([a-zA-Z_][a-zA-Z0-9_]*\
+  ))" *)
+  | `Id tok -> token tok (* identifier *)
+  | `Cst tok -> token tok (* constant *)
   )
 
 let map_do_ (x : CST.do_) =
   (match x with
-  | `Do_do tok -> token tok
+  | `Do_do tok -> token tok (* "do" *)
   | `Do_term x -> map_terminator x
   )
 
@@ -192,7 +198,7 @@ let rec map_statements (x : CST.statements) =
               let v1 = map_statement v1 in
               let v2 = map_terminator v2 in
               todo (v1, v2)
-          | `Empty_stmt tok -> token tok
+          | `Empty_stmt tok -> token tok (* ";" *)
           )
         ) v1
       in
@@ -208,65 +214,65 @@ let rec map_statements (x : CST.statements) =
 and map_statement (x : CST.statement) =
   (match x with
   | `Stmt_undef (v1, v2, v3) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "undef" *) in
       let v2 = map_method_name v2 in
       let v3 =
         List.map (fun (v1, v2) ->
-          let v1 = token v1 in
+          let v1 = token v1 (* "," *) in
           let v2 = map_method_name v2 in
           todo (v1, v2)
         ) v3
       in
       todo (v1, v2, v3)
   | `Stmt_alias (v1, v2, v3) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "alias" *) in
       let v2 = map_method_name v2 in
       let v3 = map_method_name v3 in
       todo (v1, v2, v3)
   | `Stmt_if_modi (v1, v2, v3) ->
       let v1 = map_statement v1 in
-      let v2 = token v2 in
+      let v2 = token v2 (* "if" *) in
       let v3 = map_expression v3 in
       todo (v1, v2, v3)
   | `Stmt_unle_modi (v1, v2, v3) ->
       let v1 = map_statement v1 in
-      let v2 = token v2 in
+      let v2 = token v2 (* "unless" *) in
       let v3 = map_expression v3 in
       todo (v1, v2, v3)
   | `Stmt_while_modi (v1, v2, v3) ->
       let v1 = map_statement v1 in
-      let v2 = token v2 in
+      let v2 = token v2 (* "while" *) in
       let v3 = map_expression v3 in
       todo (v1, v2, v3)
   | `Stmt_until_modi (v1, v2, v3) ->
       let v1 = map_statement v1 in
-      let v2 = token v2 in
+      let v2 = token v2 (* "until" *) in
       let v3 = map_expression v3 in
       todo (v1, v2, v3)
   | `Stmt_resc_modi (v1, v2, v3) ->
       let v1 = map_statement v1 in
-      let v2 = token v2 in
+      let v2 = token v2 (* "rescue" *) in
       let v3 = map_expression v3 in
       todo (v1, v2, v3)
   | `Stmt_begin_blk (v1, v2, v3, v4) ->
-      let v1 = token v1 in
-      let v2 = token v2 in
+      let v1 = token v1 (* "BEGIN" *) in
+      let v2 = token v2 (* "{" *) in
       let v3 =
         (match v3 with
         | Some x -> map_statements x
         | None -> todo ())
       in
-      let v4 = token v4 in
+      let v4 = token v4 (* "}" *) in
       todo (v1, v2, v3, v4)
   | `Stmt_end_blk (v1, v2, v3, v4) ->
-      let v1 = token v1 in
-      let v2 = token v2 in
+      let v1 = token v1 (* "END" *) in
+      let v2 = token v2 (* "{" *) in
       let v3 =
         (match v3 with
         | Some x -> map_statements x
         | None -> todo ())
       in
-      let v4 = token v4 in
+      let v4 = token v4 (* "}" *) in
       todo (v1, v2, v3, v4)
   | `Stmt_exp x -> map_expression x
   )
@@ -297,14 +303,14 @@ and map_method_rest ((v1, v2, v3) : CST.method_rest) =
   todo (v1, v2, v3)
 
 and map_parameters ((v1, v2, v3) : CST.parameters) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "(" *) in
   let v2 =
     (match v2 with
     | Some (v1, v2) ->
         let v1 = map_formal_parameter v1 in
         let v2 =
           List.map (fun (v1, v2) ->
-            let v1 = token v1 in
+            let v1 = token v1 (* "," *) in
             let v2 = map_formal_parameter v2 in
             todo (v1, v2)
           ) v2
@@ -312,14 +318,14 @@ and map_parameters ((v1, v2, v3) : CST.parameters) =
         todo (v1, v2)
     | None -> todo ())
   in
-  let v3 = token v3 in
+  let v3 = token v3 (* ")" *) in
   todo (v1, v2, v3)
 
 and map_bare_parameters ((v1, v2) : CST.bare_parameters) =
   let v1 = map_simple_formal_parameter v1 in
   let v2 =
     List.map (fun (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "," *) in
       let v2 = map_formal_parameter v2 in
       todo (v1, v2)
     ) v2
@@ -327,14 +333,14 @@ and map_bare_parameters ((v1, v2) : CST.bare_parameters) =
   todo (v1, v2)
 
 and map_block_parameters ((v1, v2, v3, v4, v5) : CST.block_parameters) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "|" *) in
   let v2 =
     (match v2 with
     | Some (v1, v2) ->
         let v1 = map_formal_parameter v1 in
         let v2 =
           List.map (fun (v1, v2) ->
-            let v1 = token v1 in
+            let v1 = token v1 (* "," *) in
             let v2 = map_formal_parameter v2 in
             todo (v1, v2)
           ) v2
@@ -344,25 +350,25 @@ and map_block_parameters ((v1, v2, v3, v4, v5) : CST.block_parameters) =
   in
   let v3 =
     (match v3 with
-    | Some tok -> token tok
+    | Some tok -> token tok (* "," *)
     | None -> todo ())
   in
   let v4 =
     (match v4 with
     | Some (v1, v2, v3) ->
-        let v1 = token v1 in
-        let v2 = token v2 in
+        let v1 = token v1 (* ";" *) in
+        let v2 = token v2 (* identifier *) in
         let v3 =
           List.map (fun (v1, v2) ->
-            let v1 = token v1 in
-            let v2 = token v2 in
+            let v1 = token v1 (* "," *) in
+            let v2 = token v2 (* identifier *) in
             todo (v1, v2)
           ) v3
         in
         todo (v1, v2, v3)
     | None -> todo ())
   in
-  let v5 = token v5 in
+  let v5 = token v5 (* "|" *) in
   todo (v1, v2, v3, v4, v5)
 
 and map_formal_parameter (x : CST.formal_parameter) =
@@ -374,30 +380,30 @@ and map_formal_parameter (x : CST.formal_parameter) =
 
 and map_simple_formal_parameter (x : CST.simple_formal_parameter) =
   (match x with
-  | `Simple_form_param_id tok -> token tok
+  | `Simple_form_param_id tok -> token tok (* identifier *)
   | `Simple_form_param_splat_param (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "*" *) in
       let v2 =
         (match v2 with
-        | Some tok -> token tok
+        | Some tok -> token tok (* identifier *)
         | None -> todo ())
       in
       todo (v1, v2)
   | `Simple_form_param_hash_splat_param (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "**" *) in
       let v2 =
         (match v2 with
-        | Some tok -> token tok
+        | Some tok -> token tok (* identifier *)
         | None -> todo ())
       in
       todo (v1, v2)
   | `Simple_form_param_blk_param (v1, v2) ->
-      let v1 = token v1 in
-      let v2 = token v2 in
+      let v1 = token v1 (* "&" *) in
+      let v2 = token v2 (* identifier *) in
       todo (v1, v2)
   | `Simple_form_param_kw_param (v1, v2, v3) ->
-      let v1 = token v1 in
-      let v2 = token v2 in
+      let v1 = token v1 (* identifier *) in
+      let v2 = token v2 (* ":" *) in
       let v3 =
         (match v3 with
         | Some x -> map_arg x
@@ -405,28 +411,28 @@ and map_simple_formal_parameter (x : CST.simple_formal_parameter) =
       in
       todo (v1, v2, v3)
   | `Simple_form_param_opt_param (v1, v2, v3) ->
-      let v1 = token v1 in
-      let v2 = token v2 in
+      let v1 = token v1 (* identifier *) in
+      let v2 = token v2 (* "=" *) in
       let v3 = map_arg v3 in
       todo (v1, v2, v3)
   )
 
 and map_superclass ((v1, v2) : CST.superclass) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "<" *) in
   let v2 = map_arg v2 in
   todo (v1, v2)
 
 and map_in_ ((v1, v2) : CST.in_) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "in" *) in
   let v2 = map_arg v2 in
   todo (v1, v2)
 
 and map_when_ ((v1, v2, v3, v4) : CST.when_) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "when" *) in
   let v2 = map_pattern v2 in
   let v3 =
     List.map (fun (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "," *) in
       let v2 = map_pattern v2 in
       todo (v1, v2)
     ) v3
@@ -446,7 +452,7 @@ and map_pattern (x : CST.pattern) =
   )
 
 and map_elsif ((v1, v2, v3, v4) : CST.elsif) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "elsif" *) in
   let v2 = map_statement v2 in
   let v3 =
     (match v3 with
@@ -466,7 +472,7 @@ and map_elsif ((v1, v2, v3, v4) : CST.elsif) =
   todo (v1, v2, v3, v4)
 
 and map_else_ ((v1, v2, v3) : CST.else_) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "else" *) in
   let v2 =
     (match v2 with
     | Some x -> map_terminator x
@@ -491,7 +497,7 @@ and map_then_ (x : CST.then_) =
         | Some x -> map_terminator x
         | None -> todo ())
       in
-      let v2 = token v2 in
+      let v2 = token v2 (* "then" *) in
       let v3 =
         (match v3 with
         | Some x -> map_statements x
@@ -501,7 +507,7 @@ and map_then_ (x : CST.then_) =
   )
 
 and map_ensure ((v1, v2) : CST.ensure) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "ensure" *) in
   let v2 =
     (match v2 with
     | Some x -> map_statements x
@@ -510,7 +516,7 @@ and map_ensure ((v1, v2) : CST.ensure) =
   todo (v1, v2)
 
 and map_rescue ((v1, v2, v3, v4) : CST.rescue) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "rescue" *) in
   let v2 =
     (match v2 with
     | Some x -> map_exceptions x
@@ -538,7 +544,7 @@ and map_exceptions ((v1, v2) : CST.exceptions) =
   in
   let v2 =
     List.map (fun (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "," *) in
       let v2 =
         (match v2 with
         | `Arg x -> map_arg x
@@ -551,7 +557,7 @@ and map_exceptions ((v1, v2) : CST.exceptions) =
   todo (v1, v2)
 
 and map_exception_variable ((v1, v2) : CST.exception_variable) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "=>" *) in
   let v2 = map_lhs v2 in
   todo (v1, v2)
 
@@ -570,7 +576,7 @@ and map_body_statement ((v1, v2, v3) : CST.body_statement) =
       )
     ) v2
   in
-  let v3 = token v3 in
+  let v3 = token v3 (* "end" *) in
   todo (v1, v2, v3)
 
 and map_expression (x : CST.expression) =
@@ -579,8 +585,8 @@ and map_expression (x : CST.expression) =
       let v1 = map_expression v1 in
       let v2 =
         (match v2 with
-        | `Or tok -> token tok
-        | `And tok -> token tok
+        | `Or tok -> token tok (* "or" *)
+        | `And tok -> token tok (* "and" *)
         )
       in
       let v3 = map_expression v3 in
@@ -590,38 +596,38 @@ and map_expression (x : CST.expression) =
       let v1 = map_lhs v1 in
       let v2 =
         (match v2 with
-        | `PLUSEQ tok -> token tok
-        | `DASHEQ tok -> token tok
-        | `STAREQ tok -> token tok
-        | `STARSTAREQ tok -> token tok
-        | `SLASHEQ tok -> token tok
-        | `BARBAREQ tok -> token tok
-        | `BAREQ tok -> token tok
-        | `AMPAMPEQ tok -> token tok
-        | `AMPEQ tok -> token tok
-        | `PERCEQ tok -> token tok
-        | `GTGTEQ tok -> token tok
-        | `LTLTEQ tok -> token tok
-        | `HATEQ tok -> token tok
+        | `PLUSEQ tok -> token tok (* "+=" *)
+        | `DASHEQ tok -> token tok (* "-=" *)
+        | `STAREQ tok -> token tok (* "*=" *)
+        | `STARSTAREQ tok -> token tok (* "**=" *)
+        | `SLASHEQ tok -> token tok (* "/=" *)
+        | `BARBAREQ tok -> token tok (* "||=" *)
+        | `BAREQ tok -> token tok (* "|=" *)
+        | `AMPAMPEQ tok -> token tok (* "&&=" *)
+        | `AMPEQ tok -> token tok (* "&=" *)
+        | `PERCEQ tok -> token tok (* "%=" *)
+        | `GTGTEQ tok -> token tok (* ">>=" *)
+        | `LTLTEQ tok -> token tok (* "<<=" *)
+        | `HATEQ tok -> token tok (* "^=" *)
         )
       in
       let v3 = map_expression v3 in
       todo (v1, v2, v3)
   | `Exp_cmd_call x -> map_command_call x
   | `Exp_ret_cmd (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "return" *) in
       let v2 = map_command_argument_list v2 in
       todo (v1, v2)
   | `Exp_yield_cmd (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "yield" *) in
       let v2 = map_command_argument_list v2 in
       todo (v1, v2)
   | `Exp_brk_cmd (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "break" *) in
       let v2 = map_command_argument_list v2 in
       todo (v1, v2)
   | `Exp_next_cmd (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "next" *) in
       let v2 = map_command_argument_list v2 in
       todo (v1, v2)
   | `Exp_arg x -> map_arg x
@@ -635,36 +641,36 @@ and map_arg (x : CST.arg) =
       let v1 = map_lhs v1 in
       let v2 =
         (match v2 with
-        | `PLUSEQ tok -> token tok
-        | `DASHEQ tok -> token tok
-        | `STAREQ tok -> token tok
-        | `STARSTAREQ tok -> token tok
-        | `SLASHEQ tok -> token tok
-        | `BARBAREQ tok -> token tok
-        | `BAREQ tok -> token tok
-        | `AMPAMPEQ tok -> token tok
-        | `AMPEQ tok -> token tok
-        | `PERCEQ tok -> token tok
-        | `GTGTEQ tok -> token tok
-        | `LTLTEQ tok -> token tok
-        | `HATEQ tok -> token tok
+        | `PLUSEQ tok -> token tok (* "+=" *)
+        | `DASHEQ tok -> token tok (* "-=" *)
+        | `STAREQ tok -> token tok (* "*=" *)
+        | `STARSTAREQ tok -> token tok (* "**=" *)
+        | `SLASHEQ tok -> token tok (* "/=" *)
+        | `BARBAREQ tok -> token tok (* "||=" *)
+        | `BAREQ tok -> token tok (* "|=" *)
+        | `AMPAMPEQ tok -> token tok (* "&&=" *)
+        | `AMPEQ tok -> token tok (* "&=" *)
+        | `PERCEQ tok -> token tok (* "%=" *)
+        | `GTGTEQ tok -> token tok (* ">>=" *)
+        | `LTLTEQ tok -> token tok (* "<<=" *)
+        | `HATEQ tok -> token tok (* "^=" *)
         )
       in
       let v3 = map_arg v3 in
       todo (v1, v2, v3)
   | `Arg_cond (v1, v2, v3, v4, v5) ->
       let v1 = map_arg v1 in
-      let v2 = token v2 in
+      let v2 = token v2 (* "?" *) in
       let v3 = map_arg v3 in
-      let v4 = token v4 in
+      let v4 = token v4 (* ":" *) in
       let v5 = map_arg v5 in
       todo (v1, v2, v3, v4, v5)
   | `Arg_range (v1, v2, v3) ->
       let v1 = map_arg v1 in
       let v2 =
         (match v2 with
-        | `DOTDOT tok -> token tok
-        | `DOTDOTDOT tok -> token tok
+        | `DOTDOT tok -> token tok (* ".." *)
+        | `DOTDOTDOT tok -> token tok (* "..." *)
         )
       in
       let v3 = map_arg v3 in
@@ -678,16 +684,16 @@ and map_primary (x : CST.primary) =
   | `Prim_paren_stmts x -> map_parenthesized_statements x
   | `Prim_lhs x -> map_lhs x
   | `Prim_array (v1, v2, v3) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "[" *) in
       let v2 =
         (match v2 with
         | Some x -> map_argument_list_with_trailing_comma x
         | None -> todo ())
       in
-      let v3 = token v3 in
+      let v3 = token v3 (* "]" *) in
       todo (v1, v2, v3)
   | `Prim_str_array (v1, v2, v3, v4, v5) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* string_array_start *) in
       let v2 =
         (match v2 with
         | Some () -> todo ()
@@ -712,10 +718,10 @@ and map_primary (x : CST.primary) =
         | Some () -> todo ()
         | None -> todo ())
       in
-      let v5 = token v5 in
+      let v5 = token v5 (* string_end *) in
       todo (v1, v2, v3, v4, v5)
   | `Prim_symb_array (v1, v2, v3, v4, v5) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* symbol_array_start *) in
       let v2 =
         (match v2 with
         | Some () -> todo ()
@@ -740,10 +746,10 @@ and map_primary (x : CST.primary) =
         | Some () -> todo ()
         | None -> todo ())
       in
-      let v5 = token v5 in
+      let v5 = token v5 (* string_end *) in
       todo (v1, v2, v3, v4, v5)
   | `Prim_hash (v1, v2, v3) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "{" *) in
       let v2 =
         (match v2 with
         | Some (v1, v2, v3) ->
@@ -755,7 +761,7 @@ and map_primary (x : CST.primary) =
             in
             let v2 =
               List.map (fun (v1, v2) ->
-                let v1 = token v1 in
+                let v1 = token v1 (* "," *) in
                 let v2 =
                   (match v2 with
                   | `Pair x -> map_pair x
@@ -767,48 +773,55 @@ and map_primary (x : CST.primary) =
             in
             let v3 =
               (match v3 with
-              | Some tok -> token tok
+              | Some tok -> token tok (* "," *)
               | None -> todo ())
             in
             todo (v1, v2, v3)
         | None -> todo ())
       in
-      let v3 = token v3 in
+      let v3 = token v3 (* "}" *) in
       todo (v1, v2, v3)
   | `Prim_subs (v1, v2, v3) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* subshell_start *) in
       let v2 =
         (match v2 with
         | Some x -> map_literal_contents x
         | None -> todo ())
       in
-      let v3 = token v3 in
+      let v3 = token v3 (* string_end *) in
       todo (v1, v2, v3)
   | `Prim_symb x -> map_symbol x
-  | `Prim_int tok -> token tok
-  | `Prim_float tok -> token tok
-  | `Prim_comp tok -> token tok
+  | `Prim_int tok ->
+      token tok (* pattern 0[bB][01](_?[01])*|0[oO]?[0-7](_?[0-7])*|(0[dD])?\d(_?\d)*|0x[0-9a-fA-F](_?[0-9a-fA-F])* *)
+  | `Prim_float tok ->
+      token tok (* pattern \d(_?\d)*(\.\d)?(_?\d)*([eE][\+-]?\d(_?\d)*\
+  )? *)
+  | `Prim_comp tok ->
+      token tok (* pattern (\d+)?(\+|-)?(\d+)i *)
   | `Prim_rati (v1, v2) ->
-      let v1 = token v1 in
-      let v2 = token v2 in
+      let v1 =
+        token v1 (* pattern 0[bB][01](_?[01])*|0[oO]?[0-7](_?[0-7])*|(0[dD])?\d(_?\d)*|0x[0-9a-fA-F](_?[0-9a-fA-F])* *)
+      in
+      let v2 = token v2 (* "r" *) in
       todo (v1, v2)
   | `Prim_str x -> map_string_ x
-  | `Prim_char tok -> token tok
+  | `Prim_char tok ->
+      token tok (* pattern \?(\\\S({[0-9]*}|[0-9]*|-\S([MC]-\S)?)?|\S) *)
   | `Prim_chai_str (v1, v2) ->
       let v1 = map_string_ v1 in
       let v2 = List.map map_string_ v2 in
       todo (v1, v2)
   | `Prim_regex (v1, v2, v3) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* regex_start *) in
       let v2 =
         (match v2 with
         | Some x -> map_literal_contents x
         | None -> todo ())
       in
-      let v3 = token v3 in
+      let v3 = token v3 (* string_end *) in
       todo (v1, v2, v3)
   | `Prim_lamb (v1, v2, v3) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "->" *) in
       let v2 =
         (match v2 with
         | Some x ->
@@ -826,34 +839,34 @@ and map_primary (x : CST.primary) =
       in
       todo (v1, v2, v3)
   | `Prim_meth (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "def" *) in
       let v2 = map_method_rest v2 in
       todo (v1, v2)
   | `Prim_sing_meth (v1, v2, v3, v4) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "def" *) in
       let v2 =
         (match v2 with
         | `Var x -> map_variable x
         | `LPAR_arg_RPAR (v1, v2, v3) ->
-            let v1 = token v1 in
+            let v1 = token v1 (* "(" *) in
             let v2 = map_arg v2 in
-            let v3 = token v3 in
+            let v3 = token v3 (* ")" *) in
             todo (v1, v2, v3)
         )
       in
       let v3 =
         (match v3 with
-        | `DOT tok -> token tok
-        | `COLONCOLON tok -> token tok
+        | `DOT tok -> token tok (* "." *)
+        | `COLONCOLON tok -> token tok (* "::" *)
         )
       in
       let v4 = map_method_rest v4 in
       todo (v1, v2, v3, v4)
   | `Prim_class (v1, v2, v3, v4, v5) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "class" *) in
       let v2 =
         (match v2 with
-        | `Cst tok -> token tok
+        | `Cst tok -> token tok (* constant *)
         | `Scope_resol x -> map_scope_resolution x
         )
       in
@@ -866,17 +879,19 @@ and map_primary (x : CST.primary) =
       let v5 = map_body_statement v5 in
       todo (v1, v2, v3, v4, v5)
   | `Prim_sing_class (v1, v2, v3, v4, v5) ->
-      let v1 = token v1 in
-      let v2 = token v2 in
+      let v1 = token v1 (* "class" *) in
+      let v2 =
+        token v2 (* singleton_class_left_angle_left_langle *)
+      in
       let v3 = map_arg v3 in
       let v4 = map_terminator v4 in
       let v5 = map_body_statement v5 in
       todo (v1, v2, v3, v4, v5)
   | `Prim_modu (v1, v2, v3) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "module" *) in
       let v2 =
         (match v2 with
-        | `Cst tok -> token tok
+        | `Cst tok -> token tok (* constant *)
         | `Scope_resol x -> map_scope_resolution x
         )
       in
@@ -886,12 +901,12 @@ and map_primary (x : CST.primary) =
             let v1 = map_terminator v1 in
             let v2 = map_body_statement v2 in
             todo (v1, v2)
-        | `End tok -> token tok
+        | `End tok -> token tok (* "end" *)
         )
       in
       todo (v1, v2, v3)
   | `Prim_begin (v1, v2, v3) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "begin" *) in
       let v2 =
         (match v2 with
         | Some x -> map_terminator x
@@ -900,7 +915,7 @@ and map_primary (x : CST.primary) =
       let v3 = map_body_statement v3 in
       todo (v1, v2, v3)
   | `Prim_while (v1, v2, v3, v4, v5) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "while" *) in
       let v2 = map_arg v2 in
       let v3 = map_do_ v3 in
       let v4 =
@@ -908,10 +923,10 @@ and map_primary (x : CST.primary) =
         | Some x -> map_statements x
         | None -> todo ())
       in
-      let v5 = token v5 in
+      let v5 = token v5 (* "end" *) in
       todo (v1, v2, v3, v4, v5)
   | `Prim_until (v1, v2, v3, v4, v5) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "until" *) in
       let v2 = map_arg v2 in
       let v3 = map_do_ v3 in
       let v4 =
@@ -919,10 +934,10 @@ and map_primary (x : CST.primary) =
         | Some x -> map_statements x
         | None -> todo ())
       in
-      let v5 = token v5 in
+      let v5 = token v5 (* "end" *) in
       todo (v1, v2, v3, v4, v5)
   | `Prim_if (v1, v2, v3, v4, v5) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "if" *) in
       let v2 = map_statement v2 in
       let v3 =
         (match v3 with
@@ -939,10 +954,10 @@ and map_primary (x : CST.primary) =
             )
         | None -> todo ())
       in
-      let v5 = token v5 in
+      let v5 = token v5 (* "end" *) in
       todo (v1, v2, v3, v4, v5)
   | `Prim_unle (v1, v2, v3, v4, v5) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "unless" *) in
       let v2 = map_statement v2 in
       let v3 =
         (match v3 with
@@ -959,10 +974,10 @@ and map_primary (x : CST.primary) =
             )
         | None -> todo ())
       in
-      let v5 = token v5 in
+      let v5 = token v5 (* "end" *) in
       todo (v1, v2, v3, v4, v5)
   | `Prim_for (v1, v2, v3, v4, v5, v6) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "for" *) in
       let v2 = map_mlhs v2 in
       let v3 = map_in_ v3 in
       let v4 = map_do_ v4 in
@@ -971,27 +986,27 @@ and map_primary (x : CST.primary) =
         | Some x -> map_statements x
         | None -> todo ())
       in
-      let v6 = token v6 in
+      let v6 = token v6 (* "end" *) in
       todo (v1, v2, v3, v4, v5, v6)
   | `Prim_case (v1, v2, v3, v4, v5, v6, v7) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "case" *) in
       let v2 =
         (match v2 with
         | Some x -> map_arg x
         | None -> todo ())
       in
       let v3 = map_terminator v3 in
-      let v4 = List.map token v4 in
+      let v4 = List.map token (* ";" *) v4 in
       let v5 = List.map map_when_ v5 in
       let v6 =
         (match v6 with
         | Some x -> map_else_ x
         | None -> todo ())
       in
-      let v7 = token v7 in
+      let v7 = token v7 (* "end" *) in
       todo (v1, v2, v3, v4, v5, v6, v7)
   | `Prim_ret (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "return" *) in
       let v2 =
         (match v2 with
         | Some x -> map_argument_list x
@@ -999,7 +1014,7 @@ and map_primary (x : CST.primary) =
       in
       todo (v1, v2)
   | `Prim_yield (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "yield" *) in
       let v2 =
         (match v2 with
         | Some x -> map_argument_list x
@@ -1007,7 +1022,7 @@ and map_primary (x : CST.primary) =
       in
       todo (v1, v2)
   | `Prim_brk (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "break" *) in
       let v2 =
         (match v2 with
         | Some x -> map_argument_list x
@@ -1015,7 +1030,7 @@ and map_primary (x : CST.primary) =
       in
       todo (v1, v2)
   | `Prim_next (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "next" *) in
       let v2 =
         (match v2 with
         | Some x -> map_argument_list x
@@ -1023,7 +1038,7 @@ and map_primary (x : CST.primary) =
       in
       todo (v1, v2)
   | `Prim_redo (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "redo" *) in
       let v2 =
         (match v2 with
         | Some x -> map_argument_list x
@@ -1031,7 +1046,7 @@ and map_primary (x : CST.primary) =
       in
       todo (v1, v2)
   | `Prim_retry (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "retry" *) in
       let v2 =
         (match v2 with
         | Some x -> map_argument_list x
@@ -1041,8 +1056,8 @@ and map_primary (x : CST.primary) =
   | `Prim_paren_un (v1, v2) ->
       let v1 =
         (match v1 with
-        | `Defi tok -> token tok
-        | `Not tok -> token tok
+        | `Defi tok -> token tok (* "defined?" *)
+        | `Not tok -> token tok (* "not" *)
         )
       in
       let v2 = map_parenthesized_statements v2 in
@@ -1050,44 +1065,47 @@ and map_primary (x : CST.primary) =
   | `Prim_un_lit (v1, v2) ->
       let v1 =
         (match v1 with
-        | `Un_minus tok -> token tok
-        | `PLUS tok -> token tok
+        | `Un_minus tok -> token tok (* unary_minus *)
+        | `PLUS tok -> token tok (* "+" *)
         )
       in
       let v2 =
         (match v2 with
-        | `Int tok -> token tok
-        | `Float tok -> token tok
+        | `Int tok ->
+            token tok (* pattern 0[bB][01](_?[01])*|0[oO]?[0-7](_?[0-7])*|(0[dD])?\d(_?\d)*|0x[0-9a-fA-F](_?[0-9a-fA-F])* *)
+        | `Float tok ->
+            token tok (* pattern \d(_?\d)*(\.\d)?(_?\d)*([eE][\+-]?\d(_?\d)*\
+  )? *)
         )
       in
       todo (v1, v2)
-  | `Prim_here_begin tok -> token tok
+  | `Prim_here_begin tok -> token tok (* heredoc_beginning *)
   )
 
 and map_parenthesized_statements ((v1, v2, v3) : CST.parenthesized_statements) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "(" *) in
   let v2 =
     (match v2 with
     | Some x -> map_statements x
     | None -> todo ())
   in
-  let v3 = token v3 in
+  let v3 = token v3 (* ")" *) in
   todo (v1, v2, v3)
 
 and map_scope_resolution ((v1, v2) : CST.scope_resolution) =
   let v1 =
     (match v1 with
-    | `COLONCOLON tok -> token tok
+    | `COLONCOLON tok -> token tok (* "::" *)
     | `Prim_COLONCOLON (v1, v2) ->
         let v1 = map_primary v1 in
-        let v2 = token v2 in
+        let v2 = token v2 (* "::" *) in
         todo (v1, v2)
     )
   in
   let v2 =
     (match v2 with
-    | `Id tok -> token tok
-    | `Cst tok -> token tok
+    | `Id tok -> token tok (* identifier *)
+    | `Cst tok -> token tok (* constant *)
     )
   in
   todo (v1, v2)
@@ -1096,15 +1114,15 @@ and map_call ((v1, v2, v3) : CST.call) =
   let v1 = map_primary v1 in
   let v2 =
     (match v2 with
-    | `DOT tok -> token tok
-    | `AMPDOT tok -> token tok
+    | `DOT tok -> token tok (* "." *)
+    | `AMPDOT tok -> token tok (* "&." *)
     )
   in
   let v3 =
     (match v3 with
-    | `Id tok -> token tok
+    | `Id tok -> token tok (* identifier *)
     | `Op x -> map_operator x
-    | `Cst tok -> token tok
+    | `Cst tok -> token tok (* constant *)
     | `Arg_list x -> map_argument_list x
     )
   in
@@ -1208,7 +1226,7 @@ and map_command_argument_list (x : CST.command_argument_list) =
       let v1 = map_argument v1 in
       let v2 =
         List.map (fun (v1, v2) ->
-          let v1 = token v1 in
+          let v1 = token v1 (* "," *) in
           let v2 = map_argument v2 in
           todo (v1, v2)
         ) v2
@@ -1218,27 +1236,27 @@ and map_command_argument_list (x : CST.command_argument_list) =
   )
 
 and map_argument_list ((v1, v2, v3) : CST.argument_list) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "(" *) in
   let v2 =
     (match v2 with
     | Some x -> map_argument_list_with_trailing_comma x
     | None -> todo ())
   in
-  let v3 = token v3 in
+  let v3 = token v3 (* ")" *) in
   todo (v1, v2, v3)
 
 and map_argument_list_with_trailing_comma ((v1, v2, v3) : CST.argument_list_with_trailing_comma) =
   let v1 = map_argument v1 in
   let v2 =
     List.map (fun (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "," *) in
       let v2 = map_argument v2 in
       todo (v1, v2)
     ) v2
   in
   let v3 =
     (match v3 with
-    | Some tok -> token tok
+    | Some tok -> token tok (* "," *)
     | None -> todo ())
   in
   todo (v1, v2, v3)
@@ -1249,24 +1267,24 @@ and map_argument (x : CST.argument) =
   | `Arg_splat_arg x -> map_splat_argument x
   | `Arg_hash_splat_arg x -> map_hash_splat_argument x
   | `Arg_blk_arg (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* block_ampersand *) in
       let v2 = map_arg v2 in
       todo (v1, v2)
   | `Arg_pair x -> map_pair x
   )
 
 and map_splat_argument ((v1, v2) : CST.splat_argument) =
-  let v1 = token v1 in
+  let v1 = token v1 (* splat_star *) in
   let v2 = map_arg v2 in
   todo (v1, v2)
 
 and map_hash_splat_argument ((v1, v2) : CST.hash_splat_argument) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "**" *) in
   let v2 = map_arg v2 in
   todo (v1, v2)
 
 and map_do_block ((v1, v2, v3, v4) : CST.do_block) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "do" *) in
   let v2 =
     (match v2 with
     | Some x -> map_terminator x
@@ -1288,7 +1306,7 @@ and map_do_block ((v1, v2, v3, v4) : CST.do_block) =
   todo (v1, v2, v3, v4)
 
 and map_block ((v1, v2, v3, v4) : CST.block) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "{" *) in
   let v2 =
     (match v2 with
     | Some x -> map_block_parameters x
@@ -1299,7 +1317,7 @@ and map_block ((v1, v2, v3, v4) : CST.block) =
     | Some x -> map_statements x
     | None -> todo ())
   in
-  let v4 = token v4 in
+  let v4 = token v4 (* "}" *) in
   todo (v1, v2, v3, v4)
 
 and map_assignment (x : CST.assignment) =
@@ -1311,7 +1329,7 @@ and map_assignment (x : CST.assignment) =
         | `Left_assign_list x -> map_left_assignment_list x
         )
       in
-      let v2 = token v2 in
+      let v2 = token v2 (* "=" *) in
       let v3 =
         (match v3 with
         | `Arg x -> map_arg x
@@ -1331,7 +1349,7 @@ and map_command_assignment (x : CST.command_assignment) =
         | `Left_assign_list x -> map_left_assignment_list x
         )
       in
-      let v2 = token v2 in
+      let v2 = token v2 (* "=" *) in
       let v3 = map_expression v3 in
       todo (v1, v2, v3)
   )
@@ -1340,30 +1358,30 @@ and map_binary (x : CST.binary) =
   (match x with
   | `Bin_arg_and_arg (v1, v2, v3) ->
       let v1 = map_arg v1 in
-      let v2 = token v2 in
+      let v2 = token v2 (* "and" *) in
       let v3 = map_arg v3 in
       todo (v1, v2, v3)
   | `Bin_arg_or_arg (v1, v2, v3) ->
       let v1 = map_arg v1 in
-      let v2 = token v2 in
+      let v2 = token v2 (* "or" *) in
       let v3 = map_arg v3 in
       todo (v1, v2, v3)
   | `Bin_arg_BARBAR_arg (v1, v2, v3) ->
       let v1 = map_arg v1 in
-      let v2 = token v2 in
+      let v2 = token v2 (* "||" *) in
       let v3 = map_arg v3 in
       todo (v1, v2, v3)
   | `Bin_arg_AMPAMP_arg (v1, v2, v3) ->
       let v1 = map_arg v1 in
-      let v2 = token v2 in
+      let v2 = token v2 (* "&&" *) in
       let v3 = map_arg v3 in
       todo (v1, v2, v3)
   | `Bin_arg_choice_LTLT_arg (v1, v2, v3) ->
       let v1 = map_arg v1 in
       let v2 =
         (match v2 with
-        | `LTLT tok -> token tok
-        | `GTGT tok -> token tok
+        | `LTLT tok -> token tok (* "<<" *)
+        | `GTGT tok -> token tok (* ">>" *)
         )
       in
       let v3 = map_arg v3 in
@@ -1372,25 +1390,25 @@ and map_binary (x : CST.binary) =
       let v1 = map_arg v1 in
       let v2 =
         (match v2 with
-        | `LT tok -> token tok
-        | `LTEQ tok -> token tok
-        | `GT tok -> token tok
-        | `GTEQ tok -> token tok
+        | `LT tok -> token tok (* "<" *)
+        | `LTEQ tok -> token tok (* "<=" *)
+        | `GT tok -> token tok (* ">" *)
+        | `GTEQ tok -> token tok (* ">=" *)
         )
       in
       let v3 = map_arg v3 in
       todo (v1, v2, v3)
   | `Bin_arg_AMP_arg (v1, v2, v3) ->
       let v1 = map_arg v1 in
-      let v2 = token v2 in
+      let v2 = token v2 (* "&" *) in
       let v3 = map_arg v3 in
       todo (v1, v2, v3)
   | `Bin_arg_choice_HAT_arg (v1, v2, v3) ->
       let v1 = map_arg v1 in
       let v2 =
         (match v2 with
-        | `HAT tok -> token tok
-        | `BAR tok -> token tok
+        | `HAT tok -> token tok (* "^" *)
+        | `BAR tok -> token tok (* "|" *)
         )
       in
       let v3 = map_arg v3 in
@@ -1399,8 +1417,8 @@ and map_binary (x : CST.binary) =
       let v1 = map_arg v1 in
       let v2 =
         (match v2 with
-        | `PLUS tok -> token tok
-        | `Bin_minus tok -> token tok
+        | `PLUS tok -> token tok (* "+" *)
+        | `Bin_minus tok -> token tok (* binary_minus *)
         )
       in
       let v3 = map_arg v3 in
@@ -1409,9 +1427,9 @@ and map_binary (x : CST.binary) =
       let v1 = map_arg v1 in
       let v2 =
         (match v2 with
-        | `SLASH tok -> token tok
-        | `PERC tok -> token tok
-        | `Bin_star tok -> token tok
+        | `SLASH tok -> token tok (* "/" *)
+        | `PERC tok -> token tok (* "%" *)
+        | `Bin_star tok -> token tok (* binary_star *)
         )
       in
       let v3 = map_arg v3 in
@@ -1420,19 +1438,19 @@ and map_binary (x : CST.binary) =
       let v1 = map_arg v1 in
       let v2 =
         (match v2 with
-        | `EQEQ tok -> token tok
-        | `BANGEQ tok -> token tok
-        | `EQEQEQ tok -> token tok
-        | `LTEQGT tok -> token tok
-        | `EQTILDE tok -> token tok
-        | `BANGTILDE tok -> token tok
+        | `EQEQ tok -> token tok (* "==" *)
+        | `BANGEQ tok -> token tok (* "!=" *)
+        | `EQEQEQ tok -> token tok (* "===" *)
+        | `LTEQGT tok -> token tok (* "<=>" *)
+        | `EQTILDE tok -> token tok (* "=~" *)
+        | `BANGTILDE tok -> token tok (* "!~" *)
         )
       in
       let v3 = map_arg v3 in
       todo (v1, v2, v3)
   | `Bin_arg_STARSTAR_arg (v1, v2, v3) ->
       let v1 = map_arg v1 in
-      let v2 = token v2 in
+      let v2 = token v2 (* "**" *) in
       let v3 = map_arg v3 in
       todo (v1, v2, v3)
   )
@@ -1440,18 +1458,18 @@ and map_binary (x : CST.binary) =
 and map_unary (x : CST.unary) =
   (match x with
   | `Un_defi_arg (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "defined?" *) in
       let v2 = map_arg v2 in
       todo (v1, v2)
   | `Un_not_arg (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "not" *) in
       let v2 = map_arg v2 in
       todo (v1, v2)
   | `Un_choice_un_minus_arg (v1, v2) ->
       let v1 =
         (match v1 with
-        | `Un_minus tok -> token tok
-        | `PLUS tok -> token tok
+        | `Un_minus tok -> token tok (* unary_minus *)
+        | `PLUS tok -> token tok (* "+" *)
         )
       in
       let v2 = map_arg v2 in
@@ -1459,8 +1477,8 @@ and map_unary (x : CST.unary) =
   | `Un_choice_BANG_arg (v1, v2) ->
       let v1 =
         (match v1 with
-        | `BANG tok -> token tok
-        | `TILDE tok -> token tok
+        | `BANG tok -> token tok (* "!" *)
+        | `TILDE tok -> token tok (* "~" *)
         )
       in
       let v2 = map_arg v2 in
@@ -1476,7 +1494,7 @@ and map_right_assignment_list ((v1, v2) : CST.right_assignment_list) =
   in
   let v2 =
     List.map (fun (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "," *) in
       let v2 =
         (match v2 with
         | `Arg x -> map_arg x
@@ -1501,7 +1519,7 @@ and map_mlhs ((v1, v2, v3) : CST.mlhs) =
   in
   let v2 =
     List.map (fun (v1, v2) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* "," *) in
       let v2 =
         (match v2 with
         | `Lhs x -> map_lhs x
@@ -1514,19 +1532,19 @@ and map_mlhs ((v1, v2, v3) : CST.mlhs) =
   in
   let v3 =
     (match v3 with
-    | Some tok -> token tok
+    | Some tok -> token tok (* "," *)
     | None -> todo ())
   in
   todo (v1, v2, v3)
 
 and map_destructured_left_assignment ((v1, v2, v3) : CST.destructured_left_assignment) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "(" *) in
   let v2 = map_mlhs v2 in
-  let v3 = token v3 in
+  let v3 = token v3 (* ")" *) in
   todo (v1, v2, v3)
 
 and map_rest_assignment ((v1, v2) : CST.rest_assignment) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "*" *) in
   let v2 =
     (match v2 with
     | Some x -> map_lhs x
@@ -1543,13 +1561,13 @@ and map_lhs (x : CST.lhs) =
   | `Scope_resol x -> map_scope_resolution x
   | `Elem_ref (v1, v2, v3, v4) ->
       let v1 = map_primary v1 in
-      let v2 = token v2 in
+      let v2 = token v2 (* "[" *) in
       let v3 =
         (match v3 with
         | Some x -> map_argument_list_with_trailing_comma x
         | None -> todo ())
       in
-      let v4 = token v4 in
+      let v4 = token v4 (* "]" *) in
       todo (v1, v2, v3, v4)
   | `Call x -> map_call x
   | `Meth_call x -> map_method_call x
@@ -1557,55 +1575,59 @@ and map_lhs (x : CST.lhs) =
 
 and map_method_name (x : CST.method_name) =
   (match x with
-  | `Meth_name_id tok -> token tok
-  | `Meth_name_cst tok -> token tok
+  | `Meth_name_id tok -> token tok (* identifier *)
+  | `Meth_name_cst tok -> token tok (* constant *)
   | `Meth_name_sett (v1, v2) ->
-      let v1 = token v1 in
-      let v2 = token v2 in
+      let v1 = token v1 (* identifier *) in
+      let v2 = token v2 (* "=" *) in
       todo (v1, v2)
   | `Meth_name_symb x -> map_symbol x
   | `Meth_name_op x -> map_operator x
-  | `Meth_name_inst_var tok -> token tok
-  | `Meth_name_class_var tok -> token tok
-  | `Meth_name_glob_var tok -> token tok
+  | `Meth_name_inst_var tok ->
+      token tok (* instance_variable *)
+  | `Meth_name_class_var tok -> token tok (* class_variable *)
+  | `Meth_name_glob_var tok ->
+      token tok (* pattern "\\$-?(([!@&`'+~=\\/\\\\,;.<>*$?:\"])|([0-9]*\
+  )|([a-zA-Z_][a-zA-Z0-9_]*\
+  ))" *)
   )
 
 and map_interpolation ((v1, v2, v3) : CST.interpolation) =
-  let v1 = token v1 in
+  let v1 = token v1 (* "#{" *) in
   let v2 = map_statement v2 in
-  let v3 = token v3 in
+  let v3 = token v3 (* "}" *) in
   todo (v1, v2, v3)
 
 and map_string_ ((v1, v2, v3) : CST.string_) =
-  let v1 = token v1 in
+  let v1 = token v1 (* string_start *) in
   let v2 =
     (match v2 with
     | Some x -> map_literal_contents x
     | None -> todo ())
   in
-  let v3 = token v3 in
+  let v3 = token v3 (* string_end *) in
   todo (v1, v2, v3)
 
 and map_symbol (x : CST.symbol) =
   (match x with
-  | `Symb_simple_symb tok -> token tok
+  | `Symb_simple_symb tok -> token tok (* simple_symbol *)
   | `Symb_symb_start_opt_lit_content_str_end (v1, v2, v3) ->
-      let v1 = token v1 in
+      let v1 = token v1 (* symbol_start *) in
       let v2 =
         (match v2 with
         | Some x -> map_literal_contents x
         | None -> todo ())
       in
-      let v3 = token v3 in
+      let v3 = token v3 (* string_end *) in
       todo (v1, v2, v3)
   )
 
 and map_literal_contents (xs : CST.literal_contents) =
   List.map (fun x ->
     (match x with
-    | `Str_content tok -> token tok
+    | `Str_content tok -> token tok (* string_content *)
     | `Interp x -> map_interpolation x
-    | `Esc_seq tok -> token tok
+    | `Esc_seq tok -> token tok (* escape_sequence *)
     )
   ) xs
 
@@ -1613,19 +1635,19 @@ and map_pair (x : CST.pair) =
   (match x with
   | `Pair_arg_EQGT_arg (v1, v2, v3) ->
       let v1 = map_arg v1 in
-      let v2 = token v2 in
+      let v2 = token v2 (* "=>" *) in
       let v3 = map_arg v3 in
       todo (v1, v2, v3)
   | `Pair_choice_id_hash_key_COLON_arg (v1, v2, v3) ->
       let v1 =
         (match v1 with
-        | `Id_hash_key tok -> token tok
-        | `Id tok -> token tok
-        | `Cst tok -> token tok
+        | `Id_hash_key tok -> token tok (* identifier_hash_key *)
+        | `Id tok -> token tok (* identifier *)
+        | `Cst tok -> token tok (* constant *)
         | `Str x -> map_string_ x
         )
       in
-      let v2 = token v2 in
+      let v2 = token v2 (* ":" *) in
       let v3 = map_arg v3 in
       todo (v1, v2, v3)
   )
@@ -1639,9 +1661,9 @@ let map_program ((v1, v2) : CST.program) =
   let v2 =
     (match v2 with
     | Some (v1, v2, v3) ->
-        let v1 = token v1 in
-        let v2 = token v2 in
-        let v3 = token v3 in
+        let v1 = token v1 (* "__END__" *) in
+        let v2 = token v2 (* line_break *) in
+        let v3 = token v3 (* pattern (.|\s)* *) in
         todo (v1, v2, v3)
     | None -> todo ())
   in

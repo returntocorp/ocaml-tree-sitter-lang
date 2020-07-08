@@ -106,7 +106,7 @@ type float_ =
 [@@deriving sexp_of]
 
 type global_variable =
-  Token.t (* pattern "\\$-?(([!@&`'+~=/\\\\,;.<>*$?:\"])|([0-9]*\
+  Token.t (* pattern "\\$-?(([!@&`'+~=\\/\\\\,;.<>*$?:\"])|([0-9]*\
   )|([a-zA-Z_][a-zA-Z0-9_]*\
   ))" *)
 [@@deriving sexp_of]
