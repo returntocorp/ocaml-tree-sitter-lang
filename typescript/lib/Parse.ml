@@ -26,7 +26,7 @@ let extras = [
 ]
 
 let children_regexps : (string * Run.exp option) list = [
-  "jsx_text",None;
+  "jsx_text", None;
   "meta_property",
   Some (
     Seq [
@@ -46,25 +46,25 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "void");
     |];
   );
-  "template_chars",None;
-  "regex_pattern",None;
-  "escape_sequence",None;
-  "existential_type",None;
-  "readonly",None;
-  "number",None;
-  "hash_bang_line",None;
-  "empty_statement",None;
-  "this",None;
-  "null",None;
-  "false",None;
-  "comment",None;
-  "undefined",None;
-  "automatic_semicolon",None;
-  "identifier",None;
-  "super",None;
-  "import",None;
-  "true",None;
-  "regex_flags",None;
+  "template_chars", None;
+  "regex_pattern", None;
+  "escape_sequence", None;
+  "existential_type", None;
+  "readonly", None;
+  "number", None;
+  "hash_bang_line", None;
+  "empty_statement", None;
+  "this", None;
+  "null", None;
+  "false", None;
+  "comment", None;
+  "undefined", None;
+  "automatic_semicolon", None;
+  "identifier", None;
+  "super", None;
+  "import", None;
+  "true", None;
+  "regex_flags", None;
   "accessibility_modifier",
   Some (
     Alt [|
@@ -73,7 +73,7 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "protected");
     |];
   );
-  "jsx_identifier",None;
+  "jsx_identifier", None;
   "string",
   Some (
     Alt [|
@@ -2800,7 +2800,7 @@ let children_regexps : (string * Run.exp option) list = [
       |];
     ];
   );
-  "call_signature_",Some (Token (Name "call_signature"););
+  "call_signature_", Some (Token (Name "call_signature"););
   "property_signature",
   Some (
     Seq [

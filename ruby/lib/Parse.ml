@@ -27,17 +27,17 @@ let extras = [
 ]
 
 let children_regexps : (string * Run.exp option) list = [
-  "uninterpreted",None;
-  "self",None;
-  "binary_star",None;
-  "singleton_class_left_angle_left_langle",None;
-  "instance_variable",None;
-  "empty_statement",None;
-  "binary_minus",None;
-  "simple_symbol",None;
-  "complex",None;
-  "character",None;
-  "escape_sequence",None;
+  "uninterpreted", None;
+  "self", None;
+  "binary_star", None;
+  "singleton_class_left_angle_left_langle", None;
+  "instance_variable", None;
+  "empty_statement", None;
+  "binary_minus", None;
+  "simple_symbol", None;
+  "complex", None;
+  "character", None;
+  "escape_sequence", None;
   "false",
   Some (
     Alt [|
@@ -45,24 +45,24 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "FALSE");
     |];
   );
-  "subshell_start",None;
-  "regex_start",None;
-  "constant",None;
-  "symbol_start",None;
-  "unary_minus",None;
-  "block_ampersand",None;
-  "class_variable",None;
-  "comment",None;
-  "string_array_start",None;
-  "splat_star",None;
-  "integer",None;
-  "heredoc_content",None;
-  "super",None;
-  "string_end",None;
-  "line_break",None;
-  "identifier",None;
-  "string_content",None;
-  "heredoc_end",None;
+  "subshell_start", None;
+  "regex_start", None;
+  "constant", None;
+  "symbol_start", None;
+  "unary_minus", None;
+  "block_ampersand", None;
+  "class_variable", None;
+  "comment", None;
+  "string_array_start", None;
+  "splat_star", None;
+  "integer", None;
+  "heredoc_content", None;
+  "super", None;
+  "string_end", None;
+  "line_break", None;
+  "identifier", None;
+  "string_content", None;
+  "heredoc_end", None;
   "nil",
   Some (
     Alt [|
@@ -70,11 +70,11 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "NIL");
     |];
   );
-  "heredoc_beginning",None;
-  "float",None;
-  "global_variable",None;
-  "symbol_array_start",None;
-  "heredoc_body_start",None;
+  "heredoc_beginning", None;
+  "float", None;
+  "global_variable", None;
+  "symbol_array_start", None;
+  "heredoc_body_start", None;
   "operator",
   Some (
     Alt [|
@@ -115,8 +115,8 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "TRUE");
     |];
   );
-  "string_start",None;
-  "identifier_hash_key",None;
+  "string_start", None;
+  "identifier_hash_key", None;
   "rational",
   Some (
     Seq [
@@ -1369,7 +1369,7 @@ let children_regexps : (string * Run.exp option) list = [
       );
     ];
   );
-  "left_assignment_list",Some (Token (Name "mlhs"););
+  "left_assignment_list", Some (Token (Name "mlhs"););
   "mlhs",
   Some (
     Seq [

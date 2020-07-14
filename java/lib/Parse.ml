@@ -26,8 +26,8 @@ let extras = [
 ]
 
 let children_regexps : (string * Run.exp option) list = [
-  "asterisk",None;
-  "this",None;
+  "asterisk", None;
+  "this", None;
   "floating_point_type",
   Some (
     Alt [|
@@ -35,10 +35,10 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "double");
     |];
   );
-  "octal_integer_literal",None;
-  "binary_integer_literal",None;
-  "identifier",None;
-  "hex_integer_literal",None;
+  "octal_integer_literal", None;
+  "binary_integer_literal", None;
+  "identifier", None;
+  "hex_integer_literal", None;
   "integral_type",
   Some (
     Alt [|
@@ -49,18 +49,18 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "char");
     |];
   );
-  "decimal_floating_point_literal",None;
-  "void_type",None;
-  "boolean_type",None;
-  "character_literal",None;
-  "string_literal",None;
-  "comment",None;
-  "false",None;
-  "null_literal",None;
-  "hex_floating_point_literal",None;
-  "true",None;
-  "super",None;
-  "decimal_integer_literal",None;
+  "decimal_floating_point_literal", None;
+  "void_type", None;
+  "boolean_type", None;
+  "character_literal", None;
+  "string_literal", None;
+  "comment", None;
+  "false", None;
+  "null_literal", None;
+  "hex_floating_point_literal", None;
+  "true", None;
+  "super", None;
+  "decimal_integer_literal", None;
   "requires_modifier",
   Some (
     Alt [|
