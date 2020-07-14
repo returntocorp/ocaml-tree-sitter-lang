@@ -218,6 +218,7 @@ let rec map_statements (env : env) (x : CST.statements) =
   | `Stmts_stmt x -> map_statement env x
   )
 
+
 and map_statement (env : env) (x : CST.statement) =
   (match x with
   | `Stmt_undef (v1, v2, v3) ->
@@ -284,6 +285,7 @@ and map_statement (env : env) (x : CST.statement) =
   | `Stmt_exp x -> map_expression env x
   )
 
+
 and map_method_rest (env : env) ((v1, v2, v3) : CST.method_rest) =
   let v1 = map_method_name env v1 in
   let v2 =
@@ -309,6 +311,7 @@ and map_method_rest (env : env) ((v1, v2, v3) : CST.method_rest) =
   let v3 = map_body_statement env v3 in
   todo env (v1, v2, v3)
 
+
 and map_parameters (env : env) ((v1, v2, v3) : CST.parameters) =
   let v1 = token env v1 (* "(" *) in
   let v2 =
@@ -328,6 +331,7 @@ and map_parameters (env : env) ((v1, v2, v3) : CST.parameters) =
   let v3 = token env v3 (* ")" *) in
   todo env (v1, v2, v3)
 
+
 and map_bare_parameters (env : env) ((v1, v2) : CST.bare_parameters) =
   let v1 = map_simple_formal_parameter env v1 in
   let v2 =
@@ -338,6 +342,7 @@ and map_bare_parameters (env : env) ((v1, v2) : CST.bare_parameters) =
     ) v2
   in
   todo env (v1, v2)
+
 
 and map_block_parameters (env : env) ((v1, v2, v3, v4, v5) : CST.block_parameters) =
   let v1 = token env v1 (* "|" *) in
@@ -378,12 +383,14 @@ and map_block_parameters (env : env) ((v1, v2, v3, v4, v5) : CST.block_parameter
   let v5 = token env v5 (* "|" *) in
   todo env (v1, v2, v3, v4, v5)
 
+
 and map_formal_parameter (env : env) (x : CST.formal_parameter) =
   (match x with
   | `Form_param_simple_form_param x ->
       map_simple_formal_parameter env x
   | `Form_param_params x -> map_parameters env x
   )
+
 
 and map_simple_formal_parameter (env : env) (x : CST.simple_formal_parameter) =
   (match x with
@@ -425,15 +432,18 @@ and map_simple_formal_parameter (env : env) (x : CST.simple_formal_parameter) =
       todo env (v1, v2, v3)
   )
 
+
 and map_superclass (env : env) ((v1, v2) : CST.superclass) =
   let v1 = token env v1 (* "<" *) in
   let v2 = map_arg env v2 in
   todo env (v1, v2)
 
+
 and map_in_ (env : env) ((v1, v2) : CST.in_) =
   let v1 = token env v1 (* "in" *) in
   let v2 = map_arg env v2 in
   todo env (v1, v2)
+
 
 and map_when_ (env : env) ((v1, v2, v3, v4) : CST.when_) =
   let v1 = token env v1 (* "when" *) in
@@ -453,11 +463,13 @@ and map_when_ (env : env) ((v1, v2, v3, v4) : CST.when_) =
   in
   todo env (v1, v2, v3, v4)
 
+
 and map_pattern (env : env) (x : CST.pattern) =
   (match x with
   | `Pat_arg x -> map_arg env x
   | `Pat_splat_arg x -> map_splat_argument env x
   )
+
 
 and map_elsif (env : env) ((v1, v2, v3, v4) : CST.elsif) =
   let v1 = token env v1 (* "elsif" *) in
@@ -479,6 +491,7 @@ and map_elsif (env : env) ((v1, v2, v3, v4) : CST.elsif) =
   in
   todo env (v1, v2, v3, v4)
 
+
 and map_else_ (env : env) ((v1, v2, v3) : CST.else_) =
   let v1 = token env v1 (* "else" *) in
   let v2 =
@@ -492,6 +505,7 @@ and map_else_ (env : env) ((v1, v2, v3) : CST.else_) =
     | None -> todo env ())
   in
   todo env (v1, v2, v3)
+
 
 and map_then_ (env : env) (x : CST.then_) =
   (match x with
@@ -514,6 +528,7 @@ and map_then_ (env : env) (x : CST.then_) =
       todo env (v1, v2, v3)
   )
 
+
 and map_ensure (env : env) ((v1, v2) : CST.ensure) =
   let v1 = token env v1 (* "ensure" *) in
   let v2 =
@@ -522,6 +537,7 @@ and map_ensure (env : env) ((v1, v2) : CST.ensure) =
     | None -> todo env ())
   in
   todo env (v1, v2)
+
 
 and map_rescue (env : env) ((v1, v2, v3, v4) : CST.rescue) =
   let v1 = token env v1 (* "rescue" *) in
@@ -542,6 +558,7 @@ and map_rescue (env : env) ((v1, v2, v3, v4) : CST.rescue) =
     )
   in
   todo env (v1, v2, v3, v4)
+
 
 and map_exceptions (env : env) ((v1, v2) : CST.exceptions) =
   let v1 =
@@ -564,10 +581,12 @@ and map_exceptions (env : env) ((v1, v2) : CST.exceptions) =
   in
   todo env (v1, v2)
 
+
 and map_exception_variable (env : env) ((v1, v2) : CST.exception_variable) =
   let v1 = token env v1 (* "=>" *) in
   let v2 = map_lhs env v2 in
   todo env (v1, v2)
+
 
 and map_body_statement (env : env) ((v1, v2, v3) : CST.body_statement) =
   let v1 =
@@ -586,6 +605,7 @@ and map_body_statement (env : env) ((v1, v2, v3) : CST.body_statement) =
   in
   let v3 = token env v3 (* "end" *) in
   todo env (v1, v2, v3)
+
 
 and map_expression (env : env) (x : CST.expression) =
   (match x with
@@ -641,6 +661,7 @@ and map_expression (env : env) (x : CST.expression) =
   | `Exp_arg x -> map_arg env x
   )
 
+
 and map_arg (env : env) (x : CST.arg) =
   (match x with
   | `Arg_prim x -> map_primary env x
@@ -686,6 +707,7 @@ and map_arg (env : env) (x : CST.arg) =
   | `Arg_bin x -> map_binary env x
   | `Arg_un x -> map_unary env x
   )
+
 
 and map_primary (env : env) (x : CST.primary) =
   (match x with
@@ -1091,6 +1113,7 @@ and map_primary (env : env) (x : CST.primary) =
       token env tok (* heredoc_beginning *)
   )
 
+
 and map_parenthesized_statements (env : env) ((v1, v2, v3) : CST.parenthesized_statements) =
   let v1 = token env v1 (* "(" *) in
   let v2 =
@@ -1100,6 +1123,7 @@ and map_parenthesized_statements (env : env) ((v1, v2, v3) : CST.parenthesized_s
   in
   let v3 = token env v3 (* ")" *) in
   todo env (v1, v2, v3)
+
 
 and map_scope_resolution (env : env) ((v1, v2) : CST.scope_resolution) =
   let v1 =
@@ -1119,6 +1143,7 @@ and map_scope_resolution (env : env) ((v1, v2) : CST.scope_resolution) =
   in
   todo env (v1, v2)
 
+
 and map_call (env : env) ((v1, v2, v3) : CST.call) =
   let v1 = map_primary env v1 in
   let v2 =
@@ -1136,6 +1161,7 @@ and map_call (env : env) ((v1, v2, v3) : CST.call) =
     )
   in
   todo env (v1, v2, v3)
+
 
 and map_command_call (env : env) (x : CST.command_call) =
   (match x with
@@ -1172,6 +1198,7 @@ and map_command_call (env : env) (x : CST.command_call) =
       let v3 = map_do_block env v3 in
       todo env (v1, v2, v3)
   )
+
 
 and map_method_call (env : env) (x : CST.method_call) =
   (match x with
@@ -1229,6 +1256,7 @@ and map_method_call (env : env) (x : CST.method_call) =
       todo env (v1, v2)
   )
 
+
 and map_command_argument_list (env : env) (x : CST.command_argument_list) =
   (match x with
   | `Cmd_arg_list_arg_rep_COMMA_arg (v1, v2) ->
@@ -1244,6 +1272,7 @@ and map_command_argument_list (env : env) (x : CST.command_argument_list) =
   | `Cmd_arg_list_cmd_call x -> map_command_call env x
   )
 
+
 and map_argument_list (env : env) ((v1, v2, v3) : CST.argument_list) =
   let v1 = token env v1 (* "(" *) in
   let v2 =
@@ -1253,6 +1282,7 @@ and map_argument_list (env : env) ((v1, v2, v3) : CST.argument_list) =
   in
   let v3 = token env v3 (* ")" *) in
   todo env (v1, v2, v3)
+
 
 and map_argument_list_with_trailing_comma (env : env) ((v1, v2, v3) : CST.argument_list_with_trailing_comma) =
   let v1 = map_argument env v1 in
@@ -1270,6 +1300,7 @@ and map_argument_list_with_trailing_comma (env : env) ((v1, v2, v3) : CST.argume
   in
   todo env (v1, v2, v3)
 
+
 and map_argument (env : env) (x : CST.argument) =
   (match x with
   | `Arg_arg x -> map_arg env x
@@ -1282,15 +1313,18 @@ and map_argument (env : env) (x : CST.argument) =
   | `Arg_pair x -> map_pair env x
   )
 
+
 and map_splat_argument (env : env) ((v1, v2) : CST.splat_argument) =
   let v1 = token env v1 (* splat_star *) in
   let v2 = map_arg env v2 in
   todo env (v1, v2)
 
+
 and map_hash_splat_argument (env : env) ((v1, v2) : CST.hash_splat_argument) =
   let v1 = token env v1 (* "**" *) in
   let v2 = map_arg env v2 in
   todo env (v1, v2)
+
 
 and map_do_block (env : env) ((v1, v2, v3, v4) : CST.do_block) =
   let v1 = token env v1 (* "do" *) in
@@ -1314,6 +1348,7 @@ and map_do_block (env : env) ((v1, v2, v3, v4) : CST.do_block) =
   let v4 = map_body_statement env v4 in
   todo env (v1, v2, v3, v4)
 
+
 and map_block (env : env) ((v1, v2, v3, v4) : CST.block) =
   let v1 = token env v1 (* "{" *) in
   let v2 =
@@ -1328,6 +1363,7 @@ and map_block (env : env) ((v1, v2, v3, v4) : CST.block) =
   in
   let v4 = token env v4 (* "}" *) in
   todo env (v1, v2, v3, v4)
+
 
 and map_assignment (env : env) (x : CST.assignment) =
   (match x with
@@ -1349,6 +1385,7 @@ and map_assignment (env : env) (x : CST.assignment) =
       todo env (v1, v2, v3)
   )
 
+
 and map_command_assignment (env : env) (x : CST.command_assignment) =
   (match x with
   | `Choice_lhs_EQ_exp (v1, v2, v3) ->
@@ -1362,6 +1399,7 @@ and map_command_assignment (env : env) (x : CST.command_assignment) =
       let v3 = map_expression env v3 in
       todo env (v1, v2, v3)
   )
+
 
 and map_binary (env : env) (x : CST.binary) =
   (match x with
@@ -1464,6 +1502,7 @@ and map_binary (env : env) (x : CST.binary) =
       todo env (v1, v2, v3)
   )
 
+
 and map_unary (env : env) (x : CST.unary) =
   (match x with
   | `Un_defi_arg (v1, v2) ->
@@ -1494,6 +1533,7 @@ and map_unary (env : env) (x : CST.unary) =
       todo env (v1, v2)
   )
 
+
 and map_right_assignment_list (env : env) ((v1, v2) : CST.right_assignment_list) =
   let v1 =
     (match v1 with
@@ -1515,8 +1555,10 @@ and map_right_assignment_list (env : env) ((v1, v2) : CST.right_assignment_list)
   in
   todo env (v1, v2)
 
+
 and map_left_assignment_list (env : env) (x : CST.left_assignment_list) =
   map_mlhs env x
+
 
 and map_mlhs (env : env) ((v1, v2, v3) : CST.mlhs) =
   let v1 =
@@ -1548,11 +1590,13 @@ and map_mlhs (env : env) ((v1, v2, v3) : CST.mlhs) =
   in
   todo env (v1, v2, v3)
 
+
 and map_destructured_left_assignment (env : env) ((v1, v2, v3) : CST.destructured_left_assignment) =
   let v1 = token env v1 (* "(" *) in
   let v2 = map_mlhs env v2 in
   let v3 = token env v3 (* ")" *) in
   todo env (v1, v2, v3)
+
 
 and map_rest_assignment (env : env) ((v1, v2) : CST.rest_assignment) =
   let v1 = token env v1 (* "*" *) in
@@ -1562,6 +1606,7 @@ and map_rest_assignment (env : env) ((v1, v2) : CST.rest_assignment) =
     | None -> todo env ())
   in
   todo env (v1, v2)
+
 
 and map_lhs (env : env) (x : CST.lhs) =
   (match x with
@@ -1584,6 +1629,7 @@ and map_lhs (env : env) (x : CST.lhs) =
   | `Meth_call x -> map_method_call env x
   )
 
+
 and map_method_name (env : env) (x : CST.method_name) =
   (match x with
   | `Meth_name_id tok -> token env tok (* identifier *)
@@ -1604,11 +1650,13 @@ and map_method_name (env : env) (x : CST.method_name) =
   ))" *)
   )
 
+
 and map_interpolation (env : env) ((v1, v2, v3) : CST.interpolation) =
   let v1 = token env v1 (* "#{" *) in
   let v2 = map_statement env v2 in
   let v3 = token env v3 (* "}" *) in
   todo env (v1, v2, v3)
+
 
 and map_string_ (env : env) ((v1, v2, v3) : CST.string_) =
   let v1 = token env v1 (* string_start *) in
@@ -1619,6 +1667,7 @@ and map_string_ (env : env) ((v1, v2, v3) : CST.string_) =
   in
   let v3 = token env v3 (* string_end *) in
   todo env (v1, v2, v3)
+
 
 and map_symbol (env : env) (x : CST.symbol) =
   (match x with
@@ -1634,6 +1683,7 @@ and map_symbol (env : env) (x : CST.symbol) =
       todo env (v1, v2, v3)
   )
 
+
 and map_literal_contents (env : env) (xs : CST.literal_contents) =
   List.map (fun x ->
     (match x with
@@ -1642,6 +1692,7 @@ and map_literal_contents (env : env) (xs : CST.literal_contents) =
     | `Esc_seq tok -> token env tok (* escape_sequence *)
     )
   ) xs
+
 
 and map_pair (env : env) (x : CST.pair) =
   (match x with

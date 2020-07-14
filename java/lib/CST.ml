@@ -8,12 +8,6 @@
 open! Sexplib.Conv
 open Tree_sitter_run
 
-type reserved_identifier = [
-    `Rese_id_open of Token.t (* "open" *)
-  | `Rese_id_modu of Token.t (* "module" *)
-]
-[@@deriving sexp_of]
-
 type floating_point_type = [
     `Floa_point_type_float of Token.t (* "float" *)
   | `Floa_point_type_doub of Token.t (* "double" *)
@@ -24,6 +18,9 @@ type octal_integer_literal = Token.t
 [@@deriving sexp_of]
 
 type binary_integer_literal = Token.t
+[@@deriving sexp_of]
+
+type identifier = Token.t (* pattern [a-zA-Z_]\w* *)
 [@@deriving sexp_of]
 
 type hex_integer_literal = Token.t
@@ -47,9 +44,6 @@ type character_literal = Token.t
 type string_literal = Token.t
 [@@deriving sexp_of]
 
-type identifier = Token.t (* pattern [a-zA-Z_]\w* *)
-[@@deriving sexp_of]
-
 type hex_floating_point_literal = Token.t
 [@@deriving sexp_of]
 
@@ -62,11 +56,18 @@ type requires_modifier = [
 ]
 [@@deriving sexp_of]
 
-type name = [
-    `Name_id of identifier (*tok*)
-  | `Name_rese_id of reserved_identifier
-  | `Name_scop_id of (name * Token.t (* "." *) * identifier (*tok*))
-]
+type scoped_identifier = (
+    [
+        `Id of identifier (*tok*)
+      | `Choice_open of [
+            `Open of Token.t (* "open" *)
+          | `Modu of Token.t (* "module" *)
+        ]
+      | `Scop_id of scoped_identifier
+    ]
+  * Token.t (* "." *)
+  * identifier (*tok*)
+)
 [@@deriving sexp_of]
 
 type inferred_parameters = (
@@ -94,32 +95,126 @@ type literal = [
 
 type module_directive = (
     [
-        `Requis_rep_requis_modi_name of (
+        `Requis_rep_requis_modi_choice_id of (
             Token.t (* "requires" *)
           * requires_modifier list (* zero or more *)
-          * name
+          * [
+                `Id of identifier (*tok*)
+              | `Choice_open of [
+                    `Open of Token.t (* "open" *)
+                  | `Modu of Token.t (* "module" *)
+                ]
+              | `Scop_id of scoped_identifier
+            ]
         )
-      | `Expors_name_opt_to_opt_name_rep_COMMA_name of (
+      | `Expors_choice_id_opt_to_opt_choice_id_rep_COMMA_choice_id of (
             Token.t (* "exports" *)
-          * name
+          * [
+                `Id of identifier (*tok*)
+              | `Choice_open of [
+                    `Open of Token.t (* "open" *)
+                  | `Modu of Token.t (* "module" *)
+                ]
+              | `Scop_id of scoped_identifier
+            ]
           * Token.t (* "to" *) option
-          * name option
-          * (Token.t (* "," *) * name) list (* zero or more *)
+          * [
+                `Id of identifier (*tok*)
+              | `Choice_open of [
+                    `Open of Token.t (* "open" *)
+                  | `Modu of Token.t (* "module" *)
+                ]
+              | `Scop_id of scoped_identifier
+            ]
+              option
+          * (
+                Token.t (* "," *)
+              * [
+                    `Id of identifier (*tok*)
+                  | `Choice_open of [
+                        `Open of Token.t (* "open" *)
+                      | `Modu of Token.t (* "module" *)
+                    ]
+                  | `Scop_id of scoped_identifier
+                ]
+            )
+              list (* zero or more *)
         )
-      | `Opens_name_opt_to_opt_name_rep_COMMA_name of (
+      | `Opens_choice_id_opt_to_opt_choice_id_rep_COMMA_choice_id of (
             Token.t (* "opens" *)
-          * name
+          * [
+                `Id of identifier (*tok*)
+              | `Choice_open of [
+                    `Open of Token.t (* "open" *)
+                  | `Modu of Token.t (* "module" *)
+                ]
+              | `Scop_id of scoped_identifier
+            ]
           * Token.t (* "to" *) option
-          * name option
-          * (Token.t (* "," *) * name) list (* zero or more *)
+          * [
+                `Id of identifier (*tok*)
+              | `Choice_open of [
+                    `Open of Token.t (* "open" *)
+                  | `Modu of Token.t (* "module" *)
+                ]
+              | `Scop_id of scoped_identifier
+            ]
+              option
+          * (
+                Token.t (* "," *)
+              * [
+                    `Id of identifier (*tok*)
+                  | `Choice_open of [
+                        `Open of Token.t (* "open" *)
+                      | `Modu of Token.t (* "module" *)
+                    ]
+                  | `Scop_id of scoped_identifier
+                ]
+            )
+              list (* zero or more *)
         )
-      | `Uses_name of (Token.t (* "uses" *) * name)
-      | `Provis_name_with_name_rep_COMMA_name of (
+      | `Uses_choice_id of (
+            Token.t (* "uses" *)
+          * [
+                `Id of identifier (*tok*)
+              | `Choice_open of [
+                    `Open of Token.t (* "open" *)
+                  | `Modu of Token.t (* "module" *)
+                ]
+              | `Scop_id of scoped_identifier
+            ]
+        )
+      | `Provis_choice_id_with_choice_id_rep_COMMA_choice_id of (
             Token.t (* "provides" *)
-          * name
+          * [
+                `Id of identifier (*tok*)
+              | `Choice_open of [
+                    `Open of Token.t (* "open" *)
+                  | `Modu of Token.t (* "module" *)
+                ]
+              | `Scop_id of scoped_identifier
+            ]
           * Token.t (* "with" *)
-          * name
-          * (Token.t (* "," *) * name) list (* zero or more *)
+          * [
+                `Id of identifier (*tok*)
+              | `Choice_open of [
+                    `Open of Token.t (* "open" *)
+                  | `Modu of Token.t (* "module" *)
+                ]
+              | `Scop_id of scoped_identifier
+            ]
+          * (
+                Token.t (* "," *)
+              * [
+                    `Id of identifier (*tok*)
+                  | `Choice_open of [
+                        `Open of Token.t (* "open" *)
+                      | `Modu of Token.t (* "module" *)
+                    ]
+                  | `Scop_id of scoped_identifier
+                ]
+            )
+              list (* zero or more *)
         )
     ]
   * Token.t (* ";" *)
@@ -137,7 +232,10 @@ type expression = [
     `Exp_assign_exp of (
         [
             `Id of identifier (*tok*)
-          | `Rese_id of reserved_identifier
+          | `Choice_open of [
+                `Open of Token.t (* "open" *)
+              | `Modu of Token.t (* "module" *)
+            ]
           | `Field_acce of field_access
           | `Array_acce of array_access
         ]
@@ -225,7 +323,10 @@ and primary = [
     )
   | `Prim_this of Token.t (* "this" *)
   | `Prim_id of identifier (*tok*)
-  | `Prim_rese_id of reserved_identifier
+  | `Prim_choice_open of [
+        `Open of Token.t (* "open" *)
+      | `Modu of Token.t (* "module" *)
+    ]
   | `Prim_paren_exp of parenthesized_expression
   | `Prim_obj_crea_exp of object_creation_expression
   | `Prim_field_acce of field_access
@@ -234,7 +335,10 @@ and primary = [
         [
             `Choice_id of [
                 `Id of identifier (*tok*)
-              | `Rese_id of reserved_identifier
+              | `Choice_open of [
+                    `Open of Token.t (* "open" *)
+                  | `Modu of Token.t (* "module" *)
+                ]
             ]
           | `Choice_prim_DOT_opt_super_DOT_opt_type_args_choice_id of (
                 [ `Prim of primary | `Super of Token.t (* "super" *) ]
@@ -243,7 +347,10 @@ and primary = [
               * type_arguments option
               * [
                     `Id of identifier (*tok*)
-                  | `Rese_id of reserved_identifier
+                  | `Choice_open of [
+                        `Open of Token.t (* "open" *)
+                      | `Modu of Token.t (* "module" *)
+                    ]
                 ]
             )
         ]
@@ -261,7 +368,15 @@ and primary = [
     )
   | `Prim_array_crea_exp of (
         Token.t (* "new" *)
-      * simple_type
+      * [
+            `Void_type of Token.t (* "void" *)
+          | `Inte_type of integral_type
+          | `Floa_point_type of floating_point_type
+          | `Bool_type of Token.t (* "boolean" *)
+          | `Id of identifier (*tok*)
+          | `Scop_type_id of scoped_type_identifier
+          | `Gene_type of generic_type
+        ]
       * [
             `Rep1_dimens_expr_opt_dimens of (
                 dimensions_expr list (* one or more *)
@@ -289,7 +404,15 @@ and object_creation_expression = [
 and unqualified_object_creation_expression = (
     Token.t (* "new" *)
   * type_arguments option
-  * simple_type
+  * [
+        `Void_type of Token.t (* "void" *)
+      | `Inte_type of integral_type
+      | `Floa_point_type of floating_point_type
+      | `Bool_type of Token.t (* "boolean" *)
+      | `Id of identifier (*tok*)
+      | `Scop_type_id of scoped_type_identifier
+      | `Gene_type of generic_type
+    ]
   * argument_list
   * class_body option
 )
@@ -299,7 +422,10 @@ and field_access = (
   * Token.t (* "." *)
   * [
         `Id of identifier (*tok*)
-      | `Rese_id of reserved_identifier
+      | `Choice_open of [
+            `Open of Token.t (* "open" *)
+          | `Modu of Token.t (* "module" *)
+        ]
       | `This of Token.t (* "this" *)
     ]
 )
@@ -495,7 +621,31 @@ and resource = [
   | `Reso_id of identifier (*tok*)
   | `Reso_field_acce of field_access
 ]
-and annotation = (Token.t (* "@" *) * name * annotation_argument_list)
+and annotation = [
+    `Anno_mark_anno of (
+        Token.t (* "@" *)
+      * [
+            `Id of identifier (*tok*)
+          | `Choice_open of [
+                `Open of Token.t (* "open" *)
+              | `Modu of Token.t (* "module" *)
+            ]
+          | `Scop_id of scoped_identifier
+        ]
+    )
+  | `Anno_anno_ of (
+        Token.t (* "@" *)
+      * [
+            `Id of identifier (*tok*)
+          | `Choice_open of [
+                `Open of Token.t (* "open" *)
+              | `Modu of Token.t (* "module" *)
+            ]
+          | `Scop_id of scoped_identifier
+        ]
+      * annotation_argument_list
+    )
+]
 and annotation_argument_list = (
     Token.t (* "(" *)
   * [
@@ -532,19 +682,40 @@ and declaration = [
         annotation list (* zero or more *)
       * Token.t (* "open" *) option
       * Token.t (* "module" *)
-      * name
+      * [
+            `Id of identifier (*tok*)
+          | `Choice_open of [
+                `Open of Token.t (* "open" *)
+              | `Modu of Token.t (* "module" *)
+            ]
+          | `Scop_id of scoped_identifier
+        ]
       * module_body
     )
   | `Pack_decl of (
         annotation list (* zero or more *)
       * Token.t (* "package" *)
-      * name
+      * [
+            `Id of identifier (*tok*)
+          | `Choice_open of [
+                `Open of Token.t (* "open" *)
+              | `Modu of Token.t (* "module" *)
+            ]
+          | `Scop_id of scoped_identifier
+        ]
       * Token.t (* ";" *)
     )
   | `Impo_decl of (
         Token.t (* "import" *)
       * Token.t (* "static" *) option
-      * name
+      * [
+            `Id of identifier (*tok*)
+          | `Choice_open of [
+                `Open of Token.t (* "open" *)
+              | `Modu of Token.t (* "module" *)
+            ]
+          | `Scop_id of scoped_identifier
+        ]
       * (Token.t (* "." *) * Token.t (* "*" *)) option
       * Token.t (* ";" *)
     )
@@ -573,7 +744,19 @@ and enum_body = (
 )
 and enum_body_declarations = (
     Token.t (* ";" *)
-  * class_body_declaration list (* zero or more *)
+  * [
+        `Field_decl of field_declaration
+      | `Meth_decl of method_declaration
+      | `Class_decl of class_declaration
+      | `Inte_decl of interface_declaration
+      | `Anno_type_decl of annotation_type_declaration
+      | `Enum_decl of enum_declaration
+      | `Blk of block
+      | `Stat_init of static_initializer
+      | `Cons_decl of constructor_declaration
+      | `SEMI of Token.t (* ";" *)
+    ]
+      list (* zero or more *)
 )
 and enum_constant = (
     modifiers option
@@ -631,31 +814,28 @@ and interface_type_list = (
 )
 and class_body = (
     Token.t (* "{" *)
-  * class_body_declaration list (* zero or more *)
+  * [
+        `Field_decl of field_declaration
+      | `Meth_decl of method_declaration
+      | `Class_decl of class_declaration
+      | `Inte_decl of interface_declaration
+      | `Anno_type_decl of annotation_type_declaration
+      | `Enum_decl of enum_declaration
+      | `Blk of block
+      | `Stat_init of static_initializer
+      | `Cons_decl of constructor_declaration
+      | `SEMI of Token.t (* ";" *)
+    ]
+      list (* zero or more *)
   * Token.t (* "}" *)
 )
-and class_body_declaration = [
-    `Class_body_decl_field_decl of (
-        modifiers option
-      * unannotated_type
-      * variable_declarator_list
-      * Token.t (* ";" *)
-    )
-  | `Class_body_decl_meth_decl of method_declaration
-  | `Class_body_decl_class_decl of class_declaration
-  | `Class_body_decl_inte_decl of interface_declaration
-  | `Class_body_decl_anno_type_decl of annotation_type_declaration
-  | `Class_body_decl_enum_decl of enum_declaration
-  | `Class_body_decl_blk of block
-  | `Class_body_decl_stat_init of (Token.t (* "static" *) * block)
-  | `Class_body_decl_cons_decl of (
-        modifiers option
-      * constructor_declarator
-      * throws option
-      * constructor_body
-    )
-  | `Class_body_decl_SEMI of Token.t (* ";" *)
-]
+and static_initializer = (Token.t (* "static" *) * block)
+and constructor_declaration = (
+    modifiers option
+  * constructor_declarator
+  * throws option
+  * constructor_body
+)
 and constructor_declarator = (
     type_parameters option
   * identifier (*tok*)
@@ -684,6 +864,12 @@ and explicit_constructor_invocation = (
         )
     ]
   * argument_list
+  * Token.t (* ";" *)
+)
+and field_declaration = (
+    modifiers option
+  * unannotated_type
+  * variable_declarator_list
   * Token.t (* ";" *)
 )
 and annotation_type_declaration = (
@@ -750,21 +936,31 @@ and variable_declarator_list = (
 )
 and variable_declarator = (
     variable_declarator_id
-  * (Token.t (* "=" *) * variable_initializer) option
+  * (
+        Token.t (* "=" *)
+      * [ `Exp of expression | `Array_init of array_initializer ]
+    )
+      option
 )
 and variable_declarator_id = (
-    [ `Id of identifier (*tok*) | `Rese_id of reserved_identifier ]
+    [
+        `Id of identifier (*tok*)
+      | `Choice_open of [
+            `Open of Token.t (* "open" *)
+          | `Modu of Token.t (* "module" *)
+        ]
+    ]
   * dimensions option
 )
-and variable_initializer = [
-    `Var_init_exp of expression
-  | `Var_init_array_init of array_initializer
-]
 and array_initializer = (
     Token.t (* "{" *)
   * (
-        variable_initializer
-      * (Token.t (* "," *) * variable_initializer) list (* zero or more *)
+        [ `Exp of expression | `Array_init of array_initializer ]
+      * (
+            Token.t (* "," *)
+          * [ `Exp of expression | `Array_init of array_initializer ]
+        )
+          list (* zero or more *)
     )
       option
   * Token.t (* "," *) option
@@ -775,17 +971,16 @@ and type_ = [
   | `Type_anno_type of (annotation list (* one or more *) * unannotated_type)
 ]
 and unannotated_type = [
-    `Unan_type_simple_type of simple_type
+    `Unan_type_choice_void_type of [
+        `Void_type of Token.t (* "void" *)
+      | `Inte_type of integral_type
+      | `Floa_point_type of floating_point_type
+      | `Bool_type of Token.t (* "boolean" *)
+      | `Id of identifier (*tok*)
+      | `Scop_type_id of scoped_type_identifier
+      | `Gene_type of generic_type
+    ]
   | `Unan_type_array_type of (unannotated_type * dimensions)
-]
-and simple_type = [
-    `Simple_type_void_type of Token.t (* "void" *)
-  | `Simple_type_inte_type of integral_type
-  | `Simple_type_floa_point_type of floating_point_type
-  | `Simple_type_bool_type of Token.t (* "boolean" *)
-  | `Simple_type_id of identifier (*tok*)
-  | `Simple_type_scop_type_id of scoped_type_identifier
-  | `Simple_type_gene_type of generic_type
 ]
 and scoped_type_identifier = (
     [
@@ -808,7 +1003,13 @@ and method_header = (
   * throws option
 )
 and method_declarator = (
-    [ `Id of identifier (*tok*) | `Rese_id of reserved_identifier ]
+    [
+        `Id of identifier (*tok*)
+      | `Choice_open of [
+            `Open of Token.t (* "open" *)
+          | `Modu of Token.t (* "module" *)
+        ]
+    ]
   * formal_parameters
   * dimensions option
 )
@@ -870,16 +1071,16 @@ type program = statement list (* zero or more *)
 type asterisk (* inlined *) = Token.t (* "*" *)
 [@@deriving sexp_of]
 
-type comment (* inlined *) = Token.t
-[@@deriving sexp_of]
-
-type super (* inlined *) = Token.t (* "super" *)
+type this (* inlined *) = Token.t (* "this" *)
 [@@deriving sexp_of]
 
 type void_type (* inlined *) = Token.t (* "void" *)
 [@@deriving sexp_of]
 
 type boolean_type (* inlined *) = Token.t (* "boolean" *)
+[@@deriving sexp_of]
+
+type comment (* inlined *) = Token.t
 [@@deriving sexp_of]
 
 type false_ (* inlined *) = Token.t (* "false" *)
@@ -891,12 +1092,7 @@ type null_literal (* inlined *) = Token.t (* "null" *)
 type true_ (* inlined *) = Token.t (* "true" *)
 [@@deriving sexp_of]
 
-type this (* inlined *) = Token.t (* "this" *)
-[@@deriving sexp_of]
-
-type scoped_identifier (* inlined *) = (
-    name * Token.t (* "." *) * identifier (*tok*)
-)
+type super (* inlined *) = Token.t (* "super" *)
 [@@deriving sexp_of]
 
 type continue_statement (* inlined *) = (
@@ -913,13 +1109,30 @@ type break_statement (* inlined *) = (
 )
 [@@deriving sexp_of]
 
-type marker_annotation (* inlined *) = (Token.t (* "@" *) * name)
+type marker_annotation (* inlined *) = (
+    Token.t (* "@" *)
+  * [
+        `Id of identifier (*tok*)
+      | `Choice_open of [
+            `Open of Token.t (* "open" *)
+          | `Modu of Token.t (* "module" *)
+        ]
+      | `Scop_id of scoped_identifier
+    ]
+)
 [@@deriving sexp_of]
 
 type import_declaration (* inlined *) = (
     Token.t (* "import" *)
   * Token.t (* "static" *) option
-  * name
+  * [
+        `Id of identifier (*tok*)
+      | `Choice_open of [
+            `Open of Token.t (* "open" *)
+          | `Modu of Token.t (* "module" *)
+        ]
+      | `Scop_id of scoped_identifier
+    ]
   * (Token.t (* "." *) * Token.t (* "*" *)) option
   * Token.t (* ";" *)
 )
@@ -937,7 +1150,10 @@ type cast_expression (* inlined *) = (
 type assignment_expression (* inlined *) = (
     [
         `Id of identifier (*tok*)
-      | `Rese_id of reserved_identifier
+      | `Choice_open of [
+            `Open of Token.t (* "open" *)
+          | `Modu of Token.t (* "module" *)
+        ]
       | `Field_acce of field_access
       | `Array_acce of array_access
     ]
@@ -983,7 +1199,15 @@ type ternary_expression (* inlined *) = (
 
 type array_creation_expression (* inlined *) = (
     Token.t (* "new" *)
-  * simple_type
+  * [
+        `Void_type of Token.t (* "void" *)
+      | `Inte_type of integral_type
+      | `Floa_point_type of floating_point_type
+      | `Bool_type of Token.t (* "boolean" *)
+      | `Id of identifier (*tok*)
+      | `Scop_type_id of scoped_type_identifier
+      | `Gene_type of generic_type
+    ]
   * [
         `Rep1_dimens_expr_opt_dimens of (
             dimensions_expr list (* one or more *)
@@ -1003,14 +1227,23 @@ type method_invocation (* inlined *) = (
     [
         `Choice_id of [
             `Id of identifier (*tok*)
-          | `Rese_id of reserved_identifier
+          | `Choice_open of [
+                `Open of Token.t (* "open" *)
+              | `Modu of Token.t (* "module" *)
+            ]
         ]
       | `Choice_prim_DOT_opt_super_DOT_opt_type_args_choice_id of (
             [ `Prim of primary | `Super of Token.t (* "super" *) ]
           * Token.t (* "." *)
           * (Token.t (* "super" *) * Token.t (* "." *)) option
           * type_arguments option
-          * [ `Id of identifier (*tok*) | `Rese_id of reserved_identifier ]
+          * [
+                `Id of identifier (*tok*)
+              | `Choice_open of [
+                    `Open of Token.t (* "open" *)
+                  | `Modu of Token.t (* "module" *)
+                ]
+            ]
         )
     ]
   * argument_list
@@ -1132,6 +1365,20 @@ type enhanced_for_statement (* inlined *) = (
 )
 [@@deriving sexp_of]
 
+type annotation_ (* inlined *) = (
+    Token.t (* "@" *)
+  * [
+        `Id of identifier (*tok*)
+      | `Choice_open of [
+            `Open of Token.t (* "open" *)
+          | `Modu of Token.t (* "module" *)
+        ]
+      | `Scop_id of scoped_identifier
+    ]
+  * annotation_argument_list
+)
+[@@deriving sexp_of]
+
 type element_value_array_initializer (* inlined *) = (
     Token.t (* "{" *)
   * (
@@ -1148,7 +1395,14 @@ type module_declaration (* inlined *) = (
     annotation list (* zero or more *)
   * Token.t (* "open" *) option
   * Token.t (* "module" *)
-  * name
+  * [
+        `Id of identifier (*tok*)
+      | `Choice_open of [
+            `Open of Token.t (* "open" *)
+          | `Modu of Token.t (* "module" *)
+        ]
+      | `Scop_id of scoped_identifier
+    ]
   * module_body
 )
 [@@deriving sexp_of]
@@ -1156,26 +1410,14 @@ type module_declaration (* inlined *) = (
 type package_declaration (* inlined *) = (
     annotation list (* zero or more *)
   * Token.t (* "package" *)
-  * name
-  * Token.t (* ";" *)
-)
-[@@deriving sexp_of]
-
-type static_initializer (* inlined *) = (Token.t (* "static" *) * block)
-[@@deriving sexp_of]
-
-type constructor_declaration (* inlined *) = (
-    modifiers option
-  * constructor_declarator
-  * throws option
-  * constructor_body
-)
-[@@deriving sexp_of]
-
-type field_declaration (* inlined *) = (
-    modifiers option
-  * unannotated_type
-  * variable_declarator_list
+  * [
+        `Id of identifier (*tok*)
+      | `Choice_open of [
+            `Open of Token.t (* "open" *)
+          | `Modu of Token.t (* "module" *)
+        ]
+      | `Scop_id of scoped_identifier
+    ]
   * Token.t (* ";" *)
 )
 [@@deriving sexp_of]

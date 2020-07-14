@@ -6,10 +6,10 @@
 *)
 
 (** Parse a ruby program from a string into a typed OCaml CST. *)
-val string : ?src_file:string -> string -> CST.program option
+val string : ?src_file:string -> string -> CST.program
 
 (** Parse a ruby program from a file into a typed OCaml CST. *)
-val file : string -> CST.program option
+val file : string -> CST.program
 
 (** Whether to print debugging information. Default: false. *)
 val debug : bool ref
@@ -26,5 +26,4 @@ val parse_source_file : string -> Tree_sitter_run.Tree_sitter_parsing.t
 
 (** Parse a tree-sitter CST into an OCaml typed CST. *)
 val parse_input_tree :
-  Tree_sitter_run.Tree_sitter_parsing.t ->
-  CST.program option
+  Tree_sitter_run.Tree_sitter_parsing.t -> CST.program
