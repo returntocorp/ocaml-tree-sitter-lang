@@ -1,0 +1,23 @@
+(library
+  (public_name tree-sitter-lang.go)
+  (name tree_sitter_go)
+  (preprocess (pps ppx_sexp_conv))
+  (libraries atdgen-runtime tree-sitter.run)
+  (foreign_stubs
+    (language c)
+    (names parser bindings)
+    (flags -std=c99
+           -fPIC
+           -I .)
+  )
+  (c_library_flags (-L%{env:TREESITTER_LIBRARY_DIR=/usr/local/lib}
+                    -lstdc++
+                    -ltree-sitter)
+  )
+  (foreign_stubs
+    (language cxx)
+    (names )
+    (flags -fPIC
+           -I .)
+  )
+)
