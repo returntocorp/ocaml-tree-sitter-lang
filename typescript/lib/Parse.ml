@@ -46,7 +46,6 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "protected");
     |];
   );
-  "comment", None;
   "false", None;
   "this", None;
   "template_chars", None;
@@ -61,8 +60,6 @@ let children_regexps : (string * Run.exp option) list = [
     ];
   );
   "hash_bang_line", None;
-  "jsx_identifier", None;
-  "jsx_text", None;
   "escape_sequence", None;
   "regex_flags", None;
   "number", None;
@@ -81,32 +78,6 @@ let children_regexps : (string * Run.exp option) list = [
   );
   "import", None;
   "identifier", None;
-  "reserved_identifier",
-  Some (
-    Alt [|
-      Token (Literal "declare");
-      Token (Literal "namespace");
-      Token (Literal "type");
-      Token (Literal "public");
-      Token (Literal "private");
-      Token (Literal "protected");
-      Token (Name "readonly");
-      Token (Literal "module");
-      Token (Literal "any");
-      Token (Literal "number");
-      Token (Literal "boolean");
-      Token (Literal "string");
-      Token (Literal "symbol");
-      Token (Literal "void");
-      Token (Literal "export");
-      Alt [|
-        Token (Literal "get");
-        Token (Literal "set");
-        Token (Literal "async");
-        Token (Literal "static");
-      |];
-    |];
-  );
   "string",
   Some (
     Alt [|
@@ -153,13 +124,6 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Name "number");
     ];
   );
-  "semicolon",
-  Some (
-    Alt [|
-      Token (Name "automatic_semicolon");
-      Token (Literal ";");
-    |];
-  );
   "debugger_statement",
   Some (
     Seq [
@@ -169,13 +133,6 @@ let children_regexps : (string * Run.exp option) list = [
         Token (Literal ";");
       |];
     ];
-  );
-  "jsx_identifier_",
-  Some (
-    Alt [|
-      Token (Name "jsx_identifier");
-      Token (Name "identifier");
-    |];
   );
   "decorator_member_expression",
   Some (
@@ -213,7 +170,6 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Name "identifier");
     ];
   );
-  "type_identifier", Some (Token (Name "identifier"););
   "break_statement",
   Some (
     Seq [
@@ -258,20 +214,6 @@ let children_regexps : (string * Run.exp option) list = [
       |];
     ];
   );
-  "jsx_namespace_name",
-  Some (
-    Seq [
-      Alt [|
-        Token (Name "jsx_identifier");
-        Token (Name "identifier");
-      |];
-      Token (Literal ":");
-      Alt [|
-        Token (Name "jsx_identifier");
-        Token (Name "identifier");
-      |];
-    ];
-  );
   "nested_identifier",
   Some (
     Seq [
@@ -290,35 +232,6 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "as");
       Token (Name "identifier");
     ];
-  );
-  "identifier_reference",
-  Some (
-    Alt [|
-      Token (Name "identifier");
-      Alt [|
-        Token (Literal "declare");
-        Token (Literal "namespace");
-        Token (Literal "type");
-        Token (Literal "public");
-        Token (Literal "private");
-        Token (Literal "protected");
-        Token (Name "readonly");
-        Token (Literal "module");
-        Token (Literal "any");
-        Token (Literal "number");
-        Token (Literal "boolean");
-        Token (Literal "string");
-        Token (Literal "symbol");
-        Token (Literal "void");
-        Token (Literal "export");
-        Alt [|
-          Token (Literal "get");
-          Token (Literal "set");
-          Token (Literal "async");
-          Token (Literal "static");
-        |];
-      |];
-    |];
   );
   "import_require_clause",
   Some (
@@ -390,16 +303,6 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "}");
     ];
   );
-  "jsx_attribute_name",
-  Some (
-    Alt [|
-      Alt [|
-        Token (Name "jsx_identifier");
-        Token (Name "identifier");
-      |];
-      Token (Name "jsx_namespace_name");
-    |];
-  );
   "type_query",
   Some (
     Seq [
@@ -421,17 +324,6 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Name "identifier");
     ];
   );
-  "jsx_element_name",
-  Some (
-    Alt [|
-      Alt [|
-        Token (Name "jsx_identifier");
-        Token (Name "identifier");
-      |];
-      Token (Name "nested_identifier");
-      Token (Name "jsx_namespace_name");
-    |];
-  );
   "import_alias",
   Some (
     Seq [
@@ -446,22 +338,6 @@ let children_regexps : (string * Run.exp option) list = [
         Token (Name "automatic_semicolon");
         Token (Literal ";");
       |];
-    ];
-  );
-  "jsx_closing_element",
-  Some (
-    Seq [
-      Token (Literal "<");
-      Token (Literal "/");
-      Alt [|
-        Alt [|
-          Token (Name "jsx_identifier");
-          Token (Name "identifier");
-        |];
-        Token (Name "nested_identifier");
-        Token (Name "jsx_namespace_name");
-      |];
-      Token (Literal ">");
     ];
   );
   "import_clause",
@@ -3073,157 +2949,6 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Name "type");
     ];
   );
-  "expressions",
-  Some (
-    Alt [|
-      Token (Name "expression");
-      Token (Name "sequence_expression");
-    |];
-  );
-  "lhs_expression",
-  Some (
-    Alt [|
-      Token (Name "member_expression");
-      Token (Name "subscript_expression");
-      Token (Name "identifier");
-      Alt [|
-        Token (Literal "declare");
-        Token (Literal "namespace");
-        Token (Literal "type");
-        Token (Literal "public");
-        Token (Literal "private");
-        Token (Literal "protected");
-        Token (Name "readonly");
-        Token (Literal "module");
-        Token (Literal "any");
-        Token (Literal "number");
-        Token (Literal "boolean");
-        Token (Literal "string");
-        Token (Literal "symbol");
-        Token (Literal "void");
-        Token (Literal "export");
-        Alt [|
-          Token (Literal "get");
-          Token (Literal "set");
-          Token (Literal "async");
-          Token (Literal "static");
-        |];
-      |];
-      Alt [|
-        Token (Name "object");
-        Token (Name "array");
-      |];
-    |];
-  );
-  "jsx_expression",
-  Some (
-    Seq [
-      Token (Literal "{");
-      Opt (
-        Alt [|
-          Token (Name "expression");
-          Token (Name "sequence_expression");
-          Token (Name "spread_element");
-        |];
-      );
-      Token (Literal "}");
-    ];
-  );
-  "formal_parameter",
-  Some (
-    Seq [
-      Repeat (
-        Token (Name "decorator");
-      );
-      Alt [|
-        Token (Name "required_parameter");
-        Token (Name "rest_parameter");
-        Token (Name "optional_parameter");
-      |];
-    ];
-  );
-  "constructable_expression",
-  Some (
-    Alt [|
-      Token (Name "this");
-      Token (Name "identifier");
-      Alt [|
-        Token (Literal "declare");
-        Token (Literal "namespace");
-        Token (Literal "type");
-        Token (Literal "public");
-        Token (Literal "private");
-        Token (Literal "protected");
-        Token (Name "readonly");
-        Token (Literal "module");
-        Token (Literal "any");
-        Token (Literal "number");
-        Token (Literal "boolean");
-        Token (Literal "string");
-        Token (Literal "symbol");
-        Token (Literal "void");
-        Token (Literal "export");
-        Alt [|
-          Token (Literal "get");
-          Token (Literal "set");
-          Token (Literal "async");
-          Token (Literal "static");
-        |];
-      |];
-      Token (Name "number");
-      Token (Name "string");
-      Token (Name "template_string");
-      Token (Name "regex");
-      Token (Name "true");
-      Token (Name "false");
-      Token (Name "null");
-      Token (Name "undefined");
-      Token (Name "import");
-      Token (Name "object");
-      Token (Name "array");
-      Token (Name "function");
-      Token (Name "arrow_function");
-      Token (Name "generator_function");
-      Token (Name "class");
-      Token (Name "parenthesized_expression");
-      Token (Name "subscript_expression");
-      Token (Name "member_expression");
-      Token (Name "meta_property");
-      Token (Name "new_expression");
-    |];
-  );
-  "statement",
-  Some (
-    Alt [|
-      Token (Name "export_statement");
-      Token (Name "import_statement");
-      Token (Name "debugger_statement");
-      Token (Name "expression_statement");
-      Token (Name "declaration");
-      Token (Name "statement_block");
-      Token (Name "if_statement");
-      Token (Name "switch_statement");
-      Token (Name "for_statement");
-      Token (Name "for_in_statement");
-      Token (Name "while_statement");
-      Token (Name "do_statement");
-      Token (Name "try_statement");
-      Token (Name "with_statement");
-      Token (Name "break_statement");
-      Token (Name "continue_statement");
-      Token (Name "return_statement");
-      Token (Name "throw_statement");
-      Token (Name "empty_statement");
-      Token (Name "labeled_statement");
-    |];
-  );
-  "destructuring_pattern",
-  Some (
-    Alt [|
-      Token (Name "object");
-      Token (Name "array");
-    |];
-  );
   "program",
   Some (
     Seq [
@@ -3255,159 +2980,6 @@ let children_regexps : (string * Run.exp option) list = [
         |];
       );
     ];
-  );
-  "jsx_element",
-  Some (
-    Seq [
-      Token (Name "jsx_opening_element");
-      Repeat (
-        Alt [|
-          Token (Name "jsx_text");
-          Alt [|
-            Token (Name "jsx_element");
-            Token (Name "jsx_self_closing_element");
-          |];
-          Token (Name "jsx_expression");
-        |];
-      );
-      Token (Name "jsx_closing_element");
-    ];
-  );
-  "jsx_fragment",
-  Some (
-    Seq [
-      Token (Literal "<");
-      Token (Literal ">");
-      Repeat (
-        Alt [|
-          Token (Name "jsx_text");
-          Alt [|
-            Token (Name "jsx_element");
-            Token (Name "jsx_self_closing_element");
-          |];
-          Token (Name "jsx_expression");
-        |];
-      );
-      Token (Literal "<");
-      Token (Literal "/");
-      Token (Literal ">");
-    ];
-  );
-  "jsx_opening_element",
-  Some (
-    Seq [
-      Token (Literal "<");
-      Alt [|
-        Alt [|
-          Alt [|
-            Token (Name "jsx_identifier");
-            Token (Name "identifier");
-          |];
-          Token (Name "jsx_namespace_name");
-        |];
-        Seq [
-          Alt [|
-            Token (Name "identifier");
-            Token (Name "nested_identifier");
-          |];
-          Opt (
-            Token (Name "type_arguments");
-          );
-        ];
-      |];
-      Repeat (
-        Alt [|
-          Token (Name "jsx_attribute");
-          Token (Name "jsx_expression");
-        |];
-      );
-      Token (Literal ">");
-    ];
-  );
-  "jsx_self_closing_element",
-  Some (
-    Seq [
-      Token (Literal "<");
-      Alt [|
-        Alt [|
-          Token (Name "jsx_identifier");
-          Token (Name "identifier");
-        |];
-        Token (Name "nested_identifier");
-        Token (Name "jsx_namespace_name");
-      |];
-      Repeat (
-        Alt [|
-          Token (Name "jsx_attribute");
-          Token (Name "jsx_expression");
-        |];
-      );
-      Token (Literal "/");
-      Token (Literal ">");
-    ];
-  );
-  "jsx_attribute",
-  Some (
-    Seq [
-      Alt [|
-        Alt [|
-          Token (Name "jsx_identifier");
-          Token (Name "identifier");
-        |];
-        Token (Name "jsx_namespace_name");
-      |];
-      Opt (
-        Seq [
-          Token (Literal "=");
-          Alt [|
-            Token (Name "string");
-            Token (Name "jsx_expression");
-            Alt [|
-              Token (Name "jsx_element");
-              Token (Name "jsx_self_closing_element");
-            |];
-            Token (Name "jsx_fragment");
-          |];
-        ];
-      );
-    ];
-  );
-  "jsx_element_",
-  Some (
-    Alt [|
-      Token (Name "jsx_element");
-      Token (Name "jsx_self_closing_element");
-    |];
-  );
-  "jsx_attribute_value",
-  Some (
-    Alt [|
-      Token (Name "string");
-      Token (Name "jsx_expression");
-      Alt [|
-        Token (Name "jsx_element");
-        Token (Name "jsx_self_closing_element");
-      |];
-      Token (Name "jsx_fragment");
-    |];
-  );
-  "jsx_attribute_",
-  Some (
-    Alt [|
-      Token (Name "jsx_attribute");
-      Token (Name "jsx_expression");
-    |];
-  );
-  "jsx_child",
-  Some (
-    Alt [|
-      Token (Name "jsx_text");
-      Alt [|
-        Token (Name "jsx_element");
-        Token (Name "jsx_self_closing_element");
-      |];
-      Token (Name "jsx_expression");
-    |];
   );
 ]
 
@@ -3456,10 +3028,6 @@ let trans_accessibility_modifier ((kind, body) : mt) : CST.accessibility_modifie
       )
   | Leaf _ -> assert false
 
-let trans_comment ((kind, body) : mt) : CST.comment =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
 
 let trans_false_ ((kind, body) : mt) : CST.false_ =
   match body with
@@ -3505,15 +3073,7 @@ let trans_hash_bang_line ((kind, body) : mt) : CST.hash_bang_line =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_jsx_identifier ((kind, body) : mt) : CST.jsx_identifier =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
 
-let trans_jsx_text ((kind, body) : mt) : CST.jsx_text =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
 
 let trans_escape_sequence ((kind, body) : mt) : CST.escape_sequence =
   match body with
@@ -3582,95 +3142,6 @@ let trans_identifier ((kind, body) : mt) : CST.identifier =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_reserved_identifier ((kind, body) : mt) : CST.reserved_identifier =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Decl (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Name (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (2, v) ->
-          `Type (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (3, v) ->
-          `Publ (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (4, v) ->
-          `Priv (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (5, v) ->
-          `Prot (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (6, v) ->
-          `Read (
-            trans_readonly (Run.matcher_token v)
-          )
-      | Alt (7, v) ->
-          `Modu (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (8, v) ->
-          `Any (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (9, v) ->
-          `Num (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (10, v) ->
-          `Bool (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (11, v) ->
-          `Str (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (12, v) ->
-          `Symb (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (13, v) ->
-          `Void (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (14, v) ->
-          `Expo (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (15, v) ->
-          `Choice_get (
-            (match v with
-            | Alt (0, v) ->
-                `Get (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (1, v) ->
-                `Set (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (2, v) ->
-                `Async (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (3, v) ->
-                `Stat (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | _ -> assert false
-            )
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
 let trans_string_ ((kind, body) : mt) : CST.string_ =
   match body with
@@ -3775,21 +3246,6 @@ let trans_number_ ((kind, body) : mt) : CST.number_ =
       )
   | Leaf _ -> assert false
 
-let trans_semicolon ((kind, body) : mt) : CST.semicolon =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Auto_semi (
-            trans_automatic_semicolon (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `SEMI (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
 let trans_debugger_statement ((kind, body) : mt) : CST.debugger_statement =
   match body with
@@ -3814,21 +3270,6 @@ let trans_debugger_statement ((kind, body) : mt) : CST.debugger_statement =
       )
   | Leaf _ -> assert false
 
-let trans_jsx_identifier_ ((kind, body) : mt) : CST.jsx_identifier_ =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Jsx_id (
-            trans_jsx_identifier (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Id (
-            trans_identifier (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
 let rec trans_decorator_member_expression ((kind, body) : mt) : CST.decorator_member_expression =
   match body with
@@ -3949,11 +3390,6 @@ let rec trans_decorator_member_expression ((kind, body) : mt) : CST.decorator_me
       )
   | Leaf _ -> assert false
 
-let trans_type_identifier ((kind, body) : mt) : CST.type_identifier =
-  match body with
-  | Children v ->
-      trans_identifier (Run.matcher_token v)
-  | Leaf _ -> assert false
 
 let trans_break_statement ((kind, body) : mt) : CST.break_statement =
   match body with
@@ -4049,40 +3485,6 @@ let trans_continue_statement ((kind, body) : mt) : CST.continue_statement =
       )
   | Leaf _ -> assert false
 
-let trans_jsx_namespace_name ((kind, body) : mt) : CST.jsx_namespace_name =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2] ->
-          (
-            (match v0 with
-            | Alt (0, v) ->
-                `Jsx_id (
-                  trans_jsx_identifier (Run.matcher_token v)
-                )
-            | Alt (1, v) ->
-                `Id (
-                  trans_identifier (Run.matcher_token v)
-                )
-            | _ -> assert false
-            )
-            ,
-            Run.trans_token (Run.matcher_token v1),
-            (match v2 with
-            | Alt (0, v) ->
-                `Jsx_id (
-                  trans_jsx_identifier (Run.matcher_token v)
-                )
-            | Alt (1, v) ->
-                `Id (
-                  trans_identifier (Run.matcher_token v)
-                )
-            | _ -> assert false
-            )
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
 let rec trans_nested_identifier ((kind, body) : mt) : CST.nested_identifier =
   match body with
@@ -4123,105 +3525,6 @@ let trans_namespace_import ((kind, body) : mt) : CST.namespace_import =
       )
   | Leaf _ -> assert false
 
-let trans_identifier_reference ((kind, body) : mt) : CST.identifier_reference =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Id (
-            trans_identifier (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Choice_decl (
-            (match v with
-            | Alt (0, v) ->
-                `Decl (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (1, v) ->
-                `Name (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (2, v) ->
-                `Type (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (3, v) ->
-                `Publ (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (4, v) ->
-                `Priv (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (5, v) ->
-                `Prot (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (6, v) ->
-                `Read (
-                  trans_readonly (Run.matcher_token v)
-                )
-            | Alt (7, v) ->
-                `Modu (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (8, v) ->
-                `Any (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (9, v) ->
-                `Num (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (10, v) ->
-                `Bool (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (11, v) ->
-                `Str (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (12, v) ->
-                `Symb (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (13, v) ->
-                `Void (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (14, v) ->
-                `Expo (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (15, v) ->
-                `Choice_get (
-                  (match v with
-                  | Alt (0, v) ->
-                      `Get (
-                        Run.trans_token (Run.matcher_token v)
-                      )
-                  | Alt (1, v) ->
-                      `Set (
-                        Run.trans_token (Run.matcher_token v)
-                      )
-                  | Alt (2, v) ->
-                      `Async (
-                        Run.trans_token (Run.matcher_token v)
-                      )
-                  | Alt (3, v) ->
-                      `Stat (
-                        Run.trans_token (Run.matcher_token v)
-                      )
-                  | _ -> assert false
-                  )
-                )
-            | _ -> assert false
-            )
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
 let trans_import_require_clause ((kind, body) : mt) : CST.import_require_clause =
   match body with
@@ -4363,31 +3666,6 @@ let trans_export_clause ((kind, body) : mt) : CST.export_clause =
       )
   | Leaf _ -> assert false
 
-let trans_jsx_attribute_name ((kind, body) : mt) : CST.jsx_attribute_name =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Choice_jsx_id (
-            (match v with
-            | Alt (0, v) ->
-                `Jsx_id (
-                  trans_jsx_identifier (Run.matcher_token v)
-                )
-            | Alt (1, v) ->
-                `Id (
-                  trans_identifier (Run.matcher_token v)
-                )
-            | _ -> assert false
-            )
-          )
-      | Alt (1, v) ->
-          `Jsx_name_name (
-            trans_jsx_namespace_name (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
 let trans_type_query ((kind, body) : mt) : CST.type_query =
   match body with
@@ -4437,35 +3715,6 @@ let trans_nested_type_identifier ((kind, body) : mt) : CST.nested_type_identifie
       )
   | Leaf _ -> assert false
 
-let trans_jsx_element_name ((kind, body) : mt) : CST.jsx_element_name =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Choice_jsx_id (
-            (match v with
-            | Alt (0, v) ->
-                `Jsx_id (
-                  trans_jsx_identifier (Run.matcher_token v)
-                )
-            | Alt (1, v) ->
-                `Id (
-                  trans_identifier (Run.matcher_token v)
-                )
-            | _ -> assert false
-            )
-          )
-      | Alt (1, v) ->
-          `Nest_id (
-            trans_nested_identifier (Run.matcher_token v)
-          )
-      | Alt (2, v) ->
-          `Jsx_name_name (
-            trans_jsx_namespace_name (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
 let trans_import_alias ((kind, body) : mt) : CST.import_alias =
   match body with
@@ -4504,45 +3753,6 @@ let trans_import_alias ((kind, body) : mt) : CST.import_alias =
       )
   | Leaf _ -> assert false
 
-let trans_jsx_closing_element ((kind, body) : mt) : CST.jsx_closing_element =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2; v3] ->
-          (
-            Run.trans_token (Run.matcher_token v0),
-            Run.trans_token (Run.matcher_token v1),
-            (match v2 with
-            | Alt (0, v) ->
-                `Choice_jsx_id (
-                  (match v with
-                  | Alt (0, v) ->
-                      `Jsx_id (
-                        trans_jsx_identifier (Run.matcher_token v)
-                      )
-                  | Alt (1, v) ->
-                      `Id (
-                        trans_identifier (Run.matcher_token v)
-                      )
-                  | _ -> assert false
-                  )
-                )
-            | Alt (1, v) ->
-                `Nest_id (
-                  trans_nested_identifier (Run.matcher_token v)
-                )
-            | Alt (2, v) ->
-                `Jsx_name_name (
-                  trans_jsx_namespace_name (Run.matcher_token v)
-                )
-            | _ -> assert false
-            )
-            ,
-            Run.trans_token (Run.matcher_token v3)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
 let trans_import_clause ((kind, body) : mt) : CST.import_clause =
   match body with
@@ -11421,494 +10631,12 @@ and trans_function_type ((kind, body) : mt) : CST.function_type =
       )
   | Leaf _ -> assert false
 
-let trans_expressions ((kind, body) : mt) : CST.expressions =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Exp (
-            trans_expression (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Seq_exp (
-            trans_sequence_expression (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
-let trans_lhs_expression ((kind, body) : mt) : CST.lhs_expression =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Memb_exp (
-            trans_member_expression (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Subs_exp (
-            trans_subscript_expression (Run.matcher_token v)
-          )
-      | Alt (2, v) ->
-          `Id (
-            trans_identifier (Run.matcher_token v)
-          )
-      | Alt (3, v) ->
-          `Choice_decl (
-            (match v with
-            | Alt (0, v) ->
-                `Decl (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (1, v) ->
-                `Name (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (2, v) ->
-                `Type (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (3, v) ->
-                `Publ (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (4, v) ->
-                `Priv (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (5, v) ->
-                `Prot (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (6, v) ->
-                `Read (
-                  trans_readonly (Run.matcher_token v)
-                )
-            | Alt (7, v) ->
-                `Modu (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (8, v) ->
-                `Any (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (9, v) ->
-                `Num (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (10, v) ->
-                `Bool (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (11, v) ->
-                `Str (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (12, v) ->
-                `Symb (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (13, v) ->
-                `Void (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (14, v) ->
-                `Expo (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (15, v) ->
-                `Choice_get (
-                  (match v with
-                  | Alt (0, v) ->
-                      `Get (
-                        Run.trans_token (Run.matcher_token v)
-                      )
-                  | Alt (1, v) ->
-                      `Set (
-                        Run.trans_token (Run.matcher_token v)
-                      )
-                  | Alt (2, v) ->
-                      `Async (
-                        Run.trans_token (Run.matcher_token v)
-                      )
-                  | Alt (3, v) ->
-                      `Stat (
-                        Run.trans_token (Run.matcher_token v)
-                      )
-                  | _ -> assert false
-                  )
-                )
-            | _ -> assert false
-            )
-          )
-      | Alt (4, v) ->
-          `Choice_obj (
-            (match v with
-            | Alt (0, v) ->
-                `Obj (
-                  trans_object_ (Run.matcher_token v)
-                )
-            | Alt (1, v) ->
-                `Array (
-                  trans_array_ (Run.matcher_token v)
-                )
-            | _ -> assert false
-            )
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
-let trans_jsx_expression ((kind, body) : mt) : CST.jsx_expression =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2] ->
-          (
-            Run.trans_token (Run.matcher_token v0),
-            Run.opt
-              (fun v ->
-                (match v with
-                | Alt (0, v) ->
-                    `Exp (
-                      trans_expression (Run.matcher_token v)
-                    )
-                | Alt (1, v) ->
-                    `Seq_exp (
-                      trans_sequence_expression (Run.matcher_token v)
-                    )
-                | Alt (2, v) ->
-                    `Spre_elem (
-                      trans_spread_element (Run.matcher_token v)
-                    )
-                | _ -> assert false
-                )
-              )
-              v1
-            ,
-            Run.trans_token (Run.matcher_token v2)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
-let trans_formal_parameter ((kind, body) : mt) : CST.formal_parameter =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1] ->
-          (
-            Run.repeat
-              (fun v -> trans_decorator (Run.matcher_token v))
-              v0
-            ,
-            (match v1 with
-            | Alt (0, v) ->
-                `Requ_param (
-                  trans_required_parameter (Run.matcher_token v)
-                )
-            | Alt (1, v) ->
-                `Rest_param (
-                  trans_rest_parameter (Run.matcher_token v)
-                )
-            | Alt (2, v) ->
-                `Opt_param (
-                  trans_optional_parameter (Run.matcher_token v)
-                )
-            | _ -> assert false
-            )
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
-let trans_constructable_expression ((kind, body) : mt) : CST.constructable_expression =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `This (
-            trans_this (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Id (
-            trans_identifier (Run.matcher_token v)
-          )
-      | Alt (2, v) ->
-          `Choice_decl (
-            (match v with
-            | Alt (0, v) ->
-                `Decl (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (1, v) ->
-                `Name (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (2, v) ->
-                `Type (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (3, v) ->
-                `Publ (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (4, v) ->
-                `Priv (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (5, v) ->
-                `Prot (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (6, v) ->
-                `Read (
-                  trans_readonly (Run.matcher_token v)
-                )
-            | Alt (7, v) ->
-                `Modu (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (8, v) ->
-                `Any (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (9, v) ->
-                `Num (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (10, v) ->
-                `Bool (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (11, v) ->
-                `Str (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (12, v) ->
-                `Symb (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (13, v) ->
-                `Void (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (14, v) ->
-                `Expo (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (15, v) ->
-                `Choice_get (
-                  (match v with
-                  | Alt (0, v) ->
-                      `Get (
-                        Run.trans_token (Run.matcher_token v)
-                      )
-                  | Alt (1, v) ->
-                      `Set (
-                        Run.trans_token (Run.matcher_token v)
-                      )
-                  | Alt (2, v) ->
-                      `Async (
-                        Run.trans_token (Run.matcher_token v)
-                      )
-                  | Alt (3, v) ->
-                      `Stat (
-                        Run.trans_token (Run.matcher_token v)
-                      )
-                  | _ -> assert false
-                  )
-                )
-            | _ -> assert false
-            )
-          )
-      | Alt (3, v) ->
-          `Num (
-            trans_number (Run.matcher_token v)
-          )
-      | Alt (4, v) ->
-          `Str (
-            trans_string_ (Run.matcher_token v)
-          )
-      | Alt (5, v) ->
-          `Temp_str (
-            trans_template_string (Run.matcher_token v)
-          )
-      | Alt (6, v) ->
-          `Regex (
-            trans_regex (Run.matcher_token v)
-          )
-      | Alt (7, v) ->
-          `True (
-            trans_true_ (Run.matcher_token v)
-          )
-      | Alt (8, v) ->
-          `False (
-            trans_false_ (Run.matcher_token v)
-          )
-      | Alt (9, v) ->
-          `Null (
-            trans_null (Run.matcher_token v)
-          )
-      | Alt (10, v) ->
-          `Unde (
-            trans_undefined (Run.matcher_token v)
-          )
-      | Alt (11, v) ->
-          `Impo (
-            trans_import (Run.matcher_token v)
-          )
-      | Alt (12, v) ->
-          `Obj (
-            trans_object_ (Run.matcher_token v)
-          )
-      | Alt (13, v) ->
-          `Array (
-            trans_array_ (Run.matcher_token v)
-          )
-      | Alt (14, v) ->
-          `Func (
-            trans_function_ (Run.matcher_token v)
-          )
-      | Alt (15, v) ->
-          `Arrow_func (
-            trans_arrow_function (Run.matcher_token v)
-          )
-      | Alt (16, v) ->
-          `Gene_func (
-            trans_generator_function (Run.matcher_token v)
-          )
-      | Alt (17, v) ->
-          `Class (
-            trans_class_ (Run.matcher_token v)
-          )
-      | Alt (18, v) ->
-          `Paren_exp (
-            trans_parenthesized_expression (Run.matcher_token v)
-          )
-      | Alt (19, v) ->
-          `Subs_exp (
-            trans_subscript_expression (Run.matcher_token v)
-          )
-      | Alt (20, v) ->
-          `Memb_exp (
-            trans_member_expression (Run.matcher_token v)
-          )
-      | Alt (21, v) ->
-          `Meta_prop (
-            trans_meta_property (Run.matcher_token v)
-          )
-      | Alt (22, v) ->
-          `New_exp (
-            trans_new_expression (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
-let trans_statement ((kind, body) : mt) : CST.statement =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Expo_stmt (
-            trans_export_statement (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Impo_stmt (
-            trans_import_statement (Run.matcher_token v)
-          )
-      | Alt (2, v) ->
-          `Debu_stmt (
-            trans_debugger_statement (Run.matcher_token v)
-          )
-      | Alt (3, v) ->
-          `Exp_stmt (
-            trans_expression_statement (Run.matcher_token v)
-          )
-      | Alt (4, v) ->
-          `Decl (
-            trans_declaration (Run.matcher_token v)
-          )
-      | Alt (5, v) ->
-          `Stmt_blk (
-            trans_statement_block (Run.matcher_token v)
-          )
-      | Alt (6, v) ->
-          `If_stmt (
-            trans_if_statement (Run.matcher_token v)
-          )
-      | Alt (7, v) ->
-          `Swit_stmt (
-            trans_switch_statement (Run.matcher_token v)
-          )
-      | Alt (8, v) ->
-          `For_stmt (
-            trans_for_statement (Run.matcher_token v)
-          )
-      | Alt (9, v) ->
-          `For_in_stmt (
-            trans_for_in_statement (Run.matcher_token v)
-          )
-      | Alt (10, v) ->
-          `While_stmt (
-            trans_while_statement (Run.matcher_token v)
-          )
-      | Alt (11, v) ->
-          `Do_stmt (
-            trans_do_statement (Run.matcher_token v)
-          )
-      | Alt (12, v) ->
-          `Try_stmt (
-            trans_try_statement (Run.matcher_token v)
-          )
-      | Alt (13, v) ->
-          `With_stmt (
-            trans_with_statement (Run.matcher_token v)
-          )
-      | Alt (14, v) ->
-          `Brk_stmt (
-            trans_break_statement (Run.matcher_token v)
-          )
-      | Alt (15, v) ->
-          `Cont_stmt (
-            trans_continue_statement (Run.matcher_token v)
-          )
-      | Alt (16, v) ->
-          `Ret_stmt (
-            trans_return_statement (Run.matcher_token v)
-          )
-      | Alt (17, v) ->
-          `Throw_stmt (
-            trans_throw_statement (Run.matcher_token v)
-          )
-      | Alt (18, v) ->
-          `Empty_stmt (
-            trans_empty_statement (Run.matcher_token v)
-          )
-      | Alt (19, v) ->
-          `Labe_stmt (
-            trans_labeled_statement (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
-let trans_destructuring_pattern ((kind, body) : mt) : CST.destructuring_pattern =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Obj (
-            trans_object_ (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Array (
-            trans_array_ (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
 let trans_program ((kind, body) : mt) : CST.program =
   match body with
@@ -12012,400 +10740,10 @@ let trans_program ((kind, body) : mt) : CST.program =
       )
   | Leaf _ -> assert false
 
-let rec trans_jsx_element ((kind, body) : mt) : CST.jsx_element =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2] ->
-          (
-            trans_jsx_opening_element (Run.matcher_token v0),
-            Run.repeat
-              (fun v ->
-                (match v with
-                | Alt (0, v) ->
-                    `Jsx_text (
-                      trans_jsx_text (Run.matcher_token v)
-                    )
-                | Alt (1, v) ->
-                    `Choice_jsx_elem (
-                      (match v with
-                      | Alt (0, v) ->
-                          `Jsx_elem (
-                            trans_jsx_element (Run.matcher_token v)
-                          )
-                      | Alt (1, v) ->
-                          `Jsx_self_clos_elem (
-                            trans_jsx_self_closing_element (Run.matcher_token v)
-                          )
-                      | _ -> assert false
-                      )
-                    )
-                | Alt (2, v) ->
-                    `Jsx_exp (
-                      trans_jsx_expression (Run.matcher_token v)
-                    )
-                | _ -> assert false
-                )
-              )
-              v1
-            ,
-            trans_jsx_closing_element (Run.matcher_token v2)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
-and trans_jsx_fragment ((kind, body) : mt) : CST.jsx_fragment =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2; v3; v4; v5] ->
-          (
-            Run.trans_token (Run.matcher_token v0),
-            Run.trans_token (Run.matcher_token v1),
-            Run.repeat
-              (fun v ->
-                (match v with
-                | Alt (0, v) ->
-                    `Jsx_text (
-                      trans_jsx_text (Run.matcher_token v)
-                    )
-                | Alt (1, v) ->
-                    `Choice_jsx_elem (
-                      (match v with
-                      | Alt (0, v) ->
-                          `Jsx_elem (
-                            trans_jsx_element (Run.matcher_token v)
-                          )
-                      | Alt (1, v) ->
-                          `Jsx_self_clos_elem (
-                            trans_jsx_self_closing_element (Run.matcher_token v)
-                          )
-                      | _ -> assert false
-                      )
-                    )
-                | Alt (2, v) ->
-                    `Jsx_exp (
-                      trans_jsx_expression (Run.matcher_token v)
-                    )
-                | _ -> assert false
-                )
-              )
-              v2
-            ,
-            Run.trans_token (Run.matcher_token v3),
-            Run.trans_token (Run.matcher_token v4),
-            Run.trans_token (Run.matcher_token v5)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
-and trans_jsx_opening_element ((kind, body) : mt) : CST.jsx_opening_element =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2; v3] ->
-          (
-            Run.trans_token (Run.matcher_token v0),
-            (match v1 with
-            | Alt (0, v) ->
-                `Choice_choice_jsx_id (
-                  (match v with
-                  | Alt (0, v) ->
-                      `Choice_jsx_id (
-                        (match v with
-                        | Alt (0, v) ->
-                            `Jsx_id (
-                              trans_jsx_identifier (Run.matcher_token v)
-                            )
-                        | Alt (1, v) ->
-                            `Id (
-                              trans_identifier (Run.matcher_token v)
-                            )
-                        | _ -> assert false
-                        )
-                      )
-                  | Alt (1, v) ->
-                      `Jsx_name_name (
-                        trans_jsx_namespace_name (Run.matcher_token v)
-                      )
-                  | _ -> assert false
-                  )
-                )
-            | Alt (1, v) ->
-                `Choice_id_opt_type_args (
-                  (match v with
-                  | Seq [v0; v1] ->
-                      (
-                        (match v0 with
-                        | Alt (0, v) ->
-                            `Id (
-                              trans_identifier (Run.matcher_token v)
-                            )
-                        | Alt (1, v) ->
-                            `Nest_id (
-                              trans_nested_identifier (Run.matcher_token v)
-                            )
-                        | _ -> assert false
-                        )
-                        ,
-                        Run.opt
-                          (fun v -> trans_type_arguments (Run.matcher_token v))
-                          v1
-                      )
-                  | _ -> assert false
-                  )
-                )
-            | _ -> assert false
-            )
-            ,
-            Run.repeat
-              (fun v ->
-                (match v with
-                | Alt (0, v) ->
-                    `Jsx_attr (
-                      trans_jsx_attribute (Run.matcher_token v)
-                    )
-                | Alt (1, v) ->
-                    `Jsx_exp (
-                      trans_jsx_expression (Run.matcher_token v)
-                    )
-                | _ -> assert false
-                )
-              )
-              v2
-            ,
-            Run.trans_token (Run.matcher_token v3)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
-and trans_jsx_self_closing_element ((kind, body) : mt) : CST.jsx_self_closing_element =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2; v3; v4] ->
-          (
-            Run.trans_token (Run.matcher_token v0),
-            (match v1 with
-            | Alt (0, v) ->
-                `Choice_jsx_id (
-                  (match v with
-                  | Alt (0, v) ->
-                      `Jsx_id (
-                        trans_jsx_identifier (Run.matcher_token v)
-                      )
-                  | Alt (1, v) ->
-                      `Id (
-                        trans_identifier (Run.matcher_token v)
-                      )
-                  | _ -> assert false
-                  )
-                )
-            | Alt (1, v) ->
-                `Nest_id (
-                  trans_nested_identifier (Run.matcher_token v)
-                )
-            | Alt (2, v) ->
-                `Jsx_name_name (
-                  trans_jsx_namespace_name (Run.matcher_token v)
-                )
-            | _ -> assert false
-            )
-            ,
-            Run.repeat
-              (fun v ->
-                (match v with
-                | Alt (0, v) ->
-                    `Jsx_attr (
-                      trans_jsx_attribute (Run.matcher_token v)
-                    )
-                | Alt (1, v) ->
-                    `Jsx_exp (
-                      trans_jsx_expression (Run.matcher_token v)
-                    )
-                | _ -> assert false
-                )
-              )
-              v2
-            ,
-            Run.trans_token (Run.matcher_token v3),
-            Run.trans_token (Run.matcher_token v4)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
-and trans_jsx_attribute ((kind, body) : mt) : CST.jsx_attribute =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1] ->
-          (
-            (match v0 with
-            | Alt (0, v) ->
-                `Choice_jsx_id (
-                  (match v with
-                  | Alt (0, v) ->
-                      `Jsx_id (
-                        trans_jsx_identifier (Run.matcher_token v)
-                      )
-                  | Alt (1, v) ->
-                      `Id (
-                        trans_identifier (Run.matcher_token v)
-                      )
-                  | _ -> assert false
-                  )
-                )
-            | Alt (1, v) ->
-                `Jsx_name_name (
-                  trans_jsx_namespace_name (Run.matcher_token v)
-                )
-            | _ -> assert false
-            )
-            ,
-            Run.opt
-              (fun v ->
-                (match v with
-                | Seq [v0; v1] ->
-                    (
-                      Run.trans_token (Run.matcher_token v0),
-                      (match v1 with
-                      | Alt (0, v) ->
-                          `Str (
-                            trans_string_ (Run.matcher_token v)
-                          )
-                      | Alt (1, v) ->
-                          `Jsx_exp (
-                            trans_jsx_expression (Run.matcher_token v)
-                          )
-                      | Alt (2, v) ->
-                          `Choice_jsx_elem (
-                            (match v with
-                            | Alt (0, v) ->
-                                `Jsx_elem (
-                                  trans_jsx_element (Run.matcher_token v)
-                                )
-                            | Alt (1, v) ->
-                                `Jsx_self_clos_elem (
-                                  trans_jsx_self_closing_element (Run.matcher_token v)
-                                )
-                            | _ -> assert false
-                            )
-                          )
-                      | Alt (3, v) ->
-                          `Jsx_frag (
-                            trans_jsx_fragment (Run.matcher_token v)
-                          )
-                      | _ -> assert false
-                      )
-                    )
-                | _ -> assert false
-                )
-              )
-              v1
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
-let trans_jsx_element_ ((kind, body) : mt) : CST.jsx_element_ =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Jsx_elem (
-            trans_jsx_element (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Jsx_self_clos_elem (
-            trans_jsx_self_closing_element (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
-let trans_jsx_attribute_value ((kind, body) : mt) : CST.jsx_attribute_value =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Str (
-            trans_string_ (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Jsx_exp (
-            trans_jsx_expression (Run.matcher_token v)
-          )
-      | Alt (2, v) ->
-          `Choice_jsx_elem (
-            (match v with
-            | Alt (0, v) ->
-                `Jsx_elem (
-                  trans_jsx_element (Run.matcher_token v)
-                )
-            | Alt (1, v) ->
-                `Jsx_self_clos_elem (
-                  trans_jsx_self_closing_element (Run.matcher_token v)
-                )
-            | _ -> assert false
-            )
-          )
-      | Alt (3, v) ->
-          `Jsx_frag (
-            trans_jsx_fragment (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
-let trans_jsx_attribute_ ((kind, body) : mt) : CST.jsx_attribute_ =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Jsx_attr (
-            trans_jsx_attribute (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Jsx_exp (
-            trans_jsx_expression (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
-let trans_jsx_child ((kind, body) : mt) : CST.jsx_child =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Jsx_text (
-            trans_jsx_text (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Choice_jsx_elem (
-            (match v with
-            | Alt (0, v) ->
-                `Jsx_elem (
-                  trans_jsx_element (Run.matcher_token v)
-                )
-            | Alt (1, v) ->
-                `Jsx_self_clos_elem (
-                  trans_jsx_self_closing_element (Run.matcher_token v)
-                )
-            | _ -> assert false
-            )
-          )
-      | Alt (2, v) ->
-          `Jsx_exp (
-            trans_jsx_expression (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
 let parse_input_tree input_tree =
   let root_node =

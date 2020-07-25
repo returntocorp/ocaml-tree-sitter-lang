@@ -34,13 +34,6 @@ let extras = [
 
 let children_regexps : (string * Run.exp option) list = [
   "asterisk", None;
-  "reserved_identifier",
-  Some (
-    Alt [|
-      Token (Literal "open");
-      Token (Literal "module");
-    |];
-  );
   "integral_type",
   Some (
     Alt [|
@@ -56,7 +49,6 @@ let children_regexps : (string * Run.exp option) list = [
   "boolean_type", None;
   "hex_integer_literal", None;
   "this", None;
-  "comment", None;
   "decimal_floating_point_literal", None;
   "character_literal", None;
   "string_literal", None;
@@ -300,17 +292,6 @@ let children_regexps : (string * Run.exp option) list = [
         Token (Name "scoped_identifier");
       |];
     ];
-  );
-  "name",
-  Some (
-    Alt [|
-      Token (Name "identifier");
-      Alt [|
-        Token (Literal "open");
-        Token (Literal "module");
-      |];
-      Token (Name "scoped_identifier");
-    |];
   );
   "import_declaration",
   Some (
@@ -1962,40 +1943,6 @@ let children_regexps : (string * Run.exp option) list = [
       |];
     ];
   );
-  "class_body_declaration",
-  Some (
-    Alt [|
-      Token (Name "field_declaration");
-      Token (Name "method_declaration");
-      Token (Name "class_declaration");
-      Token (Name "interface_declaration");
-      Token (Name "annotation_type_declaration");
-      Token (Name "enum_declaration");
-      Token (Name "block");
-      Token (Name "static_initializer");
-      Token (Name "constructor_declaration");
-      Token (Literal ";");
-    |];
-  );
-  "simple_type",
-  Some (
-    Alt [|
-      Token (Name "void_type");
-      Token (Name "integral_type");
-      Token (Name "floating_point_type");
-      Token (Name "boolean_type");
-      Token (Name "identifier");
-      Token (Name "scoped_type_identifier");
-      Token (Name "generic_type");
-    |];
-  );
-  "variable_initializer",
-  Some (
-    Alt [|
-      Token (Name "expression");
-      Token (Name "array_initializer");
-    |];
-  );
   "program",
   Some (
     Repeat (
@@ -2009,21 +1956,6 @@ let trans_asterisk ((kind, body) : mt) : CST.asterisk =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_reserved_identifier ((kind, body) : mt) : CST.reserved_identifier =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Open (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Modu (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
 let trans_integral_type ((kind, body) : mt) : CST.integral_type =
   match body with
@@ -2078,10 +2010,6 @@ let trans_this ((kind, body) : mt) : CST.this =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_comment ((kind, body) : mt) : CST.comment =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
 
 let trans_decimal_floating_point_literal ((kind, body) : mt) : CST.decimal_floating_point_literal =
   match body with
@@ -2760,35 +2688,6 @@ let trans_marker_annotation ((kind, body) : mt) : CST.marker_annotation =
       )
   | Leaf _ -> assert false
 
-let trans_name ((kind, body) : mt) : CST.name =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Id (
-            trans_identifier (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Choice_open (
-            (match v with
-            | Alt (0, v) ->
-                `Open (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (1, v) ->
-                `Modu (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | _ -> assert false
-            )
-          )
-      | Alt (2, v) ->
-          `Scop_id (
-            trans_scoped_identifier (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
 let trans_import_declaration ((kind, body) : mt) : CST.import_declaration =
   match body with
@@ -6387,105 +6286,8 @@ and trans_method_declaration ((kind, body) : mt) : CST.method_declaration =
       )
   | Leaf _ -> assert false
 
-let trans_class_body_declaration ((kind, body) : mt) : CST.class_body_declaration =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Field_decl (
-            trans_field_declaration (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Meth_decl (
-            trans_method_declaration (Run.matcher_token v)
-          )
-      | Alt (2, v) ->
-          `Class_decl (
-            trans_class_declaration (Run.matcher_token v)
-          )
-      | Alt (3, v) ->
-          `Inte_decl (
-            trans_interface_declaration (Run.matcher_token v)
-          )
-      | Alt (4, v) ->
-          `Anno_type_decl (
-            trans_annotation_type_declaration (Run.matcher_token v)
-          )
-      | Alt (5, v) ->
-          `Enum_decl (
-            trans_enum_declaration (Run.matcher_token v)
-          )
-      | Alt (6, v) ->
-          `Blk (
-            trans_block (Run.matcher_token v)
-          )
-      | Alt (7, v) ->
-          `Stat_init (
-            trans_static_initializer (Run.matcher_token v)
-          )
-      | Alt (8, v) ->
-          `Cons_decl (
-            trans_constructor_declaration (Run.matcher_token v)
-          )
-      | Alt (9, v) ->
-          `SEMI (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
-let trans_simple_type ((kind, body) : mt) : CST.simple_type =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Void_type (
-            trans_void_type (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Inte_type (
-            trans_integral_type (Run.matcher_token v)
-          )
-      | Alt (2, v) ->
-          `Floa_point_type (
-            trans_floating_point_type (Run.matcher_token v)
-          )
-      | Alt (3, v) ->
-          `Bool_type (
-            trans_boolean_type (Run.matcher_token v)
-          )
-      | Alt (4, v) ->
-          `Id (
-            trans_identifier (Run.matcher_token v)
-          )
-      | Alt (5, v) ->
-          `Scop_type_id (
-            trans_scoped_type_identifier (Run.matcher_token v)
-          )
-      | Alt (6, v) ->
-          `Gene_type (
-            trans_generic_type (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
-let trans_variable_initializer ((kind, body) : mt) : CST.variable_initializer =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Exp (
-            trans_expression (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Array_init (
-            trans_array_initializer (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
 let trans_program ((kind, body) : mt) : CST.program =
   match body with

@@ -59,17 +59,14 @@ let children_regexps : (string * Run.exp option) list = [
   "unary_minus", None;
   "block_ampersand", None;
   "class_variable", None;
-  "comment", None;
   "string_array_start", None;
   "splat_star", None;
   "integer", None;
-  "heredoc_content", None;
   "super", None;
   "string_end", None;
   "line_break", None;
   "identifier", None;
   "string_content", None;
-  "heredoc_end", None;
   "nil",
   Some (
     Alt [|
@@ -81,7 +78,6 @@ let children_regexps : (string * Run.exp option) list = [
   "float", None;
   "global_variable", None;
   "symbol_array_start", None;
-  "heredoc_body_start", None;
   "operator",
   Some (
     Alt [|
@@ -1670,20 +1666,6 @@ let children_regexps : (string * Run.exp option) list = [
       );
     ];
   );
-  "heredoc_body",
-  Some (
-    Seq [
-      Token (Name "heredoc_body_start");
-      Repeat (
-        Alt [|
-          Token (Name "heredoc_content");
-          Token (Name "interpolation");
-          Token (Name "escape_sequence");
-        |];
-      );
-      Token (Name "heredoc_end");
-    ];
-  );
 ]
 
 let trans_uninterpreted ((kind, body) : mt) : CST.uninterpreted =
@@ -1792,10 +1774,6 @@ let trans_class_variable ((kind, body) : mt) : CST.class_variable =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_comment ((kind, body) : mt) : CST.comment =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
 
 let trans_string_array_start ((kind, body) : mt) : CST.string_array_start =
   match body with
@@ -1812,10 +1790,6 @@ let trans_integer ((kind, body) : mt) : CST.integer =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_heredoc_content ((kind, body) : mt) : CST.heredoc_content =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
 
 let trans_super ((kind, body) : mt) : CST.super =
   match body with
@@ -1842,10 +1816,6 @@ let trans_string_content ((kind, body) : mt) : CST.string_content =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_heredoc_end ((kind, body) : mt) : CST.heredoc_end =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
 
 let trans_nil ((kind, body) : mt) : CST.nil =
   match body with
@@ -1883,10 +1853,6 @@ let trans_symbol_array_start ((kind, body) : mt) : CST.symbol_array_start =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_heredoc_body_start ((kind, body) : mt) : CST.heredoc_body_start =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
 
 let trans_operator ((kind, body) : mt) : CST.operator =
   match body with
@@ -5537,38 +5503,6 @@ let trans_program ((kind, body) : mt) : CST.program =
       )
   | Leaf _ -> assert false
 
-let trans_heredoc_body ((kind, body) : mt) : CST.heredoc_body =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2] ->
-          (
-            trans_heredoc_body_start (Run.matcher_token v0),
-            Run.repeat
-              (fun v ->
-                (match v with
-                | Alt (0, v) ->
-                    `Here_content (
-                      trans_heredoc_content (Run.matcher_token v)
-                    )
-                | Alt (1, v) ->
-                    `Interp (
-                      trans_interpolation (Run.matcher_token v)
-                    )
-                | Alt (2, v) ->
-                    `Esc_seq (
-                      trans_escape_sequence (Run.matcher_token v)
-                    )
-                | _ -> assert false
-                )
-              )
-              v1
-            ,
-            trans_heredoc_end (Run.matcher_token v2)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
 let parse_input_tree input_tree =
   let root_node =
