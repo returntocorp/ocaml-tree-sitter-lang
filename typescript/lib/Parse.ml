@@ -3013,7 +3013,7 @@ let trans_accessibility_modifier ((kind, body) : mt) : CST.accessibility_modifie
   | Children v ->
       (match v with
       | Alt (0, v) ->
-          `Publ (
+          `Public (
             Run.trans_token (Run.matcher_token v)
           )
       | Alt (1, v) ->
@@ -3301,7 +3301,7 @@ let rec trans_decorator_member_expression ((kind, body) : mt) : CST.decorator_me
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (3, v) ->
-                            `Publ (
+                            `Public (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (4, v) ->
@@ -3317,7 +3317,7 @@ let rec trans_decorator_member_expression ((kind, body) : mt) : CST.decorator_me
                               trans_readonly (Run.matcher_token v)
                             )
                         | Alt (7, v) ->
-                            `Modu (
+                            `Module (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (8, v) ->
@@ -3345,7 +3345,7 @@ let rec trans_decorator_member_expression ((kind, body) : mt) : CST.decorator_me
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (14, v) ->
-                            `Expo (
+                            `Export (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (15, v) ->
@@ -3364,7 +3364,7 @@ let rec trans_decorator_member_expression ((kind, body) : mt) : CST.decorator_me
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (3, v) ->
-                                  `Stat (
+                                  `Static (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | _ -> assert false
@@ -3377,7 +3377,7 @@ let rec trans_decorator_member_expression ((kind, body) : mt) : CST.decorator_me
                   )
                 )
             | Alt (1, v) ->
-                `Deco_memb_exp (
+                `Deco_member_exp (
                   trans_decorator_member_expression (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -3428,11 +3428,11 @@ let trans_import_export_specifier ((kind, body) : mt) : CST.import_export_specif
               (fun v ->
                 (match v with
                 | Alt (0, v) ->
-                    `Type_599dcce (
+                    `Type (
                       Run.trans_token (Run.matcher_token v)
                     )
                 | Alt (1, v) ->
-                    `Type_ac95254 (
+                    `Typeof (
                       Run.trans_token (Run.matcher_token v)
                     )
                 | _ -> assert false
@@ -3498,7 +3498,7 @@ let rec trans_nested_identifier ((kind, body) : mt) : CST.nested_identifier =
                   trans_identifier (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Nest_id (
+                `Nested_id (
                   trans_nested_identifier (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -3680,7 +3680,7 @@ let trans_type_query ((kind, body) : mt) : CST.type_query =
                   trans_identifier (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Nest_id (
+                `Nested_id (
                   trans_nested_identifier (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -3702,7 +3702,7 @@ let trans_nested_type_identifier ((kind, body) : mt) : CST.nested_type_identifie
                   trans_identifier (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Nest_id (
+                `Nested_id (
                   trans_nested_identifier (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -3731,7 +3731,7 @@ let trans_import_alias ((kind, body) : mt) : CST.import_alias =
                   trans_identifier (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Nest_id (
+                `Nested_id (
                   trans_nested_identifier (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -3759,15 +3759,15 @@ let trans_import_clause ((kind, body) : mt) : CST.import_clause =
   | Children v ->
       (match v with
       | Alt (0, v) ->
-          `Name_impo (
+          `Name_import (
             trans_namespace_import (Run.matcher_token v)
           )
       | Alt (1, v) ->
-          `Named_impors (
+          `Named_imports (
             trans_named_imports (Run.matcher_token v)
           )
       | Alt (2, v) ->
-          `Id_opt_COMMA_choice_name_impo (
+          `Id_opt_COMMA_choice_name_import (
             (match v with
             | Seq [v0; v1] ->
                 (
@@ -3780,11 +3780,11 @@ let trans_import_clause ((kind, body) : mt) : CST.import_clause =
                             Run.trans_token (Run.matcher_token v0),
                             (match v1 with
                             | Alt (0, v) ->
-                                `Name_impo (
+                                `Name_import (
                                   trans_namespace_import (Run.matcher_token v)
                                 )
                             | Alt (1, v) ->
-                                `Named_impors (
+                                `Named_imports (
                                   trans_named_imports (Run.matcher_token v)
                                 )
                             | _ -> assert false
@@ -3815,7 +3815,7 @@ let trans_index_type_query ((kind, body) : mt) : CST.index_type_query =
                   trans_identifier (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Nest_type_id (
+                `Nested_type_id (
                   trans_nested_type_identifier (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -3836,11 +3836,11 @@ let trans_import_statement ((kind, body) : mt) : CST.import_statement =
               (fun v ->
                 (match v with
                 | Alt (0, v) ->
-                    `Type_599dcce (
+                    `Type (
                       Run.trans_token (Run.matcher_token v)
                     )
                 | Alt (1, v) ->
-                    `Type_ac95254 (
+                    `Typeof (
                       Run.trans_token (Run.matcher_token v)
                     )
                 | _ -> assert false
@@ -3850,7 +3850,7 @@ let trans_import_statement ((kind, body) : mt) : CST.import_statement =
             ,
             (match v2 with
             | Alt (0, v) ->
-                `Impo_clau_from_clau (
+                `Import_clause_from_clause (
                   (match v with
                   | Seq [v0; v1] ->
                       (
@@ -3861,7 +3861,7 @@ let trans_import_statement ((kind, body) : mt) : CST.import_statement =
                   )
                 )
             | Alt (1, v) ->
-                `Impo_requ_clau (
+                `Import_requ_clause (
                   trans_import_require_clause (Run.matcher_token v)
                 )
             | Alt (2, v) ->
@@ -3892,17 +3892,17 @@ let rec trans_export_statement ((kind, body) : mt) : CST.export_statement =
   | Children v ->
       (match v with
       | Alt (0, v) ->
-          `Choice_expo_choice_STAR_from_clau_choice_auto_semi (
+          `Choice_export_choice_STAR_from_clause_choice_auto_semi (
             (match v with
             | Alt (0, v) ->
-                `Expo_choice_STAR_from_clau_choice_auto_semi (
+                `Export_choice_STAR_from_clause_choice_auto_semi (
                   (match v with
                   | Seq [v0; v1] ->
                       (
                         Run.trans_token (Run.matcher_token v0),
                         (match v1 with
                         | Alt (0, v) ->
-                            `STAR_from_clau_choice_auto_semi (
+                            `STAR_from_clause_choice_auto_semi (
                               (match v with
                               | Seq [v0; v1; v2] ->
                                   (
@@ -3924,7 +3924,7 @@ let rec trans_export_statement ((kind, body) : mt) : CST.export_statement =
                               )
                             )
                         | Alt (1, v) ->
-                            `Expo_clau_from_clau_choice_auto_semi (
+                            `Export_clause_from_clause_choice_auto_semi (
                               (match v with
                               | Seq [v0; v1; v2] ->
                                   (
@@ -3946,7 +3946,7 @@ let rec trans_export_statement ((kind, body) : mt) : CST.export_statement =
                               )
                             )
                         | Alt (2, v) ->
-                            `Expo_clau_choice_auto_semi (
+                            `Export_clause_choice_auto_semi (
                               (match v with
                               | Seq [v0; v1] ->
                                   (
@@ -3973,7 +3973,7 @@ let rec trans_export_statement ((kind, body) : mt) : CST.export_statement =
                   )
                 )
             | Alt (1, v) ->
-                `Rep_deco_expo_choice_decl (
+                `Rep_deco_export_choice_decl (
                   (match v with
                   | Seq [v0; v1; v2] ->
                       (
@@ -4019,7 +4019,7 @@ let rec trans_export_statement ((kind, body) : mt) : CST.export_statement =
             )
           )
       | Alt (1, v) ->
-          `Expo_EQ_id_choice_auto_semi (
+          `Export_EQ_id_choice_auto_semi (
             (match v with
             | Seq [v0; v1; v2; v3] ->
                 (
@@ -4042,7 +4042,7 @@ let rec trans_export_statement ((kind, body) : mt) : CST.export_statement =
             )
           )
       | Alt (2, v) ->
-          `Expo_as_name_id_choice_auto_semi (
+          `Export_as_name_id_choice_auto_semi (
             (match v with
             | Seq [v0; v1; v2; v3; v4] ->
                 (
@@ -4108,11 +4108,11 @@ and trans_declaration ((kind, body) : mt) : CST.declaration =
             trans_abstract_class_declaration (Run.matcher_token v)
           )
       | Alt (3, v) ->
-          `Modu (
+          `Module (
             trans_module_ (Run.matcher_token v)
           )
       | Alt (4, v) ->
-          `Inte_modu (
+          `Inte_module (
             trans_internal_module (Run.matcher_token v)
           )
       | Alt (5, v) ->
@@ -4128,7 +4128,7 @@ and trans_declaration ((kind, body) : mt) : CST.declaration =
             trans_interface_declaration (Run.matcher_token v)
           )
       | Alt (8, v) ->
-          `Impo_alias (
+          `Import_alias (
             trans_import_alias (Run.matcher_token v)
           )
       | Alt (9, v) ->
@@ -4309,11 +4309,11 @@ and trans_statement_block ((kind, body) : mt) : CST.statement_block =
               (fun v ->
                 (match v with
                 | Alt (0, v) ->
-                    `Expo_stmt (
+                    `Export_stmt (
                       trans_export_statement (Run.matcher_token v)
                     )
                 | Alt (1, v) ->
-                    `Impo_stmt (
+                    `Import_stmt (
                       trans_import_statement (Run.matcher_token v)
                     )
                 | Alt (2, v) ->
@@ -4337,7 +4337,7 @@ and trans_statement_block ((kind, body) : mt) : CST.statement_block =
                       trans_if_statement (Run.matcher_token v)
                     )
                 | Alt (7, v) ->
-                    `Swit_stmt (
+                    `Switch_stmt (
                       trans_switch_statement (Run.matcher_token v)
                     )
                 | Alt (8, v) ->
@@ -4412,11 +4412,11 @@ and trans_if_statement ((kind, body) : mt) : CST.if_statement =
             trans_parenthesized_expression (Run.matcher_token v1),
             (match v2 with
             | Alt (0, v) ->
-                `Expo_stmt (
+                `Export_stmt (
                   trans_export_statement (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Impo_stmt (
+                `Import_stmt (
                   trans_import_statement (Run.matcher_token v)
                 )
             | Alt (2, v) ->
@@ -4440,7 +4440,7 @@ and trans_if_statement ((kind, body) : mt) : CST.if_statement =
                   trans_if_statement (Run.matcher_token v)
                 )
             | Alt (7, v) ->
-                `Swit_stmt (
+                `Switch_stmt (
                   trans_switch_statement (Run.matcher_token v)
                 )
             | Alt (8, v) ->
@@ -4502,11 +4502,11 @@ and trans_if_statement ((kind, body) : mt) : CST.if_statement =
                       Run.trans_token (Run.matcher_token v0),
                       (match v1 with
                       | Alt (0, v) ->
-                          `Expo_stmt (
+                          `Export_stmt (
                             trans_export_statement (Run.matcher_token v)
                           )
                       | Alt (1, v) ->
-                          `Impo_stmt (
+                          `Import_stmt (
                             trans_import_statement (Run.matcher_token v)
                           )
                       | Alt (2, v) ->
@@ -4530,7 +4530,7 @@ and trans_if_statement ((kind, body) : mt) : CST.if_statement =
                             trans_if_statement (Run.matcher_token v)
                           )
                       | Alt (7, v) ->
-                          `Swit_stmt (
+                          `Switch_stmt (
                             trans_switch_statement (Run.matcher_token v)
                           )
                       | Alt (8, v) ->
@@ -4666,11 +4666,11 @@ and trans_for_statement ((kind, body) : mt) : CST.for_statement =
             Run.trans_token (Run.matcher_token v5),
             (match v6 with
             | Alt (0, v) ->
-                `Expo_stmt (
+                `Export_stmt (
                   trans_export_statement (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Impo_stmt (
+                `Import_stmt (
                   trans_import_statement (Run.matcher_token v)
                 )
             | Alt (2, v) ->
@@ -4694,7 +4694,7 @@ and trans_for_statement ((kind, body) : mt) : CST.for_statement =
                   trans_if_statement (Run.matcher_token v)
                 )
             | Alt (7, v) ->
-                `Swit_stmt (
+                `Switch_stmt (
                   trans_switch_statement (Run.matcher_token v)
                 )
             | Alt (8, v) ->
@@ -4766,11 +4766,11 @@ and trans_for_in_statement ((kind, body) : mt) : CST.for_in_statement =
             trans_for_header (Run.matcher_token v2),
             (match v3 with
             | Alt (0, v) ->
-                `Expo_stmt (
+                `Export_stmt (
                   trans_export_statement (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Impo_stmt (
+                `Import_stmt (
                   trans_import_statement (Run.matcher_token v)
                 )
             | Alt (2, v) ->
@@ -4794,7 +4794,7 @@ and trans_for_in_statement ((kind, body) : mt) : CST.for_in_statement =
                   trans_if_statement (Run.matcher_token v)
                 )
             | Alt (7, v) ->
-                `Swit_stmt (
+                `Switch_stmt (
                   trans_switch_statement (Run.matcher_token v)
                 )
             | Alt (8, v) ->
@@ -4885,10 +4885,10 @@ and trans_for_header ((kind, body) : mt) : CST.for_header =
                   trans_parenthesized_expression (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Choice_memb_exp (
+                `Choice_member_exp (
                   (match v with
                   | Alt (0, v) ->
-                      `Memb_exp (
+                      `Member_exp (
                         trans_member_expression (Run.matcher_token v)
                       )
                   | Alt (1, v) ->
@@ -4915,7 +4915,7 @@ and trans_for_header ((kind, body) : mt) : CST.for_header =
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (3, v) ->
-                            `Publ (
+                            `Public (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (4, v) ->
@@ -4931,7 +4931,7 @@ and trans_for_header ((kind, body) : mt) : CST.for_header =
                               trans_readonly (Run.matcher_token v)
                             )
                         | Alt (7, v) ->
-                            `Modu (
+                            `Module (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (8, v) ->
@@ -4959,7 +4959,7 @@ and trans_for_header ((kind, body) : mt) : CST.for_header =
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (14, v) ->
-                            `Expo (
+                            `Export (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (15, v) ->
@@ -4978,7 +4978,7 @@ and trans_for_header ((kind, body) : mt) : CST.for_header =
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (3, v) ->
-                                  `Stat (
+                                  `Static (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | _ -> assert false
@@ -5047,11 +5047,11 @@ and trans_while_statement ((kind, body) : mt) : CST.while_statement =
             trans_parenthesized_expression (Run.matcher_token v1),
             (match v2 with
             | Alt (0, v) ->
-                `Expo_stmt (
+                `Export_stmt (
                   trans_export_statement (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Impo_stmt (
+                `Import_stmt (
                   trans_import_statement (Run.matcher_token v)
                 )
             | Alt (2, v) ->
@@ -5075,7 +5075,7 @@ and trans_while_statement ((kind, body) : mt) : CST.while_statement =
                   trans_if_statement (Run.matcher_token v)
                 )
             | Alt (7, v) ->
-                `Swit_stmt (
+                `Switch_stmt (
                   trans_switch_statement (Run.matcher_token v)
                 )
             | Alt (8, v) ->
@@ -5142,11 +5142,11 @@ and trans_do_statement ((kind, body) : mt) : CST.do_statement =
             Run.trans_token (Run.matcher_token v0),
             (match v1 with
             | Alt (0, v) ->
-                `Expo_stmt (
+                `Export_stmt (
                   trans_export_statement (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Impo_stmt (
+                `Import_stmt (
                   trans_import_statement (Run.matcher_token v)
                 )
             | Alt (2, v) ->
@@ -5170,7 +5170,7 @@ and trans_do_statement ((kind, body) : mt) : CST.do_statement =
                   trans_if_statement (Run.matcher_token v)
                 )
             | Alt (7, v) ->
-                `Swit_stmt (
+                `Switch_stmt (
                   trans_switch_statement (Run.matcher_token v)
                 )
             | Alt (8, v) ->
@@ -5272,11 +5272,11 @@ and trans_with_statement ((kind, body) : mt) : CST.with_statement =
             trans_parenthesized_expression (Run.matcher_token v1),
             (match v2 with
             | Alt (0, v) ->
-                `Expo_stmt (
+                `Export_stmt (
                   trans_export_statement (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Impo_stmt (
+                `Import_stmt (
                   trans_import_statement (Run.matcher_token v)
                 )
             | Alt (2, v) ->
@@ -5300,7 +5300,7 @@ and trans_with_statement ((kind, body) : mt) : CST.with_statement =
                   trans_if_statement (Run.matcher_token v)
                 )
             | Alt (7, v) ->
-                `Swit_stmt (
+                `Switch_stmt (
                   trans_switch_statement (Run.matcher_token v)
                 )
             | Alt (8, v) ->
@@ -5459,7 +5459,7 @@ and trans_labeled_statement ((kind, body) : mt) : CST.labeled_statement =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (3, v) ->
-                      `Publ (
+                      `Public (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (4, v) ->
@@ -5475,7 +5475,7 @@ and trans_labeled_statement ((kind, body) : mt) : CST.labeled_statement =
                         trans_readonly (Run.matcher_token v)
                       )
                   | Alt (7, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (8, v) ->
@@ -5503,7 +5503,7 @@ and trans_labeled_statement ((kind, body) : mt) : CST.labeled_statement =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (14, v) ->
-                      `Expo (
+                      `Export (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (15, v) ->
@@ -5522,7 +5522,7 @@ and trans_labeled_statement ((kind, body) : mt) : CST.labeled_statement =
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (3, v) ->
-                            `Stat (
+                            `Static (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | _ -> assert false
@@ -5537,11 +5537,11 @@ and trans_labeled_statement ((kind, body) : mt) : CST.labeled_statement =
             Run.trans_token (Run.matcher_token v1),
             (match v2 with
             | Alt (0, v) ->
-                `Expo_stmt (
+                `Export_stmt (
                   trans_export_statement (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Impo_stmt (
+                `Import_stmt (
                   trans_import_statement (Run.matcher_token v)
                 )
             | Alt (2, v) ->
@@ -5565,7 +5565,7 @@ and trans_labeled_statement ((kind, body) : mt) : CST.labeled_statement =
                   trans_if_statement (Run.matcher_token v)
                 )
             | Alt (7, v) ->
-                `Swit_stmt (
+                `Switch_stmt (
                   trans_switch_statement (Run.matcher_token v)
                 )
             | Alt (8, v) ->
@@ -5634,11 +5634,11 @@ and trans_switch_body ((kind, body) : mt) : CST.switch_body =
               (fun v ->
                 (match v with
                 | Alt (0, v) ->
-                    `Swit_case (
+                    `Switch_case (
                       trans_switch_case (Run.matcher_token v)
                     )
                 | Alt (1, v) ->
-                    `Swit_defa (
+                    `Switch_defa (
                       trans_switch_default (Run.matcher_token v)
                     )
                 | _ -> assert false
@@ -5676,11 +5676,11 @@ and trans_switch_case ((kind, body) : mt) : CST.switch_case =
               (fun v ->
                 (match v with
                 | Alt (0, v) ->
-                    `Expo_stmt (
+                    `Export_stmt (
                       trans_export_statement (Run.matcher_token v)
                     )
                 | Alt (1, v) ->
-                    `Impo_stmt (
+                    `Import_stmt (
                       trans_import_statement (Run.matcher_token v)
                     )
                 | Alt (2, v) ->
@@ -5704,7 +5704,7 @@ and trans_switch_case ((kind, body) : mt) : CST.switch_case =
                       trans_if_statement (Run.matcher_token v)
                     )
                 | Alt (7, v) ->
-                    `Swit_stmt (
+                    `Switch_stmt (
                       trans_switch_statement (Run.matcher_token v)
                     )
                 | Alt (8, v) ->
@@ -5776,11 +5776,11 @@ and trans_switch_default ((kind, body) : mt) : CST.switch_default =
               (fun v ->
                 (match v with
                 | Alt (0, v) ->
-                    `Expo_stmt (
+                    `Export_stmt (
                       trans_export_statement (Run.matcher_token v)
                     )
                 | Alt (1, v) ->
-                    `Impo_stmt (
+                    `Import_stmt (
                       trans_import_statement (Run.matcher_token v)
                     )
                 | Alt (2, v) ->
@@ -5804,7 +5804,7 @@ and trans_switch_default ((kind, body) : mt) : CST.switch_default =
                       trans_if_statement (Run.matcher_token v)
                     )
                 | Alt (7, v) ->
-                    `Swit_stmt (
+                    `Switch_stmt (
                       trans_switch_statement (Run.matcher_token v)
                     )
                 | Alt (8, v) ->
@@ -5972,7 +5972,7 @@ and trans_expression ((kind, body) : mt) : CST.expression =
             trans_non_null_expression (Run.matcher_token v)
           )
       | Alt (2, v) ->
-          `Inte_modu (
+          `Inte_module (
             trans_internal_module (Run.matcher_token v)
           )
       | Alt (3, v) ->
@@ -6010,7 +6010,7 @@ and trans_expression ((kind, body) : mt) : CST.expression =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (3, v) ->
-                      `Publ (
+                      `Public (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (4, v) ->
@@ -6026,7 +6026,7 @@ and trans_expression ((kind, body) : mt) : CST.expression =
                         trans_readonly (Run.matcher_token v)
                       )
                   | Alt (7, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (8, v) ->
@@ -6054,7 +6054,7 @@ and trans_expression ((kind, body) : mt) : CST.expression =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (14, v) ->
-                      `Expo (
+                      `Export (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (15, v) ->
@@ -6073,7 +6073,7 @@ and trans_expression ((kind, body) : mt) : CST.expression =
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (3, v) ->
-                            `Stat (
+                            `Static (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | _ -> assert false
@@ -6115,7 +6115,7 @@ and trans_expression ((kind, body) : mt) : CST.expression =
                   trans_undefined (Run.matcher_token v)
                 )
             | Alt (11, v) ->
-                `Impo (
+                `Import (
                   trans_import (Run.matcher_token v)
                 )
             | Alt (12, v) ->
@@ -6151,7 +6151,7 @@ and trans_expression ((kind, body) : mt) : CST.expression =
                   trans_subscript_expression (Run.matcher_token v)
                 )
             | Alt (20, v) ->
-                `Memb_exp (
+                `Member_exp (
                   trans_member_expression (Run.matcher_token v)
                 )
             | Alt (21, v) ->
@@ -6190,7 +6190,7 @@ and trans_expression ((kind, body) : mt) : CST.expression =
             trans_ternary_expression (Run.matcher_token v)
           )
       | Alt (12, v) ->
-          `Upda_exp (
+          `Update_exp (
             trans_update_expression (Run.matcher_token v)
           )
       | Alt (13, v) ->
@@ -6257,7 +6257,7 @@ and trans_object_ ((kind, body) : mt) : CST.object_ =
                                 trans_pair (Run.matcher_token v)
                               )
                           | Alt (1, v) ->
-                              `Spre_elem (
+                              `Spread_elem (
                                 trans_spread_element (Run.matcher_token v)
                               )
                           | Alt (2, v) ->
@@ -6291,7 +6291,7 @@ and trans_object_ ((kind, body) : mt) : CST.object_ =
                                             Run.trans_token (Run.matcher_token v)
                                           )
                                       | Alt (3, v) ->
-                                          `Publ (
+                                          `Public (
                                             Run.trans_token (Run.matcher_token v)
                                           )
                                       | Alt (4, v) ->
@@ -6307,7 +6307,7 @@ and trans_object_ ((kind, body) : mt) : CST.object_ =
                                             trans_readonly (Run.matcher_token v)
                                           )
                                       | Alt (7, v) ->
-                                          `Modu (
+                                          `Module (
                                             Run.trans_token (Run.matcher_token v)
                                           )
                                       | Alt (8, v) ->
@@ -6335,7 +6335,7 @@ and trans_object_ ((kind, body) : mt) : CST.object_ =
                                             Run.trans_token (Run.matcher_token v)
                                           )
                                       | Alt (14, v) ->
-                                          `Expo (
+                                          `Export (
                                             Run.trans_token (Run.matcher_token v)
                                           )
                                       | Alt (15, v) ->
@@ -6354,7 +6354,7 @@ and trans_object_ ((kind, body) : mt) : CST.object_ =
                                                   Run.trans_token (Run.matcher_token v)
                                                 )
                                             | Alt (3, v) ->
-                                                `Stat (
+                                                `Static (
                                                   Run.trans_token (Run.matcher_token v)
                                                 )
                                             | _ -> assert false
@@ -6385,7 +6385,7 @@ and trans_object_ ((kind, body) : mt) : CST.object_ =
                                           trans_pair (Run.matcher_token v)
                                         )
                                     | Alt (1, v) ->
-                                        `Spre_elem (
+                                        `Spread_elem (
                                           trans_spread_element (Run.matcher_token v)
                                         )
                                     | Alt (2, v) ->
@@ -6419,7 +6419,7 @@ and trans_object_ ((kind, body) : mt) : CST.object_ =
                                                       Run.trans_token (Run.matcher_token v)
                                                     )
                                                 | Alt (3, v) ->
-                                                    `Publ (
+                                                    `Public (
                                                       Run.trans_token (Run.matcher_token v)
                                                     )
                                                 | Alt (4, v) ->
@@ -6435,7 +6435,7 @@ and trans_object_ ((kind, body) : mt) : CST.object_ =
                                                       trans_readonly (Run.matcher_token v)
                                                     )
                                                 | Alt (7, v) ->
-                                                    `Modu (
+                                                    `Module (
                                                       Run.trans_token (Run.matcher_token v)
                                                     )
                                                 | Alt (8, v) ->
@@ -6463,7 +6463,7 @@ and trans_object_ ((kind, body) : mt) : CST.object_ =
                                                       Run.trans_token (Run.matcher_token v)
                                                     )
                                                 | Alt (14, v) ->
-                                                    `Expo (
+                                                    `Export (
                                                       Run.trans_token (Run.matcher_token v)
                                                     )
                                                 | Alt (15, v) ->
@@ -6482,7 +6482,7 @@ and trans_object_ ((kind, body) : mt) : CST.object_ =
                                                             Run.trans_token (Run.matcher_token v)
                                                           )
                                                       | Alt (3, v) ->
-                                                          `Stat (
+                                                          `Static (
                                                             Run.trans_token (Run.matcher_token v)
                                                           )
                                                       | _ -> assert false
@@ -6541,7 +6541,7 @@ and trans_assignment_pattern ((kind, body) : mt) : CST.assignment_pattern =
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (3, v) ->
-                            `Publ (
+                            `Public (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (4, v) ->
@@ -6557,7 +6557,7 @@ and trans_assignment_pattern ((kind, body) : mt) : CST.assignment_pattern =
                               trans_readonly (Run.matcher_token v)
                             )
                         | Alt (7, v) ->
-                            `Modu (
+                            `Module (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (8, v) ->
@@ -6585,7 +6585,7 @@ and trans_assignment_pattern ((kind, body) : mt) : CST.assignment_pattern =
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (14, v) ->
-                            `Expo (
+                            `Export (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (15, v) ->
@@ -6604,7 +6604,7 @@ and trans_assignment_pattern ((kind, body) : mt) : CST.assignment_pattern =
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (3, v) ->
-                                  `Stat (
+                                  `Static (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | _ -> assert false
@@ -6664,7 +6664,7 @@ and trans_array_ ((kind, body) : mt) : CST.array_ =
                                 trans_expression (Run.matcher_token v)
                               )
                           | Alt (1, v) ->
-                              `Spre_elem (
+                              `Spread_elem (
                                 trans_spread_element (Run.matcher_token v)
                               )
                           | _ -> assert false
@@ -6686,7 +6686,7 @@ and trans_array_ ((kind, body) : mt) : CST.array_ =
                                           trans_expression (Run.matcher_token v)
                                         )
                                     | Alt (1, v) ->
-                                        `Spre_elem (
+                                        `Spread_elem (
                                           trans_spread_element (Run.matcher_token v)
                                         )
                                     | _ -> assert false
@@ -6773,7 +6773,7 @@ and trans_class_heritage ((kind, body) : mt) : CST.class_heritage =
   | Children v ->
       (match v with
       | Alt (0, v) ->
-          `Extens_clau_opt_imples_clau (
+          `Extends_clause_opt_imples_clause (
             (match v with
             | Seq [v0; v1] ->
                 (
@@ -6786,7 +6786,7 @@ and trans_class_heritage ((kind, body) : mt) : CST.class_heritage =
             )
           )
       | Alt (1, v) ->
-          `Imples_clau (
+          `Imples_clause (
             trans_implements_clause (Run.matcher_token v)
           )
       | _ -> assert false
@@ -6913,7 +6913,7 @@ and trans_arrow_function ((kind, body) : mt) : CST.arrow_function =
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (3, v) ->
-                            `Publ (
+                            `Public (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (4, v) ->
@@ -6929,7 +6929,7 @@ and trans_arrow_function ((kind, body) : mt) : CST.arrow_function =
                               trans_readonly (Run.matcher_token v)
                             )
                         | Alt (7, v) ->
-                            `Modu (
+                            `Module (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (8, v) ->
@@ -6957,7 +6957,7 @@ and trans_arrow_function ((kind, body) : mt) : CST.arrow_function =
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (14, v) ->
-                            `Expo (
+                            `Export (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (15, v) ->
@@ -6976,7 +6976,7 @@ and trans_arrow_function ((kind, body) : mt) : CST.arrow_function =
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (3, v) ->
-                                  `Stat (
+                                  `Static (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | _ -> assert false
@@ -7109,7 +7109,7 @@ and trans_new_expression ((kind, body) : mt) : CST.new_expression =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (3, v) ->
-                      `Publ (
+                      `Public (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (4, v) ->
@@ -7125,7 +7125,7 @@ and trans_new_expression ((kind, body) : mt) : CST.new_expression =
                         trans_readonly (Run.matcher_token v)
                       )
                   | Alt (7, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (8, v) ->
@@ -7153,7 +7153,7 @@ and trans_new_expression ((kind, body) : mt) : CST.new_expression =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (14, v) ->
-                      `Expo (
+                      `Export (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (15, v) ->
@@ -7172,7 +7172,7 @@ and trans_new_expression ((kind, body) : mt) : CST.new_expression =
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (3, v) ->
-                            `Stat (
+                            `Static (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | _ -> assert false
@@ -7214,7 +7214,7 @@ and trans_new_expression ((kind, body) : mt) : CST.new_expression =
                   trans_undefined (Run.matcher_token v)
                 )
             | Alt (11, v) ->
-                `Impo (
+                `Import (
                   trans_import (Run.matcher_token v)
                 )
             | Alt (12, v) ->
@@ -7250,7 +7250,7 @@ and trans_new_expression ((kind, body) : mt) : CST.new_expression =
                   trans_subscript_expression (Run.matcher_token v)
                 )
             | Alt (20, v) ->
-                `Memb_exp (
+                `Member_exp (
                   trans_member_expression (Run.matcher_token v)
                 )
             | Alt (21, v) ->
@@ -7320,7 +7320,7 @@ and trans_member_expression ((kind, body) : mt) : CST.member_expression =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (3, v) ->
-                      `Publ (
+                      `Public (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (4, v) ->
@@ -7336,7 +7336,7 @@ and trans_member_expression ((kind, body) : mt) : CST.member_expression =
                         trans_readonly (Run.matcher_token v)
                       )
                   | Alt (7, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (8, v) ->
@@ -7364,7 +7364,7 @@ and trans_member_expression ((kind, body) : mt) : CST.member_expression =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (14, v) ->
-                      `Expo (
+                      `Export (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (15, v) ->
@@ -7383,7 +7383,7 @@ and trans_member_expression ((kind, body) : mt) : CST.member_expression =
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (3, v) ->
-                            `Stat (
+                            `Static (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | _ -> assert false
@@ -7451,10 +7451,10 @@ and trans_assignment_expression ((kind, body) : mt) : CST.assignment_expression 
                   trans_parenthesized_expression (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Choice_memb_exp (
+                `Choice_member_exp (
                   (match v with
                   | Alt (0, v) ->
-                      `Memb_exp (
+                      `Member_exp (
                         trans_member_expression (Run.matcher_token v)
                       )
                   | Alt (1, v) ->
@@ -7481,7 +7481,7 @@ and trans_assignment_expression ((kind, body) : mt) : CST.assignment_expression 
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (3, v) ->
-                            `Publ (
+                            `Public (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (4, v) ->
@@ -7497,7 +7497,7 @@ and trans_assignment_expression ((kind, body) : mt) : CST.assignment_expression 
                               trans_readonly (Run.matcher_token v)
                             )
                         | Alt (7, v) ->
-                            `Modu (
+                            `Module (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (8, v) ->
@@ -7525,7 +7525,7 @@ and trans_assignment_expression ((kind, body) : mt) : CST.assignment_expression 
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (14, v) ->
-                            `Expo (
+                            `Export (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (15, v) ->
@@ -7544,7 +7544,7 @@ and trans_assignment_expression ((kind, body) : mt) : CST.assignment_expression 
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (3, v) ->
-                                  `Stat (
+                                  `Static (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | _ -> assert false
@@ -7588,7 +7588,7 @@ and trans_augmented_assignment_expression ((kind, body) : mt) : CST.augmented_as
           (
             (match v0 with
             | Alt (0, v) ->
-                `Memb_exp (
+                `Member_exp (
                   trans_member_expression (Run.matcher_token v)
                 )
             | Alt (1, v) ->
@@ -7611,7 +7611,7 @@ and trans_augmented_assignment_expression ((kind, body) : mt) : CST.augmented_as
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (3, v) ->
-                      `Publ (
+                      `Public (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (4, v) ->
@@ -7627,7 +7627,7 @@ and trans_augmented_assignment_expression ((kind, body) : mt) : CST.augmented_as
                         trans_readonly (Run.matcher_token v)
                       )
                   | Alt (7, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (8, v) ->
@@ -7655,7 +7655,7 @@ and trans_augmented_assignment_expression ((kind, body) : mt) : CST.augmented_as
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (14, v) ->
-                      `Expo (
+                      `Export (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (15, v) ->
@@ -7674,7 +7674,7 @@ and trans_augmented_assignment_expression ((kind, body) : mt) : CST.augmented_as
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (3, v) ->
-                            `Stat (
+                            `Static (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | _ -> assert false
@@ -8151,7 +8151,7 @@ and trans_unary_expression ((kind, body) : mt) : CST.unary_expression =
             )
           )
       | Alt (4, v) ->
-          `Type_exp (
+          `Typeof_exp (
             (match v with
             | Seq [v0; v1] ->
                 (
@@ -8173,7 +8173,7 @@ and trans_unary_expression ((kind, body) : mt) : CST.unary_expression =
             )
           )
       | Alt (6, v) ->
-          `Dele_exp (
+          `Delete_exp (
             (match v with
             | Seq [v0; v1] ->
                 (
@@ -8340,7 +8340,7 @@ and trans_arguments ((kind, body) : mt) : CST.arguments =
                                 trans_expression (Run.matcher_token v)
                               )
                           | Alt (1, v) ->
-                              `Spre_elem (
+                              `Spread_elem (
                                 trans_spread_element (Run.matcher_token v)
                               )
                           | _ -> assert false
@@ -8362,7 +8362,7 @@ and trans_arguments ((kind, body) : mt) : CST.arguments =
                                           trans_expression (Run.matcher_token v)
                                         )
                                     | Alt (1, v) ->
-                                        `Spre_elem (
+                                        `Spread_elem (
                                           trans_spread_element (Run.matcher_token v)
                                         )
                                     | _ -> assert false
@@ -8417,7 +8417,7 @@ and trans_decorator ((kind, body) : mt) : CST.decorator =
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (3, v) ->
-                            `Publ (
+                            `Public (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (4, v) ->
@@ -8433,7 +8433,7 @@ and trans_decorator ((kind, body) : mt) : CST.decorator =
                               trans_readonly (Run.matcher_token v)
                             )
                         | Alt (7, v) ->
-                            `Modu (
+                            `Module (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (8, v) ->
@@ -8461,7 +8461,7 @@ and trans_decorator ((kind, body) : mt) : CST.decorator =
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (14, v) ->
-                            `Expo (
+                            `Export (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (15, v) ->
@@ -8480,7 +8480,7 @@ and trans_decorator ((kind, body) : mt) : CST.decorator =
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (3, v) ->
-                                  `Stat (
+                                  `Static (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | _ -> assert false
@@ -8493,7 +8493,7 @@ and trans_decorator ((kind, body) : mt) : CST.decorator =
                   )
                 )
             | Alt (1, v) ->
-                `Deco_memb_exp (
+                `Deco_member_exp (
                   trans_decorator_member_expression (Run.matcher_token v)
                 )
             | Alt (2, v) ->
@@ -8537,7 +8537,7 @@ and trans_decorator_call_expression ((kind, body) : mt) : CST.decorator_call_exp
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (3, v) ->
-                            `Publ (
+                            `Public (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (4, v) ->
@@ -8553,7 +8553,7 @@ and trans_decorator_call_expression ((kind, body) : mt) : CST.decorator_call_exp
                               trans_readonly (Run.matcher_token v)
                             )
                         | Alt (7, v) ->
-                            `Modu (
+                            `Module (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (8, v) ->
@@ -8581,7 +8581,7 @@ and trans_decorator_call_expression ((kind, body) : mt) : CST.decorator_call_exp
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (14, v) ->
-                            `Expo (
+                            `Export (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (15, v) ->
@@ -8600,7 +8600,7 @@ and trans_decorator_call_expression ((kind, body) : mt) : CST.decorator_call_exp
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (3, v) ->
-                                  `Stat (
+                                  `Static (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | _ -> assert false
@@ -8613,7 +8613,7 @@ and trans_decorator_call_expression ((kind, body) : mt) : CST.decorator_call_exp
                   )
                 )
             | Alt (1, v) ->
-                `Deco_memb_exp (
+                `Deco_member_exp (
                   trans_decorator_member_expression (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -8683,7 +8683,7 @@ and trans_class_body ((kind, body) : mt) : CST.class_body =
                                   trans_method_signature (Run.matcher_token v)
                                 )
                             | Alt (3, v) ->
-                                `Publ_field_defi (
+                                `Public_field_defi (
                                   trans_public_field_definition (Run.matcher_token v)
                                 )
                             | _ -> assert false
@@ -8739,7 +8739,7 @@ and trans_public_field_definition ((kind, body) : mt) : CST.public_field_definit
             ,
             (match v1 with
             | Alt (0, v) ->
-                `Opt_stat_opt_read (
+                `Opt_static_opt_read (
                   (match v with
                   | Seq [v0; v1] ->
                       (
@@ -9009,7 +9009,7 @@ and trans_property_name ((kind, body) : mt) : CST.property_name =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (3, v) ->
-                      `Publ (
+                      `Public (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (4, v) ->
@@ -9025,7 +9025,7 @@ and trans_property_name ((kind, body) : mt) : CST.property_name =
                         trans_readonly (Run.matcher_token v)
                       )
                   | Alt (7, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (8, v) ->
@@ -9053,7 +9053,7 @@ and trans_property_name ((kind, body) : mt) : CST.property_name =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (14, v) ->
-                      `Expo (
+                      `Export (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (15, v) ->
@@ -9072,7 +9072,7 @@ and trans_property_name ((kind, body) : mt) : CST.property_name =
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (3, v) ->
-                            `Stat (
+                            `Static (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | _ -> assert false
@@ -9330,7 +9330,7 @@ and trans_ambient_declaration ((kind, body) : mt) : CST.ambient_declaration =
                   trans_declaration (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Glob_stmt_blk (
+                `Global_stmt_blk (
                   (match v with
                   | Seq [v0; v1] ->
                       (
@@ -9341,7 +9341,7 @@ and trans_ambient_declaration ((kind, body) : mt) : CST.ambient_declaration =
                   )
                 )
             | Alt (2, v) ->
-                `Modu_DOT_id_COLON_type (
+                `Module_DOT_id_COLON_type (
                   (match v with
                   | Seq [v0; v1; v2; v3; v4] ->
                       (
@@ -9426,7 +9426,7 @@ and trans_module__ ((kind, body) : mt) : CST.module__ =
                   trans_identifier (Run.matcher_token v)
                 )
             | Alt (2, v) ->
-                `Nest_id (
+                `Nested_id (
                   trans_nested_identifier (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -9478,7 +9478,7 @@ and trans_extends_clause ((kind, body) : mt) : CST.extends_clause =
                         trans_identifier (Run.matcher_token v)
                       )
                   | Alt (1, v) ->
-                      `Nest_type_id (
+                      `Nested_type_id (
                         trans_nested_type_identifier (Run.matcher_token v)
                       )
                   | Alt (2, v) ->
@@ -9510,7 +9510,7 @@ and trans_extends_clause ((kind, body) : mt) : CST.extends_clause =
                                   trans_identifier (Run.matcher_token v)
                                 )
                             | Alt (1, v) ->
-                                `Nest_type_id (
+                                `Nested_type_id (
                                   trans_nested_type_identifier (Run.matcher_token v)
                                 )
                             | Alt (2, v) ->
@@ -9735,7 +9735,7 @@ and trans_parameter_name ((kind, body) : mt) : CST.parameter_name =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (3, v) ->
-                      `Publ (
+                      `Public (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (4, v) ->
@@ -9751,7 +9751,7 @@ and trans_parameter_name ((kind, body) : mt) : CST.parameter_name =
                         trans_readonly (Run.matcher_token v)
                       )
                   | Alt (7, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (8, v) ->
@@ -9779,7 +9779,7 @@ and trans_parameter_name ((kind, body) : mt) : CST.parameter_name =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (14, v) ->
-                      `Expo (
+                      `Export (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (15, v) ->
@@ -9798,7 +9798,7 @@ and trans_parameter_name ((kind, body) : mt) : CST.parameter_name =
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (3, v) ->
-                            `Stat (
+                            `Static (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | _ -> assert false
@@ -9909,7 +9909,7 @@ and trans_primary_type ((kind, body) : mt) : CST.primary_type =
             trans_identifier (Run.matcher_token v)
           )
       | Alt (3, v) ->
-          `Nest_type_id (
+          `Nested_type_id (
             trans_nested_type_identifier (Run.matcher_token v)
           )
       | Alt (4, v) ->
@@ -9957,7 +9957,7 @@ and trans_primary_type ((kind, body) : mt) : CST.primary_type =
             trans_literal_type (Run.matcher_token v)
           )
       | Alt (15, v) ->
-          `Look_type (
+          `Lookup_type (
             trans_lookup_type (Run.matcher_token v)
           )
       | _ -> assert false
@@ -9976,7 +9976,7 @@ and trans_generic_type ((kind, body) : mt) : CST.generic_type =
                   trans_identifier (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Nest_type_id (
+                `Nested_type_id (
                   trans_nested_type_identifier (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -10130,7 +10130,7 @@ and trans_object_type ((kind, body) : mt) : CST.object_type =
                       ,
                       (match v1 with
                       | Alt (0, v) ->
-                          `Expo_stmt (
+                          `Export_stmt (
                             trans_export_statement (Run.matcher_token v)
                           )
                       | Alt (1, v) ->
@@ -10185,7 +10185,7 @@ and trans_object_type ((kind, body) : mt) : CST.object_type =
                                 ,
                                 (match v1 with
                                 | Alt (0, v) ->
-                                    `Expo_stmt (
+                                    `Export_stmt (
                                       trans_export_statement (Run.matcher_token v)
                                     )
                                 | Alt (1, v) ->
@@ -10373,7 +10373,7 @@ and trans_constraint_ ((kind, body) : mt) : CST.constraint_ =
           (
             (match v0 with
             | Alt (0, v) ->
-                `Extens (
+                `Extends (
                   Run.trans_token (Run.matcher_token v)
                 )
             | Alt (1, v) ->
@@ -10443,7 +10443,7 @@ and trans_index_signature ((kind, body) : mt) : CST.index_signature =
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (3, v) ->
-                                  `Publ (
+                                  `Public (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (4, v) ->
@@ -10459,7 +10459,7 @@ and trans_index_signature ((kind, body) : mt) : CST.index_signature =
                                     trans_readonly (Run.matcher_token v)
                                   )
                               | Alt (7, v) ->
-                                  `Modu (
+                                  `Module (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (8, v) ->
@@ -10487,7 +10487,7 @@ and trans_index_signature ((kind, body) : mt) : CST.index_signature =
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (14, v) ->
-                                  `Expo (
+                                  `Export (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (15, v) ->
@@ -10506,7 +10506,7 @@ and trans_index_signature ((kind, body) : mt) : CST.index_signature =
                                           Run.trans_token (Run.matcher_token v)
                                         )
                                     | Alt (3, v) ->
-                                        `Stat (
+                                        `Static (
                                           Run.trans_token (Run.matcher_token v)
                                         )
                                     | _ -> assert false
@@ -10525,7 +10525,7 @@ and trans_index_signature ((kind, body) : mt) : CST.index_signature =
                   )
                 )
             | Alt (1, v) ->
-                `Mapp_type_clau (
+                `Mapped_type_clause (
                   trans_mapped_type_clause (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -10652,11 +10652,11 @@ let trans_program ((kind, body) : mt) : CST.program =
               (fun v ->
                 (match v with
                 | Alt (0, v) ->
-                    `Expo_stmt (
+                    `Export_stmt (
                       trans_export_statement (Run.matcher_token v)
                     )
                 | Alt (1, v) ->
-                    `Impo_stmt (
+                    `Import_stmt (
                       trans_import_statement (Run.matcher_token v)
                     )
                 | Alt (2, v) ->
@@ -10680,7 +10680,7 @@ let trans_program ((kind, body) : mt) : CST.program =
                       trans_if_statement (Run.matcher_token v)
                     )
                 | Alt (7, v) ->
-                    `Swit_stmt (
+                    `Switch_stmt (
                       trans_switch_statement (Run.matcher_token v)
                     )
                 | Alt (8, v) ->

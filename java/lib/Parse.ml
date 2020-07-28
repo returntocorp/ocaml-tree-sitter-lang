@@ -2070,7 +2070,7 @@ let trans_floating_point_type ((kind, body) : mt) : CST.floating_point_type =
             Run.trans_token (Run.matcher_token v)
           )
       | Alt (1, v) ->
-          `Doub (
+          `Double (
             Run.trans_token (Run.matcher_token v)
           )
       | _ -> assert false
@@ -2091,7 +2091,7 @@ let trans_requires_modifier ((kind, body) : mt) : CST.requires_modifier =
             Run.trans_token (Run.matcher_token v)
           )
       | Alt (1, v) ->
-          `Stat (
+          `Static (
             Run.trans_token (Run.matcher_token v)
           )
       | _ -> assert false
@@ -2117,14 +2117,14 @@ let rec trans_scoped_identifier ((kind, body) : mt) : CST.scoped_identifier =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (1, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | _ -> assert false
                   )
                 )
             | Alt (2, v) ->
-                `Scop_id (
+                `Scoped_id (
                   trans_scoped_identifier (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -2280,14 +2280,14 @@ let trans_module_directive ((kind, body) : mt) : CST.module_directive =
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (1, v) ->
-                                  `Modu (
+                                  `Module (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | _ -> assert false
                               )
                             )
                         | Alt (2, v) ->
-                            `Scop_id (
+                            `Scoped_id (
                               trans_scoped_identifier (Run.matcher_token v)
                             )
                         | _ -> assert false
@@ -2297,7 +2297,7 @@ let trans_module_directive ((kind, body) : mt) : CST.module_directive =
                   )
                 )
             | Alt (1, v) ->
-                `Expors_choice_id_opt_to_opt_choice_id_rep_COMMA_choice_id (
+                `Exports_choice_id_opt_to_opt_choice_id_rep_COMMA_choice_id (
                   (match v with
                   | Seq [v0; v1; v2; v3; v4] ->
                       (
@@ -2315,14 +2315,14 @@ let trans_module_directive ((kind, body) : mt) : CST.module_directive =
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (1, v) ->
-                                  `Modu (
+                                  `Module (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | _ -> assert false
                               )
                             )
                         | Alt (2, v) ->
-                            `Scop_id (
+                            `Scoped_id (
                               trans_scoped_identifier (Run.matcher_token v)
                             )
                         | _ -> assert false
@@ -2347,14 +2347,14 @@ let trans_module_directive ((kind, body) : mt) : CST.module_directive =
                                         Run.trans_token (Run.matcher_token v)
                                       )
                                   | Alt (1, v) ->
-                                      `Modu (
+                                      `Module (
                                         Run.trans_token (Run.matcher_token v)
                                       )
                                   | _ -> assert false
                                   )
                                 )
                             | Alt (2, v) ->
-                                `Scop_id (
+                                `Scoped_id (
                                   trans_scoped_identifier (Run.matcher_token v)
                                 )
                             | _ -> assert false
@@ -2381,14 +2381,14 @@ let trans_module_directive ((kind, body) : mt) : CST.module_directive =
                                               Run.trans_token (Run.matcher_token v)
                                             )
                                         | Alt (1, v) ->
-                                            `Modu (
+                                            `Module (
                                               Run.trans_token (Run.matcher_token v)
                                             )
                                         | _ -> assert false
                                         )
                                       )
                                   | Alt (2, v) ->
-                                      `Scop_id (
+                                      `Scoped_id (
                                         trans_scoped_identifier (Run.matcher_token v)
                                       )
                                   | _ -> assert false
@@ -2421,14 +2421,14 @@ let trans_module_directive ((kind, body) : mt) : CST.module_directive =
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (1, v) ->
-                                  `Modu (
+                                  `Module (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | _ -> assert false
                               )
                             )
                         | Alt (2, v) ->
-                            `Scop_id (
+                            `Scoped_id (
                               trans_scoped_identifier (Run.matcher_token v)
                             )
                         | _ -> assert false
@@ -2453,14 +2453,14 @@ let trans_module_directive ((kind, body) : mt) : CST.module_directive =
                                         Run.trans_token (Run.matcher_token v)
                                       )
                                   | Alt (1, v) ->
-                                      `Modu (
+                                      `Module (
                                         Run.trans_token (Run.matcher_token v)
                                       )
                                   | _ -> assert false
                                   )
                                 )
                             | Alt (2, v) ->
-                                `Scop_id (
+                                `Scoped_id (
                                   trans_scoped_identifier (Run.matcher_token v)
                                 )
                             | _ -> assert false
@@ -2487,14 +2487,14 @@ let trans_module_directive ((kind, body) : mt) : CST.module_directive =
                                               Run.trans_token (Run.matcher_token v)
                                             )
                                         | Alt (1, v) ->
-                                            `Modu (
+                                            `Module (
                                               Run.trans_token (Run.matcher_token v)
                                             )
                                         | _ -> assert false
                                         )
                                       )
                                   | Alt (2, v) ->
-                                      `Scop_id (
+                                      `Scoped_id (
                                         trans_scoped_identifier (Run.matcher_token v)
                                       )
                                   | _ -> assert false
@@ -2527,14 +2527,14 @@ let trans_module_directive ((kind, body) : mt) : CST.module_directive =
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (1, v) ->
-                                  `Modu (
+                                  `Module (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | _ -> assert false
                               )
                             )
                         | Alt (2, v) ->
-                            `Scop_id (
+                            `Scoped_id (
                               trans_scoped_identifier (Run.matcher_token v)
                             )
                         | _ -> assert false
@@ -2562,14 +2562,14 @@ let trans_module_directive ((kind, body) : mt) : CST.module_directive =
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (1, v) ->
-                                  `Modu (
+                                  `Module (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | _ -> assert false
                               )
                             )
                         | Alt (2, v) ->
-                            `Scop_id (
+                            `Scoped_id (
                               trans_scoped_identifier (Run.matcher_token v)
                             )
                         | _ -> assert false
@@ -2589,14 +2589,14 @@ let trans_module_directive ((kind, body) : mt) : CST.module_directive =
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (1, v) ->
-                                  `Modu (
+                                  `Module (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | _ -> assert false
                               )
                             )
                         | Alt (2, v) ->
-                            `Scop_id (
+                            `Scoped_id (
                               trans_scoped_identifier (Run.matcher_token v)
                             )
                         | _ -> assert false
@@ -2621,14 +2621,14 @@ let trans_module_directive ((kind, body) : mt) : CST.module_directive =
                                               Run.trans_token (Run.matcher_token v)
                                             )
                                         | Alt (1, v) ->
-                                            `Modu (
+                                            `Module (
                                               Run.trans_token (Run.matcher_token v)
                                             )
                                         | _ -> assert false
                                         )
                                       )
                                   | Alt (2, v) ->
-                                      `Scop_id (
+                                      `Scoped_id (
                                         trans_scoped_identifier (Run.matcher_token v)
                                       )
                                   | _ -> assert false
@@ -2671,14 +2671,14 @@ let trans_marker_annotation ((kind, body) : mt) : CST.marker_annotation =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (1, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | _ -> assert false
                   )
                 )
             | Alt (2, v) ->
-                `Scop_id (
+                `Scoped_id (
                   trans_scoped_identifier (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -2713,14 +2713,14 @@ let trans_import_declaration ((kind, body) : mt) : CST.import_declaration =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (1, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | _ -> assert false
                   )
                 )
             | Alt (2, v) ->
-                `Scop_id (
+                `Scoped_id (
                   trans_scoped_identifier (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -2779,7 +2779,7 @@ let rec trans_expression ((kind, body) : mt) : CST.expression =
             trans_instanceof_expression (Run.matcher_token v)
           )
       | Alt (3, v) ->
-          `Lamb_exp (
+          `Lambda_exp (
             trans_lambda_expression (Run.matcher_token v)
           )
       | Alt (4, v) ->
@@ -2787,7 +2787,7 @@ let rec trans_expression ((kind, body) : mt) : CST.expression =
             trans_ternary_expression (Run.matcher_token v)
           )
       | Alt (5, v) ->
-          `Upda_exp (
+          `Update_exp (
             trans_update_expression (Run.matcher_token v)
           )
       | Alt (6, v) ->
@@ -2853,18 +2853,18 @@ and trans_assignment_expression ((kind, body) : mt) : CST.assignment_expression 
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (1, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | _ -> assert false
                   )
                 )
             | Alt (2, v) ->
-                `Field_acce (
+                `Field_access (
                   trans_field_access (Run.matcher_token v)
                 )
             | Alt (3, v) ->
-                `Array_acce (
+                `Array_access (
                   trans_array_access (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -3190,7 +3190,7 @@ and trans_lambda_expression ((kind, body) : mt) : CST.lambda_expression =
                   trans_identifier (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Form_params (
+                `Formal_params (
                   trans_formal_parameters (Run.matcher_token v)
                 )
             | Alt (2, v) ->
@@ -3365,7 +3365,7 @@ and trans_primary ((kind, body) : mt) : CST.primary =
                   Run.trans_token (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Modu (
+                `Module (
                   Run.trans_token (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -3380,11 +3380,11 @@ and trans_primary ((kind, body) : mt) : CST.primary =
             trans_object_creation_expression (Run.matcher_token v)
           )
       | Alt (7, v) ->
-          `Field_acce (
+          `Field_access (
             trans_field_access (Run.matcher_token v)
           )
       | Alt (8, v) ->
-          `Array_acce (
+          `Array_access (
             trans_array_access (Run.matcher_token v)
           )
       | Alt (9, v) ->
@@ -3432,7 +3432,7 @@ and trans_array_creation_expression ((kind, body) : mt) : CST.array_creation_exp
                   trans_identifier (Run.matcher_token v)
                 )
             | Alt (5, v) ->
-                `Scop_type_id (
+                `Scoped_type_id (
                   trans_scoped_type_identifier (Run.matcher_token v)
                 )
             | Alt (6, v) ->
@@ -3580,7 +3580,7 @@ and trans_unqualified_object_creation_expression ((kind, body) : mt) : CST.unqua
                   trans_identifier (Run.matcher_token v)
                 )
             | Alt (5, v) ->
-                `Scop_type_id (
+                `Scoped_type_id (
                   trans_scoped_type_identifier (Run.matcher_token v)
                 )
             | Alt (6, v) ->
@@ -3644,7 +3644,7 @@ and trans_field_access ((kind, body) : mt) : CST.field_access =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (1, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | _ -> assert false
@@ -3698,7 +3698,7 @@ and trans_method_invocation ((kind, body) : mt) : CST.method_invocation =
                               Run.trans_token (Run.matcher_token v)
                             )
                         | Alt (1, v) ->
-                            `Modu (
+                            `Module (
                               Run.trans_token (Run.matcher_token v)
                             )
                         | _ -> assert false
@@ -3755,7 +3755,7 @@ and trans_method_invocation ((kind, body) : mt) : CST.method_invocation =
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | Alt (1, v) ->
-                                  `Modu (
+                                  `Module (
                                     Run.trans_token (Run.matcher_token v)
                                   )
                               | _ -> assert false
@@ -3938,7 +3938,7 @@ and trans_wildcard_bounds ((kind, body) : mt) : CST.wildcard_bounds =
   | Children v ->
       (match v with
       | Alt (0, v) ->
-          `Extens_type (
+          `Extends_type (
             (match v with
             | Seq [v0; v1] ->
                 (
@@ -4025,11 +4025,11 @@ and trans_statement ((kind, body) : mt) : CST.statement =
             Run.trans_token (Run.matcher_token v)
           )
       | Alt (9, v) ->
-          `Asse_stmt (
+          `Assert_stmt (
             trans_assert_statement (Run.matcher_token v)
           )
       | Alt (10, v) ->
-          `Swit_stmt (
+          `Switch_stmt (
             trans_switch_statement (Run.matcher_token v)
           )
       | Alt (11, v) ->
@@ -4121,7 +4121,7 @@ and trans_assert_statement ((kind, body) : mt) : CST.assert_statement =
   | Children v ->
       (match v with
       | Alt (0, v) ->
-          `Asse_exp_SEMI (
+          `Assert_exp_SEMI (
             (match v with
             | Seq [v0; v1; v2] ->
                 (
@@ -4133,7 +4133,7 @@ and trans_assert_statement ((kind, body) : mt) : CST.assert_statement =
             )
           )
       | Alt (1, v) ->
-          `Asse_exp_COLON_exp_SEMI (
+          `Assert_exp_COLON_exp_SEMI (
             (match v with
             | Seq [v0; v1; v2; v3; v4] ->
                 (
@@ -4175,7 +4175,7 @@ and trans_switch_block ((kind, body) : mt) : CST.switch_block =
               (fun v ->
                 (match v with
                 | Alt (0, v) ->
-                    `Swit_label (
+                    `Switch_label (
                       trans_switch_label (Run.matcher_token v)
                     )
                 | Alt (1, v) ->
@@ -4295,13 +4295,13 @@ and trans_try_statement ((kind, body) : mt) : CST.try_statement =
             trans_block (Run.matcher_token v1),
             (match v2 with
             | Alt (0, v) ->
-                `Rep1_catch_clau (
+                `Rep1_catch_clause (
                   Run.repeat1
                     (fun v -> trans_catch_clause (Run.matcher_token v))
                     v
                 )
             | Alt (1, v) ->
-                `Rep_catch_clau_fina_clau (
+                `Rep_catch_clause_fina_clause (
                   (match v with
                   | Seq [v0; v1] ->
                       (
@@ -4469,7 +4469,7 @@ and trans_resource ((kind, body) : mt) : CST.resource =
             trans_identifier (Run.matcher_token v)
           )
       | Alt (2, v) ->
-          `Field_acce (
+          `Field_access (
             trans_field_access (Run.matcher_token v)
           )
       | _ -> assert false
@@ -4630,7 +4630,7 @@ and trans_annotation ((kind, body) : mt) : CST.annotation =
   | Children v ->
       (match v with
       | Alt (0, v) ->
-          `Mark_anno (
+          `Marker_anno (
             trans_marker_annotation (Run.matcher_token v)
           )
       | Alt (1, v) ->
@@ -4661,14 +4661,14 @@ and trans_annotation_ ((kind, body) : mt) : CST.annotation_ =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (1, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | _ -> assert false
                   )
                 )
             | Alt (2, v) ->
-                `Scop_id (
+                `Scoped_id (
                   trans_scoped_identifier (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -4807,7 +4807,7 @@ and trans_declaration ((kind, body) : mt) : CST.declaration =
   | Children v ->
       (match v with
       | Alt (0, v) ->
-          `Modu_decl (
+          `Module_decl (
             trans_module_declaration (Run.matcher_token v)
           )
       | Alt (1, v) ->
@@ -4815,7 +4815,7 @@ and trans_declaration ((kind, body) : mt) : CST.declaration =
             trans_package_declaration (Run.matcher_token v)
           )
       | Alt (2, v) ->
-          `Impo_decl (
+          `Import_decl (
             trans_import_declaration (Run.matcher_token v)
           )
       | Alt (3, v) ->
@@ -4866,14 +4866,14 @@ and trans_module_declaration ((kind, body) : mt) : CST.module_declaration =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (1, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | _ -> assert false
                   )
                 )
             | Alt (2, v) ->
-                `Scop_id (
+                `Scoped_id (
                   trans_scoped_identifier (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -4909,14 +4909,14 @@ and trans_package_declaration ((kind, body) : mt) : CST.package_declaration =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (1, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | _ -> assert false
                   )
                 )
             | Alt (2, v) ->
-                `Scop_id (
+                `Scoped_id (
                   trans_scoped_identifier (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -5036,7 +5036,7 @@ and trans_enum_body_declarations ((kind, body) : mt) : CST.enum_body_declaration
                       trans_block (Run.matcher_token v)
                     )
                 | Alt (7, v) ->
-                    `Stat_init (
+                    `Static_init (
                       trans_static_initializer (Run.matcher_token v)
                     )
                 | Alt (8, v) ->
@@ -5120,7 +5120,7 @@ and trans_modifiers ((kind, body) : mt) : CST.modifiers =
                 trans_annotation (Run.matcher_token v)
               )
           | Alt (1, v) ->
-              `Publ (
+              `Public (
                 Run.trans_token (Run.matcher_token v)
               )
           | Alt (2, v) ->
@@ -5136,7 +5136,7 @@ and trans_modifiers ((kind, body) : mt) : CST.modifiers =
                 Run.trans_token (Run.matcher_token v)
               )
           | Alt (5, v) ->
-              `Stat (
+              `Static (
                 Run.trans_token (Run.matcher_token v)
               )
           | Alt (6, v) ->
@@ -5156,7 +5156,7 @@ and trans_modifiers ((kind, body) : mt) : CST.modifiers =
                 Run.trans_token (Run.matcher_token v)
               )
           | Alt (10, v) ->
-              `Nati (
+              `Native (
                 Run.trans_token (Run.matcher_token v)
               )
           | Alt (11, v) ->
@@ -5333,7 +5333,7 @@ and trans_class_body ((kind, body) : mt) : CST.class_body =
                       trans_block (Run.matcher_token v)
                     )
                 | Alt (7, v) ->
-                    `Stat_init (
+                    `Static_init (
                       trans_static_initializer (Run.matcher_token v)
                     )
                 | Alt (8, v) ->
@@ -5794,7 +5794,7 @@ and trans_variable_declarator_id ((kind, body) : mt) : CST.variable_declarator_i
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (1, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | _ -> assert false
@@ -5917,7 +5917,7 @@ and trans_unannotated_type ((kind, body) : mt) : CST.unannotated_type =
                   trans_identifier (Run.matcher_token v)
                 )
             | Alt (5, v) ->
-                `Scop_type_id (
+                `Scoped_type_id (
                   trans_scoped_type_identifier (Run.matcher_token v)
                 )
             | Alt (6, v) ->
@@ -5963,7 +5963,7 @@ and trans_scoped_type_identifier ((kind, body) : mt) : CST.scoped_type_identifie
                   trans_identifier (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Scop_type_id (
+                `Scoped_type_id (
                   trans_scoped_type_identifier (Run.matcher_token v)
                 )
             | Alt (2, v) ->
@@ -5996,7 +5996,7 @@ and trans_generic_type ((kind, body) : mt) : CST.generic_type =
                   trans_identifier (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Scop_type_id (
+                `Scoped_type_id (
                   trans_scoped_type_identifier (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -6071,7 +6071,7 @@ and trans_method_declarator ((kind, body) : mt) : CST.method_declarator =
                         Run.trans_token (Run.matcher_token v)
                       )
                   | Alt (1, v) ->
-                      `Modu (
+                      `Module (
                         Run.trans_token (Run.matcher_token v)
                       )
                   | _ -> assert false
@@ -6107,11 +6107,11 @@ and trans_formal_parameters ((kind, body) : mt) : CST.formal_parameters =
                     (
                       (match v0 with
                       | Alt (0, v) ->
-                          `Form_param (
+                          `Formal_param (
                             trans_formal_parameter (Run.matcher_token v)
                           )
                       | Alt (1, v) ->
-                          `Spre_param (
+                          `Spread_param (
                             trans_spread_parameter (Run.matcher_token v)
                           )
                       | _ -> assert false
@@ -6125,11 +6125,11 @@ and trans_formal_parameters ((kind, body) : mt) : CST.formal_parameters =
                                 Run.trans_token (Run.matcher_token v0),
                                 (match v1 with
                                 | Alt (0, v) ->
-                                    `Form_param (
+                                    `Formal_param (
                                       trans_formal_parameter (Run.matcher_token v)
                                     )
                                 | Alt (1, v) ->
-                                    `Spre_param (
+                                    `Spread_param (
                                       trans_spread_parameter (Run.matcher_token v)
                                     )
                                 | _ -> assert false

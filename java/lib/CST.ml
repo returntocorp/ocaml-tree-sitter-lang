@@ -22,7 +22,7 @@ type integral_type = [
 
 type reserved_identifier = [
     `Open of Token.t (* "open" *)
-  | `Modu of Token.t (* "module" *)
+  | `Module of Token.t (* "module" *)
 ]
 [@@deriving sexp_of]
 
@@ -34,7 +34,7 @@ type character_literal = Token.t
 
 type requires_modifier = [
     `Tran of Token.t (* "transitive" *)
-  | `Stat of Token.t (* "static" *)
+  | `Static of Token.t (* "static" *)
 ]
 [@@deriving sexp_of]
 
@@ -49,7 +49,7 @@ type binary_integer_literal = Token.t
 
 type floating_point_type = [
     `Float of Token.t (* "float" *)
-  | `Doub of Token.t (* "double" *)
+  | `Double of Token.t (* "double" *)
 ]
 [@@deriving sexp_of]
 
@@ -86,7 +86,7 @@ type anon_choice_id = [
 type name = [
     `Id of identifier (*tok*)
   | `Choice_open of reserved_identifier
-  | `Scop_id of (name * Token.t (* "." *) * identifier (*tok*))
+  | `Scoped_id of (name * Token.t (* "." *) * identifier (*tok*))
 ]
 [@@deriving sexp_of]
 
@@ -105,7 +105,7 @@ type module_directive = (
           * requires_modifier list (* zero or more *)
           * name
         )
-      | `Expors_choice_id_opt_to_opt_choice_id_rep_COMMA_choice_id of (
+      | `Exports_choice_id_opt_to_opt_choice_id_rep_COMMA_choice_id of (
             Token.t (* "exports" *)
           * name
           * Token.t (* "to" *) option
@@ -143,6 +143,20 @@ type parenthesized_expression = (
     Token.t (* "(" *) * expression * Token.t (* ")" *)
 )
 
+and anon_choice_formal_param = [
+    `Formal_param of (
+        modifiers option
+      * unannotated_type
+      * variable_declarator_id
+    )
+  | `Spread_param of (
+        modifiers option
+      * unannotated_type
+      * Token.t (* "..." *)
+      * variable_declarator
+    )
+]
+
 and anon_choice_type = [
     `Type of type_
   | `Wild of (
@@ -153,7 +167,7 @@ and anon_choice_type = [
 ]
 
 and generic_type = (
-    [ `Id of identifier (*tok*) | `Scop_type_id of scoped_type_identifier ]
+    [ `Id of identifier (*tok*) | `Scoped_type_id of scoped_type_identifier ]
   * type_arguments
 )
 
@@ -243,8 +257,8 @@ and primary = [
   | `Choice_open of reserved_identifier
   | `Paren_exp of parenthesized_expression
   | `Obj_crea_exp of object_creation_expression
-  | `Field_acce of field_access
-  | `Array_acce of array_access
+  | `Field_access of field_access
+  | `Array_access of array_access
   | `Meth_invo of (
         [
             `Choice_id of anon_choice_id
@@ -318,7 +332,7 @@ and simple_type = [
   | `Floa_point_type of floating_point_type
   | `Bool_type of Token.t (* "boolean" *)
   | `Id of identifier (*tok*)
-  | `Scop_type_id of scoped_type_identifier
+  | `Scoped_type_id of scoped_type_identifier
   | `Gene_type of generic_type
 ]
 
@@ -366,7 +380,7 @@ and anon_exp_rep_COMMA_exp = (
 and scoped_type_identifier = (
     [
         `Id of identifier (*tok*)
-      | `Scop_type_id of scoped_type_identifier
+      | `Scoped_type_id of scoped_type_identifier
       | `Gene_type of generic_type
     ]
   * Token.t (* "." *)
@@ -379,8 +393,8 @@ and expression = [
         [
             `Id of identifier (*tok*)
           | `Choice_open of reserved_identifier
-          | `Field_acce of field_access
-          | `Array_acce of array_access
+          | `Field_access of field_access
+          | `Array_access of array_access
         ]
       * [
             `EQ of Token.t (* "=" *)
@@ -400,10 +414,10 @@ and expression = [
     )
   | `Bin_exp of binary_expression
   | `Inst_exp of (expression * Token.t (* "instanceof" *) * type_)
-  | `Lamb_exp of (
+  | `Lambda_exp of (
         [
             `Id of identifier (*tok*)
-          | `Form_params of formal_parameters
+          | `Formal_params of formal_parameters
           | `Infe_params of inferred_parameters
         ]
       * Token.t (* "->" *)
@@ -413,7 +427,7 @@ and expression = [
         expression * Token.t (* "?" *) * expression * Token.t (* ":" *)
       * expression
     )
-  | `Upda_exp of update_expression
+  | `Update_exp of update_expression
   | `Prim of primary
   | `Un_exp of unary_expression
   | `Cast_exp of (
@@ -456,7 +470,7 @@ and class_body_declaration = [
   | `Anno_type_decl of annotation_type_declaration
   | `Enum_decl of enum_declaration
   | `Blk of block
-  | `Stat_init of (Token.t (* "static" *) * block)
+  | `Static_init of (Token.t (* "static" *) * block)
   | `Cons_decl of (
         modifiers option
       * constructor_declarator
@@ -470,8 +484,9 @@ and formal_parameters = (
     Token.t (* "(" *)
   * receiver_parameter option
   * (
-        anon_choice_form_param
-      * (Token.t (* "," *) * anon_choice_form_param) list (* zero or more *)
+        anon_choice_formal_param
+      * (Token.t (* "," *) * anon_choice_formal_param)
+          list (* zero or more *)
     )
       option
   * Token.t (* ")" *)
@@ -484,16 +499,16 @@ and array_access = (
 and modifiers =
   [
       `Anno of annotation
-    | `Publ of Token.t (* "public" *)
+    | `Public of Token.t (* "public" *)
     | `Prot of Token.t (* "protected" *)
     | `Priv of Token.t (* "private" *)
     | `Abst of Token.t (* "abstract" *)
-    | `Stat of Token.t (* "static" *)
+    | `Static of Token.t (* "static" *)
     | `Final of Token.t (* "final" *)
     | `Stri of Token.t (* "strictfp" *)
     | `Defa of Token.t (* "default" *)
     | `Sync of Token.t (* "synchronized" *)
-    | `Nati of Token.t (* "native" *)
+    | `Native of Token.t (* "native" *)
     | `Tran of Token.t (* "transient" *)
     | `Vola of Token.t (* "volatile" *)
   ]
@@ -547,8 +562,8 @@ and statement = [
     )
   | `Blk of block
   | `SEMI of Token.t (* ";" *)
-  | `Asse_stmt of assert_statement
-  | `Swit_stmt of (
+  | `Assert_stmt of assert_statement
+  | `Switch_stmt of (
         Token.t (* "switch" *) * parenthesized_expression * switch_block
     )
   | `Do_stmt of (
@@ -579,8 +594,8 @@ and statement = [
         Token.t (* "try" *)
       * block
       * [
-            `Rep1_catch_clau of catch_clause list (* one or more *)
-          | `Rep_catch_clau_fina_clau of (
+            `Rep1_catch_clause of catch_clause list (* one or more *)
+          | `Rep_catch_clause_fina_clause of (
                 catch_clause list (* zero or more *)
               * finally_clause
             )
@@ -647,7 +662,7 @@ and class_declaration = (
 )
 
 and annotation = [
-    `Mark_anno of (Token.t (* "@" *) * name)
+    `Marker_anno of (Token.t (* "@" *) * name)
   | `Anno_ of (Token.t (* "@" *) * name * annotation_argument_list)
 ]
 
@@ -679,22 +694,8 @@ and update_expression = [
 ]
 
 and wildcard_bounds = [
-    `Extens_type of superclass
+    `Extends_type of superclass
   | `Super_type of (Token.t (* "super" *) * type_)
-]
-
-and anon_choice_form_param = [
-    `Form_param of (
-        modifiers option
-      * unannotated_type
-      * variable_declarator_id
-    )
-  | `Spre_param of (
-        modifiers option
-      * unannotated_type
-      * Token.t (* "..." *)
-      * variable_declarator
-    )
 ]
 
 and program = statement list (* zero or more *)
@@ -721,10 +722,10 @@ and enum_body = (
 and variable_declarator_id = (anon_choice_id * dimensions option)
 
 and assert_statement = [
-    `Asse_exp_SEMI of (
+    `Assert_exp_SEMI of (
         Token.t (* "assert" *) * expression * Token.t (* ";" *)
     )
-  | `Asse_exp_COLON_exp_SEMI of (
+  | `Assert_exp_COLON_exp_SEMI of (
         Token.t (* "assert" *) * expression * Token.t (* ":" *) * expression
       * Token.t (* ";" *)
     )
@@ -739,7 +740,7 @@ and resource = [
       * expression
     )
   | `Id of identifier (*tok*)
-  | `Field_acce of field_access
+  | `Field_access of field_access
 ]
 
 and superclass = (Token.t (* "extends" *) * type_)
@@ -783,7 +784,7 @@ and unqualified_object_creation_expression = (
 
 and switch_block = (
     Token.t (* "{" *)
-  * [ `Swit_label of switch_label | `Stmt of statement ]
+  * [ `Switch_label of switch_label | `Stmt of statement ]
       list (* zero or more *)
   * Token.t (* "}" *)
 )
@@ -873,7 +874,7 @@ and method_declarator = (
 )
 
 and declaration = [
-    `Modu_decl of (
+    `Module_decl of (
         annotation list (* zero or more *)
       * Token.t (* "open" *) option
       * Token.t (* "module" *)
@@ -886,7 +887,7 @@ and declaration = [
       * name
       * Token.t (* ";" *)
     )
-  | `Impo_decl of (
+  | `Import_decl of (
         Token.t (* "import" *)
       * Token.t (* "static" *) option
       * name
@@ -1032,8 +1033,8 @@ type assignment_expression (* inlined *) = (
     [
         `Id of identifier (*tok*)
       | `Choice_open of reserved_identifier
-      | `Field_acce of field_access
-      | `Array_acce of array_access
+      | `Field_access of field_access
+      | `Array_access of array_access
     ]
   * [
         `EQ of Token.t (* "=" *)
@@ -1133,8 +1134,8 @@ type try_statement (* inlined *) = (
     Token.t (* "try" *)
   * block
   * [
-        `Rep1_catch_clau of catch_clause list (* one or more *)
-      | `Rep_catch_clau_fina_clau of (
+        `Rep1_catch_clause of catch_clause list (* one or more *)
+      | `Rep_catch_clause_fina_clause of (
             catch_clause list (* zero or more *)
           * finally_clause
         )
@@ -1153,7 +1154,7 @@ type if_statement (* inlined *) = (
 type lambda_expression (* inlined *) = (
     [
         `Id of identifier (*tok*)
-      | `Form_params of formal_parameters
+      | `Formal_params of formal_parameters
       | `Infe_params of inferred_parameters
     ]
   * Token.t (* "->" *)

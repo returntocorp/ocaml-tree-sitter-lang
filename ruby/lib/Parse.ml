@@ -2140,7 +2140,7 @@ let trans_variable ((kind, body) : mt) : CST.variable =
             trans_class_variable (Run.matcher_token v)
           )
       | Alt (4, v) ->
-          `Glob_var (
+          `Global_var (
             trans_global_variable (Run.matcher_token v)
           )
       | Alt (5, v) ->
@@ -2271,7 +2271,7 @@ and trans_statement ((kind, body) : mt) : CST.statement =
             trans_if_modifier (Run.matcher_token v)
           )
       | Alt (3, v) ->
-          `Unle_modi (
+          `Unless_modi (
             trans_unless_modifier (Run.matcher_token v)
           )
       | Alt (4, v) ->
@@ -2283,7 +2283,7 @@ and trans_statement ((kind, body) : mt) : CST.statement =
             trans_until_modifier (Run.matcher_token v)
           )
       | Alt (6, v) ->
-          `Resc_modi (
+          `Rescue_modi (
             trans_rescue_modifier (Run.matcher_token v)
           )
       | Alt (7, v) ->
@@ -2536,7 +2536,7 @@ and trans_formal_parameter ((kind, body) : mt) : CST.formal_parameter =
   | Children v ->
       (match v with
       | Alt (0, v) ->
-          `Simple_form_param (
+          `Simple_formal_param (
             trans_simple_formal_parameter (Run.matcher_token v)
           )
       | Alt (1, v) ->
@@ -3391,7 +3391,7 @@ and trans_body_statement ((kind, body) : mt) : CST.body_statement =
               (fun v ->
                 (match v with
                 | Alt (0, v) ->
-                    `Resc (
+                    `Rescue (
                       trans_rescue (Run.matcher_token v)
                     )
                 | Alt (1, v) ->
@@ -3399,7 +3399,7 @@ and trans_body_statement ((kind, body) : mt) : CST.body_statement =
                       trans_else_ (Run.matcher_token v)
                     )
                 | Alt (2, v) ->
-                    `Ensu (
+                    `Ensure (
                       trans_ensure (Run.matcher_token v)
                     )
                 | _ -> assert false
@@ -3562,7 +3562,7 @@ and trans_primary ((kind, body) : mt) : CST.primary =
             trans_regex (Run.matcher_token v)
           )
       | Alt (16, v) ->
-          `Lamb (
+          `Lambda (
             trans_lambda (Run.matcher_token v)
           )
       | Alt (17, v) ->
@@ -3582,7 +3582,7 @@ and trans_primary ((kind, body) : mt) : CST.primary =
             trans_singleton_class (Run.matcher_token v)
           )
       | Alt (21, v) ->
-          `Modu (
+          `Module (
             trans_module_ (Run.matcher_token v)
           )
       | Alt (22, v) ->
@@ -3602,7 +3602,7 @@ and trans_primary ((kind, body) : mt) : CST.primary =
             trans_if_ (Run.matcher_token v)
           )
       | Alt (26, v) ->
-          `Unle (
+          `Unless (
             trans_unless (Run.matcher_token v)
           )
       | Alt (27, v) ->
@@ -5017,7 +5017,7 @@ and trans_method_name ((kind, body) : mt) : CST.method_name =
             trans_constant (Run.matcher_token v)
           )
       | Alt (2, v) ->
-          `Sett (
+          `Setter (
             trans_setter (Run.matcher_token v)
           )
       | Alt (3, v) ->
@@ -5037,7 +5037,7 @@ and trans_method_name ((kind, body) : mt) : CST.method_name =
             trans_class_variable (Run.matcher_token v)
           )
       | Alt (7, v) ->
-          `Glob_var (
+          `Global_var (
             trans_global_variable (Run.matcher_token v)
           )
       | _ -> assert false

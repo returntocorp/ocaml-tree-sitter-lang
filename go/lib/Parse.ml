@@ -2206,7 +2206,7 @@ and trans_simple_type ((kind, body) : mt) : CST.simple_type =
             trans_pointer_type (Run.matcher_token v)
           )
       | Alt (3, v) ->
-          `Stru_type (
+          `Struct_type (
             trans_struct_type (Run.matcher_token v)
           )
       | Alt (4, v) ->
@@ -2894,15 +2894,15 @@ and trans_statement ((kind, body) : mt) : CST.statement =
             trans_for_statement (Run.matcher_token v)
           )
       | Alt (7, v) ->
-          `Exp_swit_stmt (
+          `Exp_switch_stmt (
             trans_expression_switch_statement (Run.matcher_token v)
           )
       | Alt (8, v) ->
-          `Type_swit_stmt (
+          `Type_switch_stmt (
             trans_type_switch_statement (Run.matcher_token v)
           )
       | Alt (9, v) ->
-          `Sele_stmt (
+          `Select_stmt (
             trans_select_statement (Run.matcher_token v)
           )
       | Alt (10, v) ->
@@ -3242,11 +3242,11 @@ and trans_for_statement ((kind, body) : mt) : CST.for_statement =
                       trans_expression (Run.matcher_token v)
                     )
                 | Alt (1, v) ->
-                    `For_clau (
+                    `For_clause (
                       trans_for_clause (Run.matcher_token v)
                     )
                 | Alt (2, v) ->
-                    `Range_clau (
+                    `Range_clause (
                       trans_range_clause (Run.matcher_token v)
                     )
                 | _ -> assert false
@@ -4028,7 +4028,7 @@ and trans_composite_literal ((kind, body) : mt) : CST.composite_literal =
                   trans_implicit_length_array_type (Run.matcher_token v)
                 )
             | Alt (4, v) ->
-                `Stru_type (
+                `Struct_type (
                   trans_struct_type (Run.matcher_token v)
                 )
             | Alt (5, v) ->
@@ -4517,11 +4517,11 @@ let trans_import_declaration ((kind, body) : mt) : CST.import_declaration =
             Run.trans_token (Run.matcher_token v0),
             (match v1 with
             | Alt (0, v) ->
-                `Impo_spec (
+                `Import_spec (
                   trans_import_spec (Run.matcher_token v)
                 )
             | Alt (1, v) ->
-                `Impo_spec_list (
+                `Import_spec_list (
                   trans_import_spec_list (Run.matcher_token v)
                 )
             | _ -> assert false
@@ -4560,13 +4560,13 @@ let trans_source_file ((kind, body) : mt) : CST.source_file =
                 )
               )
           | Alt (1, v) ->
-              `Choice_pack_clau_opt_choice_LF (
+              `Choice_pack_clause_opt_choice_LF (
                 (match v with
                 | Seq [v0; v1] ->
                     (
                       (match v0 with
                       | Alt (0, v) ->
-                          `Pack_clau (
+                          `Pack_clause (
                             trans_package_clause (Run.matcher_token v)
                           )
                       | Alt (1, v) ->
@@ -4578,7 +4578,7 @@ let trans_source_file ((kind, body) : mt) : CST.source_file =
                             trans_method_declaration (Run.matcher_token v)
                           )
                       | Alt (3, v) ->
-                          `Impo_decl (
+                          `Import_decl (
                             trans_import_declaration (Run.matcher_token v)
                           )
                       | _ -> assert false

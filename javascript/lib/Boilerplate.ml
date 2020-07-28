@@ -37,7 +37,7 @@ let map_reserved_identifier (env : env) (x : CST.reserved_identifier) =
   | `Get tok -> token env tok (* "get" *)
   | `Set tok -> token env tok (* "set" *)
   | `Async tok -> token env tok (* "async" *)
-  | `Stat tok -> token env tok (* "static" *)
+  | `Static tok -> token env tok (* "static" *)
   )
 
 let map_jsx_identifier (env : env) (tok : CST.jsx_identifier) =
@@ -77,7 +77,7 @@ let rec map_nested_identifier (env : env) ((v1, v2, v3) : CST.nested_identifier)
   let v1 =
     (match v1 with
     | `Id tok -> token env tok (* identifier *)
-    | `Nest_id x -> map_nested_identifier env x
+    | `Nested_id x -> map_nested_identifier env x
     )
   in
   let v2 = token env v2 (* "." *) in
@@ -127,7 +127,7 @@ let map_semicolon (env : env) (x : CST.semicolon) =
   | `SEMI tok -> token env tok (* ";" *)
   )
 
-let map_anon_impo_expo_spec_rep_COMMA_impo_expo_spec (env : env) ((v1, v2) : CST.anon_impo_expo_spec_rep_COMMA_impo_expo_spec) =
+let map_anon_import_export_spec_rep_COMMA_import_export_spec (env : env) ((v1, v2) : CST.anon_import_export_spec_rep_COMMA_import_export_spec) =
   let v1 = map_import_export_specifier env v1 in
   let v2 =
     List.map (fun (v1, v2) ->
@@ -161,7 +161,8 @@ let rec map_decorator_member_expression (env : env) ((v1, v2, v3) : CST.decorato
 and map_anon_choice_id_ref (env : env) (x : CST.anon_choice_id_ref) =
   (match x with
   | `Choice_id x -> map_identifier_reference env x
-  | `Deco_memb_exp x -> map_decorator_member_expression env x
+  | `Deco_member_exp x ->
+      map_decorator_member_expression env x
   )
 
 let map_jsx_namespace_name (env : env) ((v1, v2, v3) : CST.jsx_namespace_name) =
@@ -175,7 +176,7 @@ let map_export_clause (env : env) ((v1, v2, v3, v4) : CST.export_clause) =
   let v2 =
     (match v2 with
     | Some x ->
-        map_anon_impo_expo_spec_rep_COMMA_impo_expo_spec env x
+        map_anon_import_export_spec_rep_COMMA_import_export_spec env x
     | None -> todo env ())
   in
   let v3 =
@@ -191,7 +192,7 @@ let map_named_imports (env : env) ((v1, v2, v3, v4) : CST.named_imports) =
   let v2 =
     (match v2 with
     | Some x ->
-        map_anon_impo_expo_spec_rep_COMMA_impo_expo_spec env x
+        map_anon_import_export_spec_rep_COMMA_import_export_spec env x
     | None -> todo env ())
   in
   let v3 =
@@ -216,15 +217,15 @@ let map_jsx_attribute_name (env : env) (x : CST.jsx_attribute_name) =
 let map_jsx_element_name (env : env) (x : CST.jsx_element_name) =
   (match x with
   | `Choice_jsx_id x -> map_jsx_identifier_ env x
-  | `Nest_id x -> map_nested_identifier env x
+  | `Nested_id x -> map_nested_identifier env x
   | `Jsx_name_name x -> map_jsx_namespace_name env x
   )
 
 let map_import_clause (env : env) (x : CST.import_clause) =
   (match x with
-  | `Name_impo x -> map_namespace_import env x
-  | `Named_impors x -> map_named_imports env x
-  | `Id_opt_COMMA_choice_name_impo (v1, v2) ->
+  | `Name_import x -> map_namespace_import env x
+  | `Named_imports x -> map_named_imports env x
+  | `Id_opt_COMMA_choice_name_import (v1, v2) ->
       let v1 = token env v1 (* identifier *) in
       let v2 =
         (match v2 with
@@ -232,8 +233,8 @@ let map_import_clause (env : env) (x : CST.import_clause) =
             let v1 = token env v1 (* "," *) in
             let v2 =
               (match v2 with
-              | `Name_impo x -> map_namespace_import env x
-              | `Named_impors x -> map_named_imports env x
+              | `Name_import x -> map_namespace_import env x
+              | `Named_imports x -> map_named_imports env x
               )
             in
             todo env (v1, v2)
@@ -300,7 +301,7 @@ and map_function_ (env : env) ((v1, v2, v3, v4, v5) : CST.function_) =
 and map_anon_choice_exp (env : env) (x : CST.anon_choice_exp) =
   (match x with
   | `Exp x -> map_expression env x
-  | `Spre_elem x -> map_spread_element env x
+  | `Spread_elem x -> map_spread_element env x
   )
 
 and map_switch_default (env : env) ((v1, v2, v3) : CST.switch_default) =
@@ -488,7 +489,7 @@ and map_class_body (env : env) ((v1, v2, v3) : CST.class_body) =
             | None -> todo env ())
           in
           todo env (v1, v2)
-      | `Publ_field_defi_choice_auto_semi (v1, v2) ->
+      | `Public_field_defi_choice_auto_semi (v1, v2) ->
           let v1 = map_public_field_definition env v1 in
           let v2 = map_semicolon env v2 in
           todo env (v1, v2)
@@ -530,7 +531,7 @@ and map_jsx_expression (env : env) ((v1, v2, v3) : CST.jsx_expression) =
         (match x with
         | `Exp x -> map_expression env x
         | `Seq_exp x -> map_sequence_expression env x
-        | `Spre_elem x -> map_spread_element env x
+        | `Spread_elem x -> map_spread_element env x
         )
     | None -> todo env ())
   in
@@ -544,7 +545,7 @@ and map_anon_choice_pair (env : env) (x : CST.anon_choice_pair) =
       let v2 = token env v2 (* ":" *) in
       let v3 = map_expression env v3 in
       todo env (v1, v2, v3)
-  | `Spre_elem x -> map_spread_element env x
+  | `Spread_elem x -> map_spread_element env x
   | `Meth_defi x -> map_method_definition env x
   | `Assign_pat x -> map_assignment_pattern env x
   | `Choice_id x -> map_identifier_reference env x
@@ -589,7 +590,7 @@ and map_constructable_expression (env : env) (x : CST.constructable_expression) 
   | `False tok -> token env tok (* "false" *)
   | `Null tok -> token env tok (* "null" *)
   | `Unde tok -> token env tok (* "undefined" *)
-  | `Impo tok -> token env tok (* import *)
+  | `Import tok -> token env tok (* import *)
   | `Obj x -> map_object_ env x
   | `Array x -> map_array_ env x
   | `Func x -> map_function_ env x
@@ -602,7 +603,7 @@ and map_constructable_expression (env : env) (x : CST.constructable_expression) 
       let v2 =
         (match v2 with
         | `Choice_choice_get x -> map_anon_choice_rese_id env x
-        | `Form_params x -> map_call_signature env x
+        | `Formal_params x -> map_call_signature env x
         )
       in
       let v3 = token env v3 (* "=>" *) in
@@ -646,7 +647,7 @@ and map_constructable_expression (env : env) (x : CST.constructable_expression) 
       todo env (v1, v2, v3, v4, v5)
   | `Paren_exp x -> map_parenthesized_expression env x
   | `Subs_exp x -> map_subscript_expression env x
-  | `Memb_exp x -> map_member_expression env x
+  | `Member_exp x -> map_member_expression env x
   | `Meta_prop (v1, v2, v3) ->
       let v1 = token env v1 (* "new" *) in
       let v2 = token env v2 (* "." *) in
@@ -717,7 +718,8 @@ and map_decorator (env : env) ((v1, v2) : CST.decorator) =
   let v2 =
     (match v2 with
     | `Choice_id x -> map_identifier_reference env x
-    | `Deco_memb_exp x -> map_decorator_member_expression env x
+    | `Deco_member_exp x ->
+        map_decorator_member_expression env x
     | `Deco_call_exp x -> map_decorator_call_expression env x
     )
   in
@@ -771,7 +773,7 @@ and map_expression (env : env) (x : CST.expression) =
   | `Augm_assign_exp (v1, v2, v3) ->
       let v1 =
         (match v1 with
-        | `Memb_exp x -> map_member_expression env x
+        | `Member_exp x -> map_member_expression env x
         | `Subs_exp x -> map_subscript_expression env x
         | `Choice_get x -> map_reserved_identifier env x
         | `Id tok -> token env tok (* identifier *)
@@ -809,7 +811,7 @@ and map_expression (env : env) (x : CST.expression) =
       let v4 = token env v4 (* ":" *) in
       let v5 = map_expression env v5 in
       todo env (v1, v2, v3, v4, v5)
-  | `Upda_exp x -> map_update_expression env x
+  | `Update_exp x -> map_update_expression env x
   | `Call_exp (v1, v2) ->
       let v1 =
         (match v1 with
@@ -845,7 +847,7 @@ and map_expression (env : env) (x : CST.expression) =
 and map_anon_choice_paren_exp (env : env) (x : CST.anon_choice_paren_exp) =
   (match x with
   | `Paren_exp x -> map_parenthesized_expression env x
-  | `Choice_memb_exp x -> map_lhs_expression env x
+  | `Choice_member_exp x -> map_lhs_expression env x
   )
 
 and map_unary_expression (env : env) (x : CST.unary_expression) =
@@ -866,7 +868,7 @@ and map_unary_expression (env : env) (x : CST.unary_expression) =
       let v1 = token env v1 (* "+" *) in
       let v2 = map_expression env v2 in
       todo env (v1, v2)
-  | `Type_exp (v1, v2) ->
+  | `Typeof_exp (v1, v2) ->
       let v1 = token env v1 (* "typeof" *) in
       let v2 = map_expression env v2 in
       todo env (v1, v2)
@@ -874,7 +876,7 @@ and map_unary_expression (env : env) (x : CST.unary_expression) =
       let v1 = token env v1 (* "void" *) in
       let v2 = map_expression env v2 in
       todo env (v1, v2)
-  | `Dele_exp (v1, v2) ->
+  | `Delete_exp (v1, v2) ->
       let v1 = token env v1 (* "delete" *) in
       let v2 = map_expression env v2 in
       todo env (v1, v2)
@@ -909,8 +911,8 @@ and map_switch_body (env : env) ((v1, v2, v3) : CST.switch_body) =
   let v2 =
     List.map (fun x ->
       (match x with
-      | `Swit_case x -> map_switch_case env x
-      | `Swit_defa x -> map_switch_default env x
+      | `Switch_case x -> map_switch_case env x
+      | `Switch_defa x -> map_switch_default env x
       )
     ) v2
   in
@@ -919,12 +921,12 @@ and map_switch_body (env : env) ((v1, v2, v3) : CST.switch_body) =
 
 and map_statement (env : env) (x : CST.statement) =
   (match x with
-  | `Expo_stmt x -> map_export_statement env x
-  | `Impo_stmt (v1, v2, v3) ->
+  | `Export_stmt x -> map_export_statement env x
+  | `Import_stmt (v1, v2, v3) ->
       let v1 = token env v1 (* "import" *) in
       let v2 =
         (match v2 with
-        | `Impo_clau_from_clau (v1, v2) ->
+        | `Import_clause_from_clause (v1, v2) ->
             let v1 = map_import_clause env v1 in
             let v2 = map_from_clause env v2 in
             todo env (v1, v2)
@@ -953,7 +955,7 @@ and map_statement (env : env) (x : CST.statement) =
         | None -> todo env ())
       in
       todo env (v1, v2, v3, v4)
-  | `Swit_stmt (v1, v2, v3) ->
+  | `Switch_stmt (v1, v2, v3) ->
       let v1 = token env v1 (* "switch" *) in
       let v2 = map_parenthesized_expression env v2 in
       let v3 = map_switch_body env v3 in
@@ -1101,28 +1103,28 @@ and map_array_ (env : env) ((v1, v2, v3) : CST.array_) =
 
 and map_export_statement (env : env) (x : CST.export_statement) =
   (match x with
-  | `Expo_choice_STAR_from_clau_choice_auto_semi (v1, v2) ->
+  | `Export_choice_STAR_from_clause_choice_auto_semi (v1, v2) ->
       let v1 = token env v1 (* "export" *) in
       let v2 =
         (match v2 with
-        | `STAR_from_clau_choice_auto_semi (v1, v2, v3) ->
+        | `STAR_from_clause_choice_auto_semi (v1, v2, v3) ->
             let v1 = token env v1 (* "*" *) in
             let v2 = map_from_clause env v2 in
             let v3 = map_semicolon env v3 in
             todo env (v1, v2, v3)
-        | `Expo_clau_from_clau_choice_auto_semi (v1, v2, v3) ->
+        | `Export_clause_from_clause_choice_auto_semi (v1, v2, v3) ->
             let v1 = map_export_clause env v1 in
             let v2 = map_from_clause env v2 in
             let v3 = map_semicolon env v3 in
             todo env (v1, v2, v3)
-        | `Expo_clau_choice_auto_semi (v1, v2) ->
+        | `Export_clause_choice_auto_semi (v1, v2) ->
             let v1 = map_export_clause env v1 in
             let v2 = map_semicolon env v2 in
             todo env (v1, v2)
         )
       in
       todo env (v1, v2)
-  | `Rep_deco_expo_choice_decl (v1, v2, v3) ->
+  | `Rep_deco_export_choice_decl (v1, v2, v3) ->
       let v1 = List.map (map_decorator env) v1 in
       let v2 = token env v2 (* "export" *) in
       let v3 =
@@ -1299,7 +1301,7 @@ and map_object_ (env : env) ((v1, v2, v3) : CST.object_) =
 
 and map_lhs_expression (env : env) (x : CST.lhs_expression) =
   (match x with
-  | `Memb_exp x -> map_member_expression env x
+  | `Member_exp x -> map_member_expression env x
   | `Subs_exp x -> map_subscript_expression env x
   | `Id tok -> token env tok (* identifier *)
   | `Choice_get x -> map_reserved_identifier env x

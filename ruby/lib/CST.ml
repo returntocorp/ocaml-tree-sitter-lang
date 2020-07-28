@@ -186,7 +186,7 @@ type variable = [
   | `Super of Token.t (* "super" *)
   | `Inst_var of instance_variable (*tok*)
   | `Class_var of class_variable (*tok*)
-  | `Glob_var of global_variable (*tok*)
+  | `Global_var of global_variable (*tok*)
   | `Id of identifier (*tok*)
   | `Cst of constant (*tok*)
 ]
@@ -201,7 +201,12 @@ type terminator = [
 type do_ = [ `Do of Token.t (* "do" *) | `Term of terminator ]
 [@@deriving sexp_of]
 
-type else_ = (Token.t (* "else" *) * terminator option * statements option)
+type anon_formal_param_rep_COMMA_formal_param = (
+    formal_parameter
+  * (Token.t (* "," *) * formal_parameter) list (* zero or more *)
+)
+
+and else_ = (Token.t (* "else" *) * terminator option * statements option)
 
 and block = (
     Token.t (* "{" *)
@@ -347,7 +352,7 @@ and primary = [
       * literal_contents option
       * string_end (*tok*)
     )
-  | `Lamb of (
+  | `Lambda of (
         Token.t (* "->" *)
       * [ `Params of parameters | `Bare_params of bare_parameters ] option
       * [ `Blk of block | `Do_blk of do_block ]
@@ -374,7 +379,7 @@ and primary = [
       * singleton_class_left_angle_left_langle (*tok*) * arg * terminator
       * body_statement
     )
-  | `Modu of (
+  | `Module of (
         Token.t (* "module" *)
       * anon_choice_cst
       * [
@@ -404,7 +409,7 @@ and primary = [
       * anon_choice_else option
       * Token.t (* "end" *)
     )
-  | `Unle of (
+  | `Unless of (
         Token.t (* "unless" *)
       * statement
       * anon_choice_term
@@ -467,7 +472,7 @@ and string_ = (
 
 and body_statement = (
     statements option
-  * [ `Resc of rescue | `Else of else_ | `Ensu of ensure ]
+  * [ `Rescue of rescue | `Else of else_ | `Ensure of ensure ]
       list (* zero or more *)
   * Token.t (* "end" *)
 )
@@ -604,11 +609,6 @@ and do_block = (
   * body_statement
 )
 
-and anon_form_param_rep_COMMA_form_param = (
-    formal_parameter
-  * (Token.t (* "," *) * formal_parameter) list (* zero or more *)
-)
-
 and pair = [
     `Arg_EQGT_arg of (arg * Token.t (* "=>" *) * arg)
   | `Choice_id_hash_key_COLON_arg of (
@@ -668,10 +668,10 @@ and statement = [
     )
   | `Alias of (Token.t (* "alias" *) * method_name * method_name)
   | `If_modi of (statement * Token.t (* "if" *) * expression)
-  | `Unle_modi of (statement * Token.t (* "unless" *) * expression)
+  | `Unless_modi of (statement * Token.t (* "unless" *) * expression)
   | `While_modi of (statement * Token.t (* "while" *) * expression)
   | `Until_modi of (statement * Token.t (* "until" *) * expression)
-  | `Resc_modi of (statement * Token.t (* "rescue" *) * expression)
+  | `Rescue_modi of (statement * Token.t (* "rescue" *) * expression)
   | `Begin_blk of (
         Token.t (* "BEGIN" *)
       * Token.t (* "{" *)
@@ -731,17 +731,17 @@ and exception_variable = (Token.t (* "=>" *) * lhs)
 and method_name = [
     `Id of identifier (*tok*)
   | `Cst of constant (*tok*)
-  | `Sett of (identifier (*tok*) * Token.t (* "=" *))
+  | `Setter of (identifier (*tok*) * Token.t (* "=" *))
   | `Symb of symbol
   | `Op of operator
   | `Inst_var of instance_variable (*tok*)
   | `Class_var of class_variable (*tok*)
-  | `Glob_var of global_variable (*tok*)
+  | `Global_var of global_variable (*tok*)
 ]
 
 and block_parameters = (
     Token.t (* "|" *)
-  * anon_form_param_rep_COMMA_form_param option
+  * anon_formal_param_rep_COMMA_formal_param option
   * Token.t (* "," *) option
   * (
         Token.t (* ";" *)
@@ -782,7 +782,7 @@ and left_assignment_list = mlhs
 
 and parameters = (
     Token.t (* "(" *)
-  * anon_form_param_rep_COMMA_form_param option
+  * anon_formal_param_rep_COMMA_formal_param option
   * Token.t (* ")" *)
 )
 
@@ -800,7 +800,7 @@ and simple_formal_parameter = [
 and interpolation = (Token.t (* "#{" *) * statement * Token.t (* "}" *))
 
 and formal_parameter = [
-    `Simple_form_param of simple_formal_parameter
+    `Simple_formal_param of simple_formal_parameter
   | `Params of parameters
 ]
 

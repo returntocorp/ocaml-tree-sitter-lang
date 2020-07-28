@@ -245,7 +245,7 @@ and simple_type = [
     `Id of identifier (*tok*)
   | `Qual_type of qualified_type
   | `Poin_type of (Token.t (* "*" *) * type_)
-  | `Stru_type of struct_type
+  | `Struct_type of struct_type
   | `Inte_type of (Token.t (* "interface" *) * method_spec_list)
   | `Array_type of array_type
   | `Slice_type of slice_type
@@ -333,7 +333,7 @@ and expression = [
           | `Slice_type of slice_type
           | `Array_type of array_type
           | `Impl_len_array_type of implicit_length_array_type
-          | `Stru_type of struct_type
+          | `Struct_type of struct_type
           | `Id of identifier (*tok*)
           | `Qual_type of qualified_type
         ]
@@ -388,13 +388,13 @@ and statement = [
         Token.t (* "for" *)
       * [
             `Exp of expression
-          | `For_clau of for_clause
-          | `Range_clau of range_clause
+          | `For_clause of for_clause
+          | `Range_clause of range_clause
         ]
           option
       * block
     )
-  | `Exp_swit_stmt of (
+  | `Exp_switch_stmt of (
         Token.t (* "switch" *)
       * (simple_statement * Token.t (* ";" *)) option
       * expression option
@@ -403,7 +403,7 @@ and statement = [
           list (* zero or more *)
       * Token.t (* "}" *)
     )
-  | `Type_swit_stmt of (
+  | `Type_switch_stmt of (
         Token.t (* "switch" *)
       * type_switch_header
       * Token.t (* "{" *)
@@ -411,7 +411,7 @@ and statement = [
           list (* zero or more *)
       * Token.t (* "}" *)
     )
-  | `Sele_stmt of (
+  | `Select_stmt of (
         Token.t (* "select" *)
       * Token.t (* "{" *)
       * [ `Comm_case of communication_case | `Defa_case of default_case ]
@@ -614,7 +614,7 @@ type import_spec_list = (
 [@@deriving sexp_of]
 
 type top_level_declaration = [
-    `Pack_clau of (Token.t (* "package" *) * identifier (*tok*))
+    `Pack_clause of (Token.t (* "package" *) * identifier (*tok*))
   | `Func_decl of (
         Token.t (* "func" *)
       * identifier (*tok*)
@@ -630,9 +630,12 @@ type top_level_declaration = [
       * anon_choice_param_list option
       * block option
     )
-  | `Impo_decl of (
+  | `Import_decl of (
         Token.t (* "import" *)
-      * [ `Impo_spec of import_spec | `Impo_spec_list of import_spec_list ]
+      * [
+            `Import_spec of import_spec
+          | `Import_spec_list of import_spec_list
+        ]
     )
 ]
 [@@deriving sexp_of]
@@ -640,7 +643,7 @@ type top_level_declaration = [
 type source_file =
   [
       `Stmt_choice_LF of (statement * anon_choice_LF)
-    | `Choice_pack_clau_opt_choice_LF of (
+    | `Choice_pack_clause_opt_choice_LF of (
           top_level_declaration
         * anon_choice_LF option
       )
@@ -746,7 +749,7 @@ type composite_literal (* inlined *) = (
       | `Slice_type of slice_type
       | `Array_type of array_type
       | `Impl_len_array_type of implicit_length_array_type
-      | `Stru_type of struct_type
+      | `Struct_type of struct_type
       | `Id of identifier (*tok*)
       | `Qual_type of qualified_type
     ]
@@ -954,8 +957,8 @@ type for_statement (* inlined *) = (
     Token.t (* "for" *)
   * [
         `Exp of expression
-      | `For_clau of for_clause
-      | `Range_clau of range_clause
+      | `For_clause of for_clause
+      | `Range_clause of range_clause
     ]
       option
   * block
@@ -1003,7 +1006,7 @@ type function_declaration (* inlined *) = (
 
 type import_declaration (* inlined *) = (
     Token.t (* "import" *)
-  * [ `Impo_spec of import_spec | `Impo_spec_list of import_spec_list ]
+  * [ `Import_spec of import_spec | `Import_spec_list of import_spec_list ]
 )
 [@@deriving sexp_of]
 

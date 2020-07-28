@@ -198,7 +198,7 @@ let map_variable (env : env) (x : CST.variable) =
   | `Super tok -> token env tok (* "super" *)
   | `Inst_var tok -> token env tok (* instance_variable *)
   | `Class_var tok -> token env tok (* class_variable *)
-  | `Glob_var tok ->
+  | `Global_var tok ->
       token env tok (* pattern "\\$-?(([!@&`'+~=\\/\\\\,;.<>*$?:\"])|([0-9]*\
   )|([a-zA-Z_][a-zA-Z0-9_]*\
   ))" *)
@@ -218,7 +218,18 @@ let map_do_ (env : env) (x : CST.do_) =
   | `Term x -> map_terminator env x
   )
 
-let rec map_else_ (env : env) ((v1, v2, v3) : CST.else_) =
+let rec map_anon_formal_param_rep_COMMA_formal_param (env : env) ((v1, v2) : CST.anon_formal_param_rep_COMMA_formal_param) =
+  let v1 = map_formal_parameter env v1 in
+  let v2 =
+    List.map (fun (v1, v2) ->
+      let v1 = token env v1 (* "," *) in
+      let v2 = map_formal_parameter env v2 in
+      todo env (v1, v2)
+    ) v2
+  in
+  todo env (v1, v2)
+
+and map_else_ (env : env) ((v1, v2, v3) : CST.else_) =
   let v1 = token env v1 (* "else" *) in
   let v2 =
     (match v2 with
@@ -541,7 +552,7 @@ and map_primary (env : env) (x : CST.primary) =
       in
       let v3 = token env v3 (* string_end *) in
       todo env (v1, v2, v3)
-  | `Lamb (v1, v2, v3) ->
+  | `Lambda (v1, v2, v3) ->
       let v1 = token env v1 (* "->" *) in
       let v2 =
         (match v2 with
@@ -603,7 +614,7 @@ and map_primary (env : env) (x : CST.primary) =
       let v4 = map_terminator env v4 in
       let v5 = map_body_statement env v5 in
       todo env (v1, v2, v3, v4, v5)
-  | `Modu (v1, v2, v3) ->
+  | `Module (v1, v2, v3) ->
       let v1 = token env v1 (* "module" *) in
       let v2 = map_anon_choice_cst env v2 in
       let v3 =
@@ -658,7 +669,7 @@ and map_primary (env : env) (x : CST.primary) =
       in
       let v5 = token env v5 (* "end" *) in
       todo env (v1, v2, v3, v4, v5)
-  | `Unle (v1, v2, v3, v4, v5) ->
+  | `Unless (v1, v2, v3, v4, v5) ->
       let v1 = token env v1 (* "unless" *) in
       let v2 = map_statement env v2 in
       let v3 = map_anon_choice_term env v3 in
@@ -811,9 +822,9 @@ and map_body_statement (env : env) ((v1, v2, v3) : CST.body_statement) =
   let v2 =
     List.map (fun x ->
       (match x with
-      | `Resc x -> map_rescue env x
+      | `Rescue x -> map_rescue env x
       | `Else x -> map_else_ env x
-      | `Ensu x -> map_ensure env x
+      | `Ensure x -> map_ensure env x
       )
     ) v2
   in
@@ -1089,17 +1100,6 @@ and map_do_block (env : env) ((v1, v2, v3, v4) : CST.do_block) =
   let v4 = map_body_statement env v4 in
   todo env (v1, v2, v3, v4)
 
-and map_anon_form_param_rep_COMMA_form_param (env : env) ((v1, v2) : CST.anon_form_param_rep_COMMA_form_param) =
-  let v1 = map_formal_parameter env v1 in
-  let v2 =
-    List.map (fun (v1, v2) ->
-      let v1 = token env v1 (* "," *) in
-      let v2 = map_formal_parameter env v2 in
-      todo env (v1, v2)
-    ) v2
-  in
-  todo env (v1, v2)
-
 and map_pair (env : env) (x : CST.pair) =
   (match x with
   | `Arg_EQGT_arg (v1, v2, v3) ->
@@ -1204,7 +1204,7 @@ and map_statement (env : env) (x : CST.statement) =
       let v2 = token env v2 (* "if" *) in
       let v3 = map_expression env v3 in
       todo env (v1, v2, v3)
-  | `Unle_modi (v1, v2, v3) ->
+  | `Unless_modi (v1, v2, v3) ->
       let v1 = map_statement env v1 in
       let v2 = token env v2 (* "unless" *) in
       let v3 = map_expression env v3 in
@@ -1219,7 +1219,7 @@ and map_statement (env : env) (x : CST.statement) =
       let v2 = token env v2 (* "until" *) in
       let v3 = map_expression env v3 in
       todo env (v1, v2, v3)
-  | `Resc_modi (v1, v2, v3) ->
+  | `Rescue_modi (v1, v2, v3) ->
       let v1 = map_statement env v1 in
       let v2 = token env v2 (* "rescue" *) in
       let v3 = map_expression env v3 in
@@ -1333,7 +1333,7 @@ and map_method_name (env : env) (x : CST.method_name) =
   (match x with
   | `Id tok -> token env tok (* identifier *)
   | `Cst tok -> token env tok (* constant *)
-  | `Sett (v1, v2) ->
+  | `Setter (v1, v2) ->
       let v1 = token env v1 (* identifier *) in
       let v2 = token env v2 (* "=" *) in
       todo env (v1, v2)
@@ -1341,7 +1341,7 @@ and map_method_name (env : env) (x : CST.method_name) =
   | `Op x -> map_operator env x
   | `Inst_var tok -> token env tok (* instance_variable *)
   | `Class_var tok -> token env tok (* class_variable *)
-  | `Glob_var tok ->
+  | `Global_var tok ->
       token env tok (* pattern "\\$-?(([!@&`'+~=\\/\\\\,;.<>*$?:\"])|([0-9]*\
   )|([a-zA-Z_][a-zA-Z0-9_]*\
   ))" *)
@@ -1351,7 +1351,8 @@ and map_block_parameters (env : env) ((v1, v2, v3, v4, v5) : CST.block_parameter
   let v1 = token env v1 (* "|" *) in
   let v2 =
     (match v2 with
-    | Some x -> map_anon_form_param_rep_COMMA_form_param env x
+    | Some x ->
+        map_anon_formal_param_rep_COMMA_formal_param env x
     | None -> todo env ())
   in
   let v3 =
@@ -1438,7 +1439,8 @@ and map_parameters (env : env) ((v1, v2, v3) : CST.parameters) =
   let v1 = token env v1 (* "(" *) in
   let v2 =
     (match v2 with
-    | Some x -> map_anon_form_param_rep_COMMA_form_param env x
+    | Some x ->
+        map_anon_formal_param_rep_COMMA_formal_param env x
     | None -> todo env ())
   in
   let v3 = token env v3 (* ")" *) in
@@ -1497,7 +1499,8 @@ and map_interpolation (env : env) ((v1, v2, v3) : CST.interpolation) =
 
 and map_formal_parameter (env : env) (x : CST.formal_parameter) =
   (match x with
-  | `Simple_form_param x -> map_simple_formal_parameter env x
+  | `Simple_formal_param x ->
+      map_simple_formal_parameter env x
   | `Params x -> map_parameters env x
   )
 
