@@ -917,7 +917,7 @@ and map_template_argument_list (env : env) ((v1, v2, v3) : CST.template_argument
         todo env (v1, v2)
     | None -> todo env ())
   in
-  let v3 = blank env v3 in
+  let v3 = token env v3 (* > *) in
   todo env (v1, v2, v3)
 
 and map_type_descriptor (env : env) ((v1, v2, v3, v4) : CST.type_descriptor) =
@@ -1594,7 +1594,7 @@ and map_template_parameter_list (env : env) ((v1, v2, v3) : CST.template_paramet
         todo env (v1, v2)
     | None -> todo env ())
   in
-  let v3 = blank env v3 in
+  let v3 = token env v3 (* > *) in
   todo env (v1, v2, v3)
 
 and map_condition_declaration (env : env) ((v1, v2, v3) : CST.condition_declaration) =

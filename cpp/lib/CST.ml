@@ -576,7 +576,7 @@ and template_argument_list = (
       * (Token.t (* "," *) * anon_choice_type_desc) list (* zero or more *)
     )
       option
-  * unit (* blank *)
+  * Token.t (* > *)
 )
 
 and type_descriptor = (
@@ -955,7 +955,7 @@ and template_parameter_list = (
       * (Token.t (* "," *) * anon_choice_param_decl_) list (* zero or more *)
     )
       option
-  * unit (* blank *)
+  * Token.t (* > *)
 )
 
 and condition_declaration = (

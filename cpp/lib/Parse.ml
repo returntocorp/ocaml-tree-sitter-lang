@@ -2489,7 +2489,7 @@ let children_regexps : (string * Run.exp option) list = [
           );
         ];
       );
-      Nothing;
+      Token (Literal ">");
     ];
   );
   "optional_type_parameter_declaration",
@@ -2842,7 +2842,7 @@ let children_regexps : (string * Run.exp option) list = [
           );
         ];
       );
-      Nothing;
+      Token (Literal ">");
     ];
   );
   "namespace_definition",
@@ -9496,7 +9496,7 @@ and trans_template_parameter_list ((kind, body) : mt) : CST.template_parameter_l
               )
               v1
             ,
-            Run.nothing v2
+            Run.trans_token (Run.matcher_token v2)
           )
       | _ -> assert false
       )
@@ -10296,7 +10296,7 @@ and trans_template_argument_list ((kind, body) : mt) : CST.template_argument_lis
               )
               v1
             ,
-            Run.nothing v2
+            Run.trans_token (Run.matcher_token v2)
           )
       | _ -> assert false
       )
