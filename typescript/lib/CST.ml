@@ -11,29 +11,17 @@ open Tree_sitter_run
 type hash_bang_line = Token.t (* pattern #!.* *)
 [@@deriving sexp_of]
 
-type template_chars = Token.t
-[@@deriving sexp_of]
-
 type import = Token.t
 [@@deriving sexp_of]
 
-type number = Token.t
-[@@deriving sexp_of]
-
-type escape_sequence = Token.t
-[@@deriving sexp_of]
-
-type accessibility_modifier = [
-    `Public of Token.t (* "public" *)
-  | `Priv of Token.t (* "private" *)
-  | `Prot of Token.t (* "protected" *)
+type anon_choice_get = [
+    `Get of Token.t (* "get" *)
+  | `Set of Token.t (* "set" *)
+  | `STAR of Token.t (* "*" *)
 ]
 [@@deriving sexp_of]
 
-type regex_pattern = Token.t
-[@@deriving sexp_of]
-
-type regex_flags = Token.t (* pattern [a-z]+ *)
+type number = Token.t
 [@@deriving sexp_of]
 
 type predefined_type = [
@@ -46,10 +34,29 @@ type predefined_type = [
 ]
 [@@deriving sexp_of]
 
+type accessibility_modifier = [
+    `Public of Token.t (* "public" *)
+  | `Priv of Token.t (* "private" *)
+  | `Prot of Token.t (* "protected" *)
+]
+[@@deriving sexp_of]
+
+type escape_sequence = Token.t
+[@@deriving sexp_of]
+
+type regex_flags = Token.t (* pattern [a-z]+ *)
+[@@deriving sexp_of]
+
 type anon_choice_PLUSPLUS = [
     `PLUSPLUS of Token.t (* "++" *)
   | `DASHDASH of Token.t (* "--" *)
 ]
+[@@deriving sexp_of]
+
+type jsx_text = Token.t (* pattern [^{}<>]+ *)
+[@@deriving sexp_of]
+
+type identifier = Token.t
 [@@deriving sexp_of]
 
 type anon_choice_type = [
@@ -65,17 +72,10 @@ type jsx_identifier =
 type automatic_semicolon = Token.t
 [@@deriving sexp_of]
 
-type jsx_text = Token.t (* pattern [^{}<>]+ *)
+type template_chars = Token.t
 [@@deriving sexp_of]
 
-type anon_choice_get = [
-    `Get of Token.t (* "get" *)
-  | `Set of Token.t (* "set" *)
-  | `STAR of Token.t (* "*" *)
-]
-[@@deriving sexp_of]
-
-type identifier = Token.t
+type regex_pattern = Token.t
 [@@deriving sexp_of]
 
 type anon_choice_blank = [
@@ -129,12 +129,6 @@ type string_ = [
 ]
 [@@deriving sexp_of]
 
-type anon_choice_COMMA = [
-    `COMMA of Token.t (* "," *)
-  | `Choice_auto_semi of semicolon
-]
-[@@deriving sexp_of]
-
 type namespace_import = (
     Token.t (* "*" *) * Token.t (* "as" *) * identifier (*tok*)
 )
@@ -147,20 +141,14 @@ type import_export_specifier = (
 )
 [@@deriving sexp_of]
 
-type anon_choice_rese_id = [
-    `Choice_decl of reserved_identifier
-  | `Id of identifier (*tok*)
-]
-[@@deriving sexp_of]
-
 type identifier_reference = [
     `Id of identifier (*tok*)
   | `Choice_decl of reserved_identifier
 ]
 [@@deriving sexp_of]
 
-type jsx_identifier_ = [
-    `Jsx_id of jsx_identifier (*tok*)
+type anon_choice_rese_id = [
+    `Choice_decl of reserved_identifier
   | `Id of identifier (*tok*)
 ]
 [@@deriving sexp_of]
@@ -175,10 +163,25 @@ and nested_identifier = (
 )
 [@@deriving sexp_of]
 
+type jsx_identifier_ = [
+    `Jsx_id of jsx_identifier (*tok*)
+  | `Id of identifier (*tok*)
+]
+[@@deriving sexp_of]
+
+type anon_choice_COMMA = [
+    `COMMA of Token.t (* "," *)
+  | `Choice_auto_semi of semicolon
+]
+[@@deriving sexp_of]
+
 type import_require_clause = (
     identifier (*tok*) * Token.t (* "=" *) * Token.t (* "require" *)
   * Token.t (* "(" *) * string_ * Token.t (* ")" *)
 )
+[@@deriving sexp_of]
+
+type from_clause = (Token.t (* "from" *) * string_)
 [@@deriving sexp_of]
 
 type literal_type = [
@@ -191,9 +194,6 @@ type literal_type = [
   | `True of Token.t (* "true" *)
   | `False of Token.t (* "false" *)
 ]
-[@@deriving sexp_of]
-
-type from_clause = (Token.t (* "from" *) * string_)
 [@@deriving sexp_of]
 
 type anon_import_export_spec_rep_COMMA_import_export_spec = (
@@ -212,21 +212,13 @@ and anon_choice_id_ref = [
 ]
 [@@deriving sexp_of]
 
-type jsx_namespace_name = (
-    jsx_identifier_ * Token.t (* ":" *) * jsx_identifier_
-)
-[@@deriving sexp_of]
-
 type nested_type_identifier = (
     anon_choice_type_id * Token.t (* "." *) * identifier (*tok*)
 )
 [@@deriving sexp_of]
 
-type named_imports = (
-    Token.t (* "{" *)
-  * anon_import_export_spec_rep_COMMA_import_export_spec option
-  * Token.t (* "," *) option
-  * Token.t (* "}" *)
+type jsx_namespace_name = (
+    jsx_identifier_ * Token.t (* ":" *) * jsx_identifier_
 )
 [@@deriving sexp_of]
 
@@ -238,9 +230,17 @@ type export_clause = (
 )
 [@@deriving sexp_of]
 
-type jsx_attribute_name = [
-    `Choice_jsx_id of jsx_identifier_
-  | `Jsx_name_name of jsx_namespace_name
+type named_imports = (
+    Token.t (* "{" *)
+  * anon_import_export_spec_rep_COMMA_import_export_spec option
+  * Token.t (* "," *) option
+  * Token.t (* "}" *)
+)
+[@@deriving sexp_of]
+
+type anon_choice_type_id2 = [
+    `Id of identifier (*tok*)
+  | `Nested_type_id of nested_type_identifier
 ]
 [@@deriving sexp_of]
 
@@ -251,9 +251,9 @@ type jsx_element_name = [
 ]
 [@@deriving sexp_of]
 
-type anon_choice_type_id2 = [
-    `Id of identifier (*tok*)
-  | `Nested_type_id of nested_type_identifier
+type jsx_attribute_name = [
+    `Choice_jsx_id of jsx_identifier_
+  | `Jsx_name_name of jsx_namespace_name
 ]
 [@@deriving sexp_of]
 
@@ -505,6 +505,7 @@ and constructable_expression = [
   | `New_exp of (
         Token.t (* "new" *)
       * constructable_expression
+      * type_arguments option
       * arguments option
     )
 ]
@@ -588,7 +589,8 @@ and for_header = (
 )
 
 and expression = [
-    `As_exp of (
+    `Semg_dots of Token.t (* "..." *)
+  | `As_exp of (
         expression
       * Token.t (* "as" *)
       * [ `Type of type_ | `Temp_str of template_string ]
@@ -1257,19 +1259,22 @@ and jsx_attribute_value = [
 ]
 [@@deriving sexp_of]
 
-type undefined (* inlined *) = Token.t (* "undefined" *)
-[@@deriving sexp_of]
-
-type existential_type (* inlined *) = Token.t (* "*" *)
+type empty_statement (* inlined *) = Token.t (* ";" *)
 [@@deriving sexp_of]
 
 type super (* inlined *) = Token.t (* "super" *)
 [@@deriving sexp_of]
 
-type empty_statement (* inlined *) = Token.t (* ";" *)
+type existential_type (* inlined *) = Token.t (* "*" *)
 [@@deriving sexp_of]
 
-type false_ (* inlined *) = Token.t (* "false" *)
+type semgrep_dots (* inlined *) = Token.t (* "..." *)
+[@@deriving sexp_of]
+
+type null (* inlined *) = Token.t (* "null" *)
+[@@deriving sexp_of]
+
+type readonly (* inlined *) = Token.t (* "readonly" *)
 [@@deriving sexp_of]
 
 type meta_property (* inlined *) = (
@@ -1277,19 +1282,19 @@ type meta_property (* inlined *) = (
 )
 [@@deriving sexp_of]
 
-type readonly (* inlined *) = Token.t (* "readonly" *)
-[@@deriving sexp_of]
-
 type this (* inlined *) = Token.t (* "this" *)
 [@@deriving sexp_of]
 
-type null (* inlined *) = Token.t (* "null" *)
+type comment (* inlined *) = Token.t
+[@@deriving sexp_of]
+
+type undefined (* inlined *) = Token.t (* "undefined" *)
 [@@deriving sexp_of]
 
 type true_ (* inlined *) = Token.t (* "true" *)
 [@@deriving sexp_of]
 
-type comment (* inlined *) = Token.t
+type false_ (* inlined *) = Token.t (* "false" *)
 [@@deriving sexp_of]
 
 type number_ (* inlined *) = (
@@ -1298,19 +1303,14 @@ type number_ (* inlined *) = (
 )
 [@@deriving sexp_of]
 
+type type_identifier (* inlined *) = identifier (*tok*)
+[@@deriving sexp_of]
+
 type regex (* inlined *) = (
     Token.t (* "/" *)
   * regex_pattern (*tok*)
   * Token.t (* "/" *)
   * regex_flags (*tok*) option
-)
-[@@deriving sexp_of]
-
-type type_identifier (* inlined *) = identifier (*tok*)
-[@@deriving sexp_of]
-
-type debugger_statement (* inlined *) = (
-    Token.t (* "debugger" *) * semicolon
 )
 [@@deriving sexp_of]
 
@@ -1325,6 +1325,11 @@ type break_statement (* inlined *) = (
     Token.t (* "break" *)
   * identifier (*tok*) option
   * semicolon
+)
+[@@deriving sexp_of]
+
+type debugger_statement (* inlined *) = (
+    Token.t (* "debugger" *) * semicolon
 )
 [@@deriving sexp_of]
 
@@ -1549,6 +1554,7 @@ type if_statement (* inlined *) = (
 type new_expression (* inlined *) = (
     Token.t (* "new" *)
   * constructable_expression
+  * type_arguments option
   * arguments option
 )
 [@@deriving sexp_of]

@@ -41,6 +41,7 @@ let children_regexps : (string * Run.exp option) list = [
   "false", None;
   "undefined", None;
   "this", None;
+  "semgrep_dots", None;
   "hash_bang_line", None;
   "escape_sequence", None;
   "number", None;
@@ -929,6 +930,7 @@ let children_regexps : (string * Run.exp option) list = [
   "expression",
   Some (
     Alt [|
+      Token (Name "semgrep_dots");
       Alt [|
         Token (Name "this");
         Token (Name "identifier");
@@ -2020,6 +2022,11 @@ let trans_undefined ((kind, body) : mt) : CST.undefined =
   | Children _ -> assert false
 
 let trans_this ((kind, body) : mt) : CST.this =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_semgrep_dots ((kind, body) : mt) : CST.semgrep_dots =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
@@ -4463,6 +4470,10 @@ and trans_expression ((kind, body) : mt) : CST.expression =
   | Children v ->
       (match v with
       | Alt (0, v) ->
+          `Semg_dots (
+            trans_semgrep_dots (Run.matcher_token v)
+          )
+      | Alt (1, v) ->
           `Choice_this (
             (match v with
             | Alt (0, v) ->
@@ -4578,7 +4589,7 @@ and trans_expression ((kind, body) : mt) : CST.expression =
             | _ -> assert false
             )
           )
-      | Alt (1, v) ->
+      | Alt (2, v) ->
           `Choice_jsx_elem (
             (match v with
             | Alt (0, v) ->
@@ -4592,43 +4603,43 @@ and trans_expression ((kind, body) : mt) : CST.expression =
             | _ -> assert false
             )
           )
-      | Alt (2, v) ->
+      | Alt (3, v) ->
           `Jsx_frag (
             trans_jsx_fragment (Run.matcher_token v)
           )
-      | Alt (3, v) ->
+      | Alt (4, v) ->
           `Assign_exp (
             trans_assignment_expression (Run.matcher_token v)
           )
-      | Alt (4, v) ->
+      | Alt (5, v) ->
           `Augm_assign_exp (
             trans_augmented_assignment_expression (Run.matcher_token v)
           )
-      | Alt (5, v) ->
+      | Alt (6, v) ->
           `Await_exp (
             trans_await_expression (Run.matcher_token v)
           )
-      | Alt (6, v) ->
+      | Alt (7, v) ->
           `Un_exp (
             trans_unary_expression (Run.matcher_token v)
           )
-      | Alt (7, v) ->
+      | Alt (8, v) ->
           `Bin_exp (
             trans_binary_expression (Run.matcher_token v)
           )
-      | Alt (8, v) ->
+      | Alt (9, v) ->
           `Tern_exp (
             trans_ternary_expression (Run.matcher_token v)
           )
-      | Alt (9, v) ->
+      | Alt (10, v) ->
           `Update_exp (
             trans_update_expression (Run.matcher_token v)
           )
-      | Alt (10, v) ->
+      | Alt (11, v) ->
           `Call_exp (
             trans_call_expression (Run.matcher_token v)
           )
-      | Alt (11, v) ->
+      | Alt (12, v) ->
           `Yield_exp (
             trans_yield_expression (Run.matcher_token v)
           )
