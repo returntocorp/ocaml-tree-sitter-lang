@@ -85,6 +85,8 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "from");
     |];
   );
+  "imm_tok_pat_2755817", None;
+  "imm_tok_pat_5a6fa79", None;
   "default_switch_label",
   Some (
     Seq [
@@ -93,20 +95,7 @@ let children_regexps : (string * Run.exp option) list = [
     ];
   );
   "void_keyword", None;
-  "interpolation_format_clause",
-  Some (
-    Seq [
-      Token (Literal ":");
-      Nothing;
-    ];
-  );
-  "interpolated_verbatim_string_text",
-  Some (
-    Alt [|
-      Nothing;
-      Token (Literal "\"\"");
-    |];
-  );
+  "pat_6d9db72", None;
   "overloadable_operator",
   Some (
     Alt [|
@@ -134,6 +123,7 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "<=");
     |];
   );
+  "pat_52ffbd7", None;
   "real_literal", None;
   "constructor_constraint",
   Some (
@@ -145,6 +135,7 @@ let children_regexps : (string * Run.exp option) list = [
   );
   "null_literal", None;
   "predefined_type", None;
+  "imm_tok_pat_684220d", None;
   "global", None;
   "discard", None;
   "modifier",
@@ -196,38 +187,6 @@ let children_regexps : (string * Run.exp option) list = [
   );
   "this_expression", None;
   "implicit_type", None;
-  "interpolated_string_text",
-  Some (
-    Alt [|
-      Token (Literal "{{");
-      Nothing;
-      Token (Name "escape_sequence");
-    |];
-  );
-  "character_literal",
-  Some (
-    Seq [
-      Token (Literal "'");
-      Alt [|
-        Nothing;
-        Token (Name "escape_sequence");
-      |];
-      Token (Literal "'");
-    ];
-  );
-  "string_literal",
-  Some (
-    Seq [
-      Token (Literal "\"");
-      Repeat (
-        Alt [|
-          Nothing;
-          Token (Name "escape_sequence");
-        |];
-      );
-      Token (Literal "\"");
-    ];
-  );
   "join_into_clause",
   Some (
     Seq [
@@ -242,6 +201,52 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "alias");
       Token (Name "identifier");
       Token (Literal ";");
+    ];
+  );
+  "interpolated_string_text",
+  Some (
+    Alt [|
+      Token (Literal "{{");
+      Token (Name "imm_tok_pat_2755817");
+      Token (Name "escape_sequence");
+    |];
+  );
+  "string_literal",
+  Some (
+    Seq [
+      Token (Literal "\"");
+      Repeat (
+        Alt [|
+          Token (Name "imm_tok_pat_5a6fa79");
+          Token (Name "escape_sequence");
+        |];
+      );
+      Token (Literal "\"");
+    ];
+  );
+  "interpolated_verbatim_string_text",
+  Some (
+    Alt [|
+      Token (Name "pat_6d9db72");
+      Token (Literal "\"\"");
+    |];
+  );
+  "interpolation_format_clause",
+  Some (
+    Seq [
+      Token (Literal ":");
+      Token (Name "pat_52ffbd7");
+    ];
+  );
+  "character_literal",
+  Some (
+    Seq [
+      Token (Literal "'");
+      Alt [|
+        Token (Name "imm_tok_pat_684220d");
+        Token (Name "escape_sequence");
+      |];
+      Token (Literal "'");
     ];
   );
   "name_equals",
@@ -2607,6 +2612,7 @@ let trans_identifier ((kind, body) : mt) : CST.identifier =
   | Leaf v -> v
   | Children _ -> assert false
 
+
 let trans_break_statement ((kind, body) : mt) : CST.break_statement =
   match body with
   | Children v ->
@@ -2632,6 +2638,16 @@ let trans_reserved_identifier ((kind, body) : mt) : CST.reserved_identifier =
       )
   | Leaf _ -> assert false
 
+let trans_imm_tok_pat_2755817 ((kind, body) : mt) : CST.imm_tok_pat_2755817 =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_imm_tok_pat_5a6fa79 ((kind, body) : mt) : CST.imm_tok_pat_5a6fa79 =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
 let trans_default_switch_label ((kind, body) : mt) : CST.default_switch_label =
   match body with
   | Children v ->
@@ -2650,34 +2666,10 @@ let trans_void_keyword ((kind, body) : mt) : CST.void_keyword =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_interpolation_format_clause ((kind, body) : mt) : CST.interpolation_format_clause =
+let trans_pat_6d9db72 ((kind, body) : mt) : CST.pat_6d9db72 =
   match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1] ->
-          (
-            Run.trans_token (Run.matcher_token v0),
-            Run.nothing v1
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
-let trans_interpolated_verbatim_string_text ((kind, body) : mt) : CST.interpolated_verbatim_string_text =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Blank (
-            Run.nothing v
-          )
-      | Alt (1, v) ->
-          `DQUOTDQUOT (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
+  | Leaf v -> v
+  | Children _ -> assert false
 
 let trans_overloadable_operator ((kind, body) : mt) : CST.overloadable_operator =
   match body with
@@ -2775,6 +2767,11 @@ let trans_overloadable_operator ((kind, body) : mt) : CST.overloadable_operator 
       )
   | Leaf _ -> assert false
 
+let trans_pat_52ffbd7 ((kind, body) : mt) : CST.pat_52ffbd7 =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
 let trans_real_literal ((kind, body) : mt) : CST.real_literal =
   match body with
   | Leaf v -> v
@@ -2801,6 +2798,11 @@ let trans_null_literal ((kind, body) : mt) : CST.null_literal =
   | Children _ -> assert false
 
 let trans_predefined_type ((kind, body) : mt) : CST.predefined_type =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_imm_tok_pat_684220d ((kind, body) : mt) : CST.imm_tok_pat_684220d =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
@@ -2973,80 +2975,6 @@ let trans_implicit_type ((kind, body) : mt) : CST.implicit_type =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_interpolated_string_text ((kind, body) : mt) : CST.interpolated_string_text =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `LCURLLCURL (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `Blank (
-            Run.nothing v
-          )
-      | Alt (2, v) ->
-          `Esc_seq (
-            trans_escape_sequence (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
-let trans_character_literal ((kind, body) : mt) : CST.character_literal =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2] ->
-          (
-            Run.trans_token (Run.matcher_token v0),
-            (match v1 with
-            | Alt (0, v) ->
-                `Blank (
-                  Run.nothing v
-                )
-            | Alt (1, v) ->
-                `Esc_seq (
-                  trans_escape_sequence (Run.matcher_token v)
-                )
-            | _ -> assert false
-            )
-            ,
-            Run.trans_token (Run.matcher_token v2)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
-let trans_string_literal ((kind, body) : mt) : CST.string_literal =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2] ->
-          (
-            Run.trans_token (Run.matcher_token v0),
-            Run.repeat
-              (fun v ->
-                (match v with
-                | Alt (0, v) ->
-                    `Blank (
-                      Run.nothing v
-                    )
-                | Alt (1, v) ->
-                    `Esc_seq (
-                      trans_escape_sequence (Run.matcher_token v)
-                    )
-                | _ -> assert false
-                )
-              )
-              v1
-            ,
-            Run.trans_token (Run.matcher_token v2)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
 let trans_join_into_clause ((kind, body) : mt) : CST.join_into_clause =
   match body with
   | Children v ->
@@ -3070,6 +2998,109 @@ let trans_extern_alias_directive ((kind, body) : mt) : CST.extern_alias_directiv
             Run.trans_token (Run.matcher_token v1),
             trans_identifier (Run.matcher_token v2),
             Run.trans_token (Run.matcher_token v3)
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
+let trans_interpolated_string_text ((kind, body) : mt) : CST.interpolated_string_text =
+  match body with
+  | Children v ->
+      (match v with
+      | Alt (0, v) ->
+          `LCURLLCURL (
+            Run.trans_token (Run.matcher_token v)
+          )
+      | Alt (1, v) ->
+          `Imm_tok_pat_2755817 (
+            trans_imm_tok_pat_2755817 (Run.matcher_token v)
+          )
+      | Alt (2, v) ->
+          `Esc_seq (
+            trans_escape_sequence (Run.matcher_token v)
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
+let trans_string_literal ((kind, body) : mt) : CST.string_literal =
+  match body with
+  | Children v ->
+      (match v with
+      | Seq [v0; v1; v2] ->
+          (
+            Run.trans_token (Run.matcher_token v0),
+            Run.repeat
+              (fun v ->
+                (match v with
+                | Alt (0, v) ->
+                    `Imm_tok_pat_5a6fa79 (
+                      trans_imm_tok_pat_5a6fa79 (Run.matcher_token v)
+                    )
+                | Alt (1, v) ->
+                    `Esc_seq (
+                      trans_escape_sequence (Run.matcher_token v)
+                    )
+                | _ -> assert false
+                )
+              )
+              v1
+            ,
+            Run.trans_token (Run.matcher_token v2)
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
+let trans_interpolated_verbatim_string_text ((kind, body) : mt) : CST.interpolated_verbatim_string_text =
+  match body with
+  | Children v ->
+      (match v with
+      | Alt (0, v) ->
+          `Pat_6d9db72 (
+            trans_pat_6d9db72 (Run.matcher_token v)
+          )
+      | Alt (1, v) ->
+          `DQUOTDQUOT (
+            Run.trans_token (Run.matcher_token v)
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
+let trans_interpolation_format_clause ((kind, body) : mt) : CST.interpolation_format_clause =
+  match body with
+  | Children v ->
+      (match v with
+      | Seq [v0; v1] ->
+          (
+            Run.trans_token (Run.matcher_token v0),
+            trans_pat_52ffbd7 (Run.matcher_token v1)
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
+let trans_character_literal ((kind, body) : mt) : CST.character_literal =
+  match body with
+  | Children v ->
+      (match v with
+      | Seq [v0; v1; v2] ->
+          (
+            Run.trans_token (Run.matcher_token v0),
+            (match v1 with
+            | Alt (0, v) ->
+                `Imm_tok_pat_684220d (
+                  trans_imm_tok_pat_684220d (Run.matcher_token v)
+                )
+            | Alt (1, v) ->
+                `Esc_seq (
+                  trans_escape_sequence (Run.matcher_token v)
+                )
+            | _ -> assert false
+            )
+            ,
+            Run.trans_token (Run.matcher_token v2)
           )
       | _ -> assert false
       )

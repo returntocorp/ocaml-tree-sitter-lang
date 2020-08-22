@@ -8,19 +8,13 @@
 open! Sexplib.Conv
 open Tree_sitter_run
 
-type raw_string_literal = Token.t
-[@@deriving sexp_of]
-
-type anon_choice_new = [
-    `New of Token.t (* "new" *)
-  | `Make of Token.t (* "make" *)
-]
-[@@deriving sexp_of]
-
-type imaginary_literal = Token.t
+type identifier = Token.t
 [@@deriving sexp_of]
 
 type float_literal = Token.t
+[@@deriving sexp_of]
+
+type raw_string_literal = Token.t
 [@@deriving sexp_of]
 
 type anon_choice_EQ = [
@@ -29,21 +23,30 @@ type anon_choice_EQ = [
 ]
 [@@deriving sexp_of]
 
-type identifier = Token.t
+type anon_choice_LF = [
+    `LF of Token.t (* "\n" *)
+  | `SEMI of Token.t (* ";" *)
+]
 [@@deriving sexp_of]
 
-type escape_sequence = Token.t
+type imm_tok_pat_101b4f2 = Token.t (* pattern "[^\"\\n\\\\]+" *)
+[@@deriving sexp_of]
+
+type imaginary_literal = Token.t
 [@@deriving sexp_of]
 
 type int_literal = Token.t
 [@@deriving sexp_of]
 
+type escape_sequence = Token.t
+[@@deriving sexp_of]
+
 type rune_literal = Token.t
 [@@deriving sexp_of]
 
-type anon_choice_LF = [
-    `LF of Token.t (* "\n" *)
-  | `SEMI of Token.t (* ";" *)
+type anon_choice_new = [
+    `New of Token.t (* "new" *)
+  | `Make of Token.t (* "make" *)
 ]
 [@@deriving sexp_of]
 
@@ -65,7 +68,10 @@ type string_literal = [
     `Raw_str_lit of raw_string_literal (*tok*)
   | `Inte_str_lit of (
         Token.t (* "\"" *)
-      * [ `Blank of unit (* blank *) | `Esc_seq of escape_sequence (*tok*) ]
+      * [
+            `Imm_tok_pat_101b4f2 of imm_tok_pat_101b4f2 (*tok*)
+          | `Esc_seq of escape_sequence (*tok*)
+        ]
           list (* zero or more *)
       * Token.t (* "\"" *)
     )
@@ -651,16 +657,19 @@ type source_file =
     list (* zero or more *)
 [@@deriving sexp_of]
 
-type false_ (* inlined *) = Token.t (* "false" *)
+type empty_statement (* inlined *) = Token.t (* ";" *)
 [@@deriving sexp_of]
 
-type comment (* inlined *) = Token.t
+type blank_identifier (* inlined *) = Token.t (* "_" *)
 [@@deriving sexp_of]
 
 type dot (* inlined *) = Token.t (* "." *)
 [@@deriving sexp_of]
 
-type blank_identifier (* inlined *) = Token.t (* "_" *)
+type comment (* inlined *) = Token.t
+[@@deriving sexp_of]
+
+type false_ (* inlined *) = Token.t (* "false" *)
 [@@deriving sexp_of]
 
 type nil (* inlined *) = Token.t (* "nil" *)
@@ -669,10 +678,10 @@ type nil (* inlined *) = Token.t (* "nil" *)
 type fallthrough_statement (* inlined *) = Token.t (* "fallthrough" *)
 [@@deriving sexp_of]
 
-type empty_statement (* inlined *) = Token.t (* ";" *)
+type true_ (* inlined *) = Token.t (* "true" *)
 [@@deriving sexp_of]
 
-type true_ (* inlined *) = Token.t (* "true" *)
+type field_identifier (* inlined *) = identifier (*tok*)
 [@@deriving sexp_of]
 
 type type_identifier (* inlined *) = identifier (*tok*)
@@ -681,12 +690,12 @@ type type_identifier (* inlined *) = identifier (*tok*)
 type package_identifier (* inlined *) = identifier (*tok*)
 [@@deriving sexp_of]
 
-type field_identifier (* inlined *) = identifier (*tok*)
-[@@deriving sexp_of]
-
 type interpreted_string_literal (* inlined *) = (
     Token.t (* "\"" *)
-  * [ `Blank of unit (* blank *) | `Esc_seq of escape_sequence (*tok*) ]
+  * [
+        `Imm_tok_pat_101b4f2 of imm_tok_pat_101b4f2 (*tok*)
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
   * Token.t (* "\"" *)
 )
@@ -694,12 +703,6 @@ type interpreted_string_literal (* inlined *) = (
 
 type goto_statement (* inlined *) = (
     Token.t (* "goto" *) * identifier (*tok*)
-)
-[@@deriving sexp_of]
-
-type break_statement (* inlined *) = (
-    Token.t (* "break" *)
-  * identifier (*tok*) option
 )
 [@@deriving sexp_of]
 
@@ -711,6 +714,12 @@ type continue_statement (* inlined *) = (
 
 type package_clause (* inlined *) = (
     Token.t (* "package" *) * identifier (*tok*)
+)
+[@@deriving sexp_of]
+
+type break_statement (* inlined *) = (
+    Token.t (* "break" *)
+  * identifier (*tok*) option
 )
 [@@deriving sexp_of]
 
@@ -985,9 +994,8 @@ type function_type (* inlined *) = (
 )
 [@@deriving sexp_of]
 
-type method_declaration (* inlined *) = (
+type function_declaration (* inlined *) = (
     Token.t (* "func" *)
-  * parameter_list
   * identifier (*tok*)
   * parameter_list
   * anon_choice_param_list option
@@ -995,8 +1003,9 @@ type method_declaration (* inlined *) = (
 )
 [@@deriving sexp_of]
 
-type function_declaration (* inlined *) = (
+type method_declaration (* inlined *) = (
     Token.t (* "func" *)
+  * parameter_list
   * identifier (*tok*)
   * parameter_list
   * anon_choice_param_list option

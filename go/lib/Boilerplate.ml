@@ -20,20 +20,14 @@ let blank (env : env) () =
 let todo (env : env) _ =
    failwith "not implemented"
 
-let map_raw_string_literal (env : env) (tok : CST.raw_string_literal) =
-  token env tok (* raw_string_literal *)
-
-let map_anon_choice_new (env : env) (x : CST.anon_choice_new) =
-  (match x with
-  | `New tok -> token env tok (* "new" *)
-  | `Make tok -> token env tok (* "make" *)
-  )
-
-let map_imaginary_literal (env : env) (tok : CST.imaginary_literal) =
-  token env tok (* imaginary_literal *)
+let map_identifier (env : env) (tok : CST.identifier) =
+  token env tok (* identifier *)
 
 let map_float_literal (env : env) (tok : CST.float_literal) =
   token env tok (* float_literal *)
+
+let map_raw_string_literal (env : env) (tok : CST.raw_string_literal) =
+  token env tok (* raw_string_literal *)
 
 let map_anon_choice_EQ (env : env) (x : CST.anon_choice_EQ) =
   (match x with
@@ -41,22 +35,31 @@ let map_anon_choice_EQ (env : env) (x : CST.anon_choice_EQ) =
   | `COLONEQ tok -> token env tok (* ":=" *)
   )
 
-let map_identifier (env : env) (tok : CST.identifier) =
-  token env tok (* identifier *)
-
-let map_escape_sequence (env : env) (tok : CST.escape_sequence) =
-  token env tok (* escape_sequence *)
-
-let map_int_literal (env : env) (tok : CST.int_literal) =
-  token env tok (* int_literal *)
-
-let map_rune_literal (env : env) (tok : CST.rune_literal) =
-  token env tok (* rune_literal *)
-
 let map_anon_choice_LF (env : env) (x : CST.anon_choice_LF) =
   (match x with
   | `LF tok -> token env tok (* "\n" *)
   | `SEMI tok -> token env tok (* ";" *)
+  )
+
+let map_imm_tok_pat_101b4f2 (env : env) (tok : CST.imm_tok_pat_101b4f2) =
+  token env tok (* pattern "[^\"\\n\\\\]+" *)
+
+let map_imaginary_literal (env : env) (tok : CST.imaginary_literal) =
+  token env tok (* imaginary_literal *)
+
+let map_int_literal (env : env) (tok : CST.int_literal) =
+  token env tok (* int_literal *)
+
+let map_escape_sequence (env : env) (tok : CST.escape_sequence) =
+  token env tok (* escape_sequence *)
+
+let map_rune_literal (env : env) (tok : CST.rune_literal) =
+  token env tok (* rune_literal *)
+
+let map_anon_choice_new (env : env) (x : CST.anon_choice_new) =
+  (match x with
+  | `New tok -> token env tok (* "new" *)
+  | `Make tok -> token env tok (* "make" *)
   )
 
 let map_qualified_type (env : env) ((v1, v2, v3) : CST.qualified_type) =
@@ -89,7 +92,8 @@ let map_string_literal (env : env) (x : CST.string_literal) =
       let v2 =
         List.map (fun x ->
           (match x with
-          | `Blank () -> todo env ()
+          | `Imm_tok_pat_101b4f2 tok ->
+              token env tok (* pattern "[^\"\\n\\\\]+" *)
           | `Esc_seq tok -> token env tok (* escape_sequence *)
           )
         ) v2

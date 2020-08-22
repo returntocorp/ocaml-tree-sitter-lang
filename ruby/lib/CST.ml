@@ -8,6 +8,36 @@
 open! Sexplib.Conv
 open Tree_sitter_run
 
+type binary_minus = Token.t
+[@@deriving sexp_of]
+
+type regex_start = Token.t
+[@@deriving sexp_of]
+
+type false_ = Token.t
+[@@deriving sexp_of]
+
+type anon_choice_DOT = [
+    `DOT of Token.t (* "." *)
+  | `AMPDOT of Token.t (* "&." *)
+]
+[@@deriving sexp_of]
+
+type pat_3d340f6 = Token.t (* pattern \s+ *)
+[@@deriving sexp_of]
+
+type block_ampersand = Token.t
+[@@deriving sexp_of]
+
+type heredoc_beginning = Token.t
+[@@deriving sexp_of]
+
+type string_array_start = Token.t
+[@@deriving sexp_of]
+
+type string_start = Token.t
+[@@deriving sexp_of]
+
 type anon_choice_PLUSEQ = [
     `PLUSEQ of Token.t (* "+=" *)
   | `DASHEQ of Token.t (* "-=" *)
@@ -25,47 +55,16 @@ type anon_choice_PLUSEQ = [
 ]
 [@@deriving sexp_of]
 
-type regex_start = Token.t
-[@@deriving sexp_of]
-
-type false_ = Token.t
-[@@deriving sexp_of]
-
-type anon_choice_DOT = [
-    `DOT of Token.t (* "." *)
-  | `AMPDOT of Token.t (* "&." *)
-]
+type heredoc_end = Token.t
 [@@deriving sexp_of]
 
 type heredoc_content = Token.t
 [@@deriving sexp_of]
 
-type block_ampersand = Token.t
+type singleton_class_left_angle_left_langle = Token.t
 [@@deriving sexp_of]
 
-type string_end = Token.t
-[@@deriving sexp_of]
-
-type heredoc_beginning = Token.t
-[@@deriving sexp_of]
-
-type string_array_start = Token.t
-[@@deriving sexp_of]
-
-type global_variable =
-  Token.t (* pattern "\\$-?(([!@&`'+~=\\/\\\\,;.<>*$?:\"])|([0-9]*\
-  )|([a-zA-Z_][a-zA-Z0-9_]*\
-  ))" *)
-[@@deriving sexp_of]
-
-type character =
-  Token.t (* pattern \?(\\\S({[0-9]*}|[0-9]*|-\S([MC]-\S)?)?|\S) *)
-[@@deriving sexp_of]
-
-type symbol_start = Token.t
-[@@deriving sexp_of]
-
-type line_break = Token.t
+type escape_sequence = Token.t
 [@@deriving sexp_of]
 
 type instance_variable = Token.t
@@ -74,48 +73,10 @@ type instance_variable = Token.t
 type uninterpreted = Token.t (* pattern (.|\s)* *)
 [@@deriving sexp_of]
 
-type identifier_hash_key = Token.t
-[@@deriving sexp_of]
-
-type float_ =
-  Token.t (* pattern \d(_?\d)*(\.\d)?(_?\d)*([eE][\+-]?\d(_?\d)*\
-  )? *)
-[@@deriving sexp_of]
-
-type heredoc_body_start = Token.t
-[@@deriving sexp_of]
-
-type unary_minus = Token.t
-[@@deriving sexp_of]
-
-type subshell_start = Token.t
-[@@deriving sexp_of]
-
-type complex = Token.t (* pattern (\d+)?(\+|-)?(\d+)i *)
-[@@deriving sexp_of]
-
 type string_content = Token.t
 [@@deriving sexp_of]
 
-type nil = Token.t
-[@@deriving sexp_of]
-
-type string_start = Token.t
-[@@deriving sexp_of]
-
-type singleton_class_left_angle_left_langle = Token.t
-[@@deriving sexp_of]
-
-type class_variable = Token.t
-[@@deriving sexp_of]
-
-type binary_star = Token.t
-[@@deriving sexp_of]
-
-type symbol_array_start = Token.t
-[@@deriving sexp_of]
-
-type heredoc_end = Token.t
+type identifier_hash_key = Token.t
 [@@deriving sexp_of]
 
 type operator = [
@@ -150,6 +111,41 @@ type operator = [
 ]
 [@@deriving sexp_of]
 
+type heredoc_body_start = Token.t
+[@@deriving sexp_of]
+
+type subshell_start = Token.t
+[@@deriving sexp_of]
+
+type complex = Token.t (* pattern (\d+)?(\+|-)?(\d+)i *)
+[@@deriving sexp_of]
+
+type float_ =
+  Token.t (* pattern \d(_?\d)*(\.\d)?(_?\d)*([eE][\+-]?\d(_?\d)*\
+  )? *)
+[@@deriving sexp_of]
+
+type string_end = Token.t
+[@@deriving sexp_of]
+
+type symbol_start = Token.t
+[@@deriving sexp_of]
+
+type unary_minus = Token.t
+[@@deriving sexp_of]
+
+type class_variable = Token.t
+[@@deriving sexp_of]
+
+type binary_star = Token.t
+[@@deriving sexp_of]
+
+type symbol_array_start = Token.t
+[@@deriving sexp_of]
+
+type line_break = Token.t
+[@@deriving sexp_of]
+
 type constant = Token.t
 [@@deriving sexp_of]
 
@@ -160,13 +156,20 @@ type integer =
 type true_ = Token.t
 [@@deriving sexp_of]
 
-type escape_sequence = Token.t
+type character =
+  Token.t (* pattern \?(\\\S({[0-9]*}|[0-9]*|-\S([MC]-\S)?)?|\S) *)
+[@@deriving sexp_of]
+
+type global_variable =
+  Token.t (* pattern "\\$-?(([!@&`'+~=\\/\\\\,;.<>*$?:\"])|([0-9]*\
+  )|([a-zA-Z_][a-zA-Z0-9_]*\
+  ))" *)
 [@@deriving sexp_of]
 
 type identifier = Token.t
 [@@deriving sexp_of]
 
-type binary_minus = Token.t
+type nil = Token.t
 [@@deriving sexp_of]
 
 type splat_star = Token.t
@@ -175,15 +178,15 @@ type splat_star = Token.t
 type simple_symbol = Token.t
 [@@deriving sexp_of]
 
-type terminator = [
-    `Line_brk of line_break (*tok*)
-  | `SEMI of Token.t (* ";" *)
-]
-[@@deriving sexp_of]
-
 type anon_choice_un_minus = [
     `Un_minus of unary_minus (*tok*)
   | `PLUS of Token.t (* "+" *)
+]
+[@@deriving sexp_of]
+
+type terminator = [
+    `Line_brk of line_break (*tok*)
+  | `SEMI of Token.t (* ";" *)
 ]
 [@@deriving sexp_of]
 
@@ -217,7 +220,7 @@ and in_ = (Token.t (* "in" *) * arg)
 and scope_resolution = (
     [
         `COLONCOLON of Token.t (* "::" *)
-      | `Prim_COLONCOLON of (primary * Token.t (* "::" *))
+      | `Prim_imm_tok_COLONCOLON of (primary * Token.t (* "::" *))
     ]
   * [ `Id of identifier (*tok*) | `Cst of constant (*tok*) ]
 )
@@ -300,16 +303,16 @@ and primary = [
     )
   | `Str_array of (
         string_array_start (*tok*)
-      * unit (* blank *) option
-      * anon_lit_content_rep_blank_lit_content option
-      * unit (* blank *) option
+      * pat_3d340f6 (*tok*) option
+      * anon_lit_content_rep_pat_3d340f6_lit_content option
+      * pat_3d340f6 (*tok*) option
       * string_end (*tok*)
     )
   | `Symb_array of (
         symbol_array_start (*tok*)
-      * unit (* blank *) option
-      * anon_lit_content_rep_blank_lit_content option
-      * unit (* blank *) option
+      * pat_3d340f6 (*tok*) option
+      * anon_lit_content_rep_pat_3d340f6_lit_content option
+      * pat_3d340f6 (*tok*) option
       * string_end (*tok*)
     )
   | `Hash of (
@@ -553,8 +556,7 @@ and do_ = (
 )
 
 and expression = [
-    `Semg_dots of Token.t (* "..." *)
-  | `Cmd_bin of (
+    `Cmd_bin of (
         expression
       * [ `Or of Token.t (* "or" *) | `And of Token.t (* "and" *) ]
       * expression
@@ -599,7 +601,7 @@ and do_block = (
 
 and pair = [
     `Arg_EQGT_arg of (arg * Token.t (* "=>" *) * arg)
-  | `Choice_id_hash_key_COLON_arg of (
+  | `Choice_id_hash_key_imm_tok_COLON_arg of (
         [
             `Id_hash_key of identifier_hash_key (*tok*)
           | `Id of identifier (*tok*)
@@ -630,11 +632,6 @@ and literal_contents =
     | `Esc_seq of escape_sequence (*tok*)
   ]
     list (* one or more *)
-
-and anon_lit_content_rep_blank_lit_content = (
-    literal_contents
-  * (unit (* blank *) * literal_contents) list (* zero or more *)
-)
 
 and when_ = (
     Token.t (* "when" *)
@@ -770,6 +767,11 @@ and command_argument_list = [
   | `Cmd_call_with_blk of command_call_with_block
 ]
 
+and anon_lit_content_rep_pat_3d340f6_lit_content = (
+    literal_contents
+  * (pat_3d340f6 (*tok*) * literal_contents) list (* zero or more *)
+)
+
 and anon_choice_id = [
     `Id of identifier (*tok*)
   | `Op of operator
@@ -827,19 +829,28 @@ type program = (
 )
 [@@deriving sexp_of]
 
-type comment (* inlined *) = Token.t
+type imm_tok_LPAR (* inlined *) = Token.t (* "(" *)
 [@@deriving sexp_of]
 
-type semgrep_dots (* inlined *) = Token.t (* "..." *)
+type empty_statement (* inlined *) = Token.t (* ";" *)
+[@@deriving sexp_of]
+
+type imm_tok_LBRACK (* inlined *) = Token.t (* "[" *)
 [@@deriving sexp_of]
 
 type self (* inlined *) = Token.t (* "self" *)
 [@@deriving sexp_of]
 
-type super (* inlined *) = Token.t (* "super" *)
+type imm_tok_COLONCOLON (* inlined *) = Token.t (* "::" *)
 [@@deriving sexp_of]
 
-type empty_statement (* inlined *) = Token.t (* ";" *)
+type comment (* inlined *) = Token.t
+[@@deriving sexp_of]
+
+type imm_tok_COLON (* inlined *) = Token.t (* ":" *)
+[@@deriving sexp_of]
+
+type super (* inlined *) = Token.t (* "super" *)
 [@@deriving sexp_of]
 
 type rational (* inlined *) = (integer (*tok*) * Token.t (* "r" *))
@@ -1108,9 +1119,9 @@ type return_command (* inlined *) = (
 
 type symbol_array (* inlined *) = (
     symbol_array_start (*tok*)
-  * unit (* blank *) option
-  * anon_lit_content_rep_blank_lit_content option
-  * unit (* blank *) option
+  * pat_3d340f6 (*tok*) option
+  * anon_lit_content_rep_pat_3d340f6_lit_content option
+  * pat_3d340f6 (*tok*) option
   * string_end (*tok*)
 )
 [@@deriving sexp_of]
@@ -1148,9 +1159,9 @@ type end_block (* inlined *) = (
 
 type string_array (* inlined *) = (
     string_array_start (*tok*)
-  * unit (* blank *) option
-  * anon_lit_content_rep_blank_lit_content option
-  * unit (* blank *) option
+  * pat_3d340f6 (*tok*) option
+  * anon_lit_content_rep_pat_3d340f6_lit_content option
+  * pat_3d340f6 (*tok*) option
   * string_end (*tok*)
 )
 [@@deriving sexp_of]

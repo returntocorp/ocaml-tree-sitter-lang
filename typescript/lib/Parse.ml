@@ -46,7 +46,9 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "protected");
     |];
   );
+  "imm_tok_SLASH", None;
   "false", None;
+  "imm_tok_pat_de5d470", None;
   "this", None;
   "template_chars", None;
   "existential_type", None;
@@ -59,6 +61,7 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "target");
     ];
   );
+  "imm_tok_pat_3e57880", None;
   "hash_bang_line", None;
   "escape_sequence", None;
   "semgrep_dots", None;
@@ -86,7 +89,7 @@ let children_regexps : (string * Run.exp option) list = [
         Token (Literal "\"");
         Repeat (
           Alt [|
-            Nothing;
+            Token (Name "imm_tok_pat_de5d470");
             Token (Name "escape_sequence");
           |];
         );
@@ -96,7 +99,7 @@ let children_regexps : (string * Run.exp option) list = [
         Token (Literal "'");
         Repeat (
           Alt [|
-            Nothing;
+            Token (Name "imm_tok_pat_3e57880");
             Token (Name "escape_sequence");
           |];
         );
@@ -109,7 +112,7 @@ let children_regexps : (string * Run.exp option) list = [
     Seq [
       Token (Literal "/");
       Token (Name "regex_pattern");
-      Token (Literal "/");
+      Token (Name "imm_tok_SLASH");
       Opt (
         Token (Name "regex_flags");
       );
@@ -3034,7 +3037,17 @@ let trans_accessibility_modifier ((kind, body) : mt) : CST.accessibility_modifie
   | Leaf _ -> assert false
 
 
+let trans_imm_tok_SLASH ((kind, body) : mt) : CST.imm_tok_SLASH =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
 let trans_false_ ((kind, body) : mt) : CST.false_ =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_imm_tok_pat_de5d470 ((kind, body) : mt) : CST.imm_tok_pat_de5d470 =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
@@ -3072,6 +3085,11 @@ let trans_meta_property ((kind, body) : mt) : CST.meta_property =
       | _ -> assert false
       )
   | Leaf _ -> assert false
+
+let trans_imm_tok_pat_3e57880 ((kind, body) : mt) : CST.imm_tok_pat_3e57880 =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
 
 let trans_hash_bang_line ((kind, body) : mt) : CST.hash_bang_line =
   match body with
@@ -3158,7 +3176,7 @@ let trans_string_ ((kind, body) : mt) : CST.string_ =
   | Children v ->
       (match v with
       | Alt (0, v) ->
-          `DQUOT_rep_choice_blank_DQUOT (
+          `DQUOT_rep_choice_imm_tok_pat_de5d470_DQUOT (
             (match v with
             | Seq [v0; v1; v2] ->
                 (
@@ -3167,8 +3185,8 @@ let trans_string_ ((kind, body) : mt) : CST.string_ =
                     (fun v ->
                       (match v with
                       | Alt (0, v) ->
-                          `Blank (
-                            Run.nothing v
+                          `Imm_tok_pat_de5d470 (
+                            trans_imm_tok_pat_de5d470 (Run.matcher_token v)
                           )
                       | Alt (1, v) ->
                           `Esc_seq (
@@ -3185,7 +3203,7 @@ let trans_string_ ((kind, body) : mt) : CST.string_ =
             )
           )
       | Alt (1, v) ->
-          `SQUOT_rep_choice_blank_SQUOT (
+          `SQUOT_rep_choice_imm_tok_pat_3e57880_SQUOT (
             (match v with
             | Seq [v0; v1; v2] ->
                 (
@@ -3194,8 +3212,8 @@ let trans_string_ ((kind, body) : mt) : CST.string_ =
                     (fun v ->
                       (match v with
                       | Alt (0, v) ->
-                          `Blank (
-                            Run.nothing v
+                          `Imm_tok_pat_3e57880 (
+                            trans_imm_tok_pat_3e57880 (Run.matcher_token v)
                           )
                       | Alt (1, v) ->
                           `Esc_seq (
@@ -3223,7 +3241,7 @@ let trans_regex ((kind, body) : mt) : CST.regex =
           (
             Run.trans_token (Run.matcher_token v0),
             trans_regex_pattern (Run.matcher_token v1),
-            Run.trans_token (Run.matcher_token v2),
+            trans_imm_tok_SLASH (Run.matcher_token v2),
             Run.opt
               (fun v -> trans_regex_flags (Run.matcher_token v))
               v3

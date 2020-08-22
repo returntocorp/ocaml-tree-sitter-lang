@@ -39,6 +39,7 @@ let children_regexps : (string * Run.exp option) list = [
   "dot", None;
   "imaginary_literal", None;
   "true", None;
+  "imm_tok_pat_101b4f2", None;
   "blank_identifier", None;
   "fallthrough_statement", None;
   "escape_sequence", None;
@@ -53,7 +54,7 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "\"");
       Repeat (
         Alt [|
-          Nothing;
+          Token (Name "imm_tok_pat_101b4f2");
           Token (Name "escape_sequence");
         |];
       );
@@ -1429,6 +1430,11 @@ let trans_true_ ((kind, body) : mt) : CST.true_ =
   | Leaf v -> v
   | Children _ -> assert false
 
+let trans_imm_tok_pat_101b4f2 ((kind, body) : mt) : CST.imm_tok_pat_101b4f2 =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
 let trans_blank_identifier ((kind, body) : mt) : CST.blank_identifier =
   match body with
   | Leaf v -> v
@@ -1481,8 +1487,8 @@ let trans_interpreted_string_literal ((kind, body) : mt) : CST.interpreted_strin
               (fun v ->
                 (match v with
                 | Alt (0, v) ->
-                    `Blank (
-                      Run.nothing v
+                    `Imm_tok_pat_101b4f2 (
+                      trans_imm_tok_pat_101b4f2 (Run.matcher_token v)
                     )
                 | Alt (1, v) ->
                     `Esc_seq (
