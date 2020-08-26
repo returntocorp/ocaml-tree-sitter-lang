@@ -1065,9 +1065,6 @@ and map_expression (env : env) (x : CST.expression) =
         | `GTGTGTEQ tok -> token env tok (* ">>>=" *)
         | `LTLTEQ tok -> token env tok (* "<<=" *)
         | `STARSTAREQ tok -> token env tok (* "**=" *)
-        | `AMPAMPEQ tok -> token env tok (* "&&=" *)
-        | `BARBAREQ tok -> token env tok (* "||=" *)
-        | `QMARKQMARKEQ tok -> token env tok (* "??=" *)
         )
       in
       let v3 = map_expression env v3 in

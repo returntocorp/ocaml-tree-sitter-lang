@@ -485,9 +485,6 @@ and expression = [
           | `GTGTGTEQ of Token.t (* ">>>=" *)
           | `LTLTEQ of Token.t (* "<<=" *)
           | `STARSTAREQ of Token.t (* "**=" *)
-          | `AMPAMPEQ of Token.t (* "&&=" *)
-          | `BARBAREQ of Token.t (* "||=" *)
-          | `QMARKQMARKEQ of Token.t (* "??=" *)
         ]
       * expression
     )
@@ -1128,9 +1125,6 @@ type augmented_assignment_expression (* inlined *) = (
       | `GTGTGTEQ of Token.t (* ">>>=" *)
       | `LTLTEQ of Token.t (* "<<=" *)
       | `STARSTAREQ of Token.t (* "**=" *)
-      | `AMPAMPEQ of Token.t (* "&&=" *)
-      | `BARBAREQ of Token.t (* "||=" *)
-      | `QMARKQMARKEQ of Token.t (* "??=" *)
     ]
   * expression
 )

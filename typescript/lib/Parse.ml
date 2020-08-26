@@ -1717,9 +1717,6 @@ let children_regexps : (string * Run.exp option) list = [
         Token (Literal ">>>=");
         Token (Literal "<<=");
         Token (Literal "**=");
-        Token (Literal "&&=");
-        Token (Literal "||=");
-        Token (Literal "??=");
       |];
       Token (Name "expression");
     ];
@@ -7769,18 +7766,6 @@ and trans_augmented_assignment_expression ((kind, body) : mt) : CST.augmented_as
                 )
             | Alt (11, v) ->
                 `STARSTAREQ (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (12, v) ->
-                `AMPAMPEQ (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (13, v) ->
-                `BARBAREQ (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | Alt (14, v) ->
-                `QMARKQMARKEQ (
                   Run.trans_token (Run.matcher_token v)
                 )
             | _ -> assert false
