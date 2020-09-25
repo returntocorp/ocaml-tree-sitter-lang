@@ -168,7 +168,7 @@ type interpolated_string_text = [
 type join_into_clause = (Token.t (* "into" *) * identifier (*tok*))
 [@@deriving sexp_of]
 
-type anon_choice_id = [
+type anon_choice_id_43fe74f = [
     `Id of identifier (*tok*)
   | `Disc of Token.t (* "_" *)
 ]
@@ -198,8 +198,8 @@ type variable_designation = [
 
 type tuple_pattern = (
     Token.t (* "(" *)
-  * anon_choice_id
-  * (Token.t (* "," *) * anon_choice_id) list (* zero or more *)
+  * anon_choice_id_43fe74f
+  * (Token.t (* "," *) * anon_choice_id_43fe74f) list (* zero or more *)
   * Token.t (* ")" *)
 )
 [@@deriving sexp_of]
@@ -236,7 +236,7 @@ type literal = [
 ]
 [@@deriving sexp_of]
 
-type anon_choice_param = [
+type anon_choice_param_ce11a32 = [
     `Param of parameter
   | `Param_array of (
         attribute_list list (* zero or more *)
@@ -246,7 +246,7 @@ type anon_choice_param = [
     )
 ]
 
-and anon_opt_cst_pat_rep_interp_alig_clause =
+and anon_opt_cst_pat_rep_interp_alig_clause_080fdff =
   (constant_pattern * interpolation_alignment_clause list (* zero or more *))
     option
 
@@ -577,8 +577,8 @@ and expression = [
 and finally_clause = (Token.t (* "finally" *) * block)
 
 and formal_parameter_list = (
-    anon_choice_param
-  * (Token.t (* "," *) * anon_choice_param) list (* zero or more *)
+    anon_choice_param_ce11a32
+  * (Token.t (* "," *) * anon_choice_param_ce11a32) list (* zero or more *)
 )
 
 and from_clause = (
@@ -597,7 +597,7 @@ and function_body = [
 
 and initializer_expression = (
     Token.t (* "{" *)
-  * anon_opt_cst_pat_rep_interp_alig_clause
+  * anon_opt_cst_pat_rep_interp_alig_clause_080fdff
   * Token.t (* "," *) option
   * Token.t (* "}" *)
 )
@@ -795,7 +795,7 @@ and statement = [
       * Token.t (* ";" *)
       * constant_pattern option
       * Token.t (* ";" *)
-      * anon_opt_cst_pat_rep_interp_alig_clause
+      * anon_opt_cst_pat_rep_interp_alig_clause_080fdff
       * Token.t (* ")" *)
       * statement
     )
@@ -1029,7 +1029,7 @@ type accessor_declaration = (
 )
 [@@deriving sexp_of]
 
-type anon_subp_rep_COMMA_subp = (
+type anon_subp_rep_COMMA_subp_300d2c5 = (
     subpattern
   * (Token.t (* "," *) * subpattern) list (* zero or more *)
 )
@@ -1056,14 +1056,14 @@ type accessor_list = (
 
 type positional_pattern_clause = (
     Token.t (* "(" *)
-  * anon_subp_rep_COMMA_subp option
+  * anon_subp_rep_COMMA_subp_300d2c5 option
   * Token.t (* ")" *)
 )
 [@@deriving sexp_of]
 
 type property_pattern_clause = (
     Token.t (* "{" *)
-  * anon_subp_rep_COMMA_subp option
+  * anon_subp_rep_COMMA_subp_300d2c5 option
   * Token.t (* "}" *)
 )
 [@@deriving sexp_of]
@@ -1482,7 +1482,7 @@ type for_statement (* inlined *) = (
   * Token.t (* ";" *)
   * constant_pattern option
   * Token.t (* ";" *)
-  * anon_opt_cst_pat_rep_interp_alig_clause
+  * anon_opt_cst_pat_rep_interp_alig_clause_080fdff
   * Token.t (* ")" *)
   * statement
 )

@@ -32,7 +32,7 @@ type global_variable =
   ))" *)
 [@@deriving sexp_of]
 
-type anon_choice_PLUSEQ = [
+type anon_choice_PLUSEQ_6a24756 = [
     `PLUSEQ of Token.t (* "+=" *)
   | `DASHEQ of Token.t (* "-=" *)
   | `STAREQ of Token.t (* "*=" *)
@@ -184,7 +184,7 @@ type terminator = [
 ]
 [@@deriving sexp_of]
 
-type anon_choice_un_minus = [
+type anon_choice_un_minus_157a1bc = [
     `Un_minus of unary_minus (*tok*)
   | `PLUS of Token.t (* "+" *)
 ]
@@ -204,27 +204,22 @@ type variable = [
 type do_ = [ `Do of Token.t (* "do" *) | `Term of terminator ]
 [@@deriving sexp_of]
 
-type anon_choice_cst = [
+type anon_choice_cst_c1a97cb = [
     `Cst of constant (*tok*)
   | `Scope_resol of scope_resolution
 ]
 
-and anon_choice_else = [
+and anon_choice_else_4cfa13b = [
     `Else of else_
   | `Elsif of (
         Token.t (* "elsif" *)
       * statement
-      * anon_choice_term
-      * anon_choice_else option
+      * anon_choice_term_b9e1843
+      * anon_choice_else_4cfa13b option
     )
 ]
 
-and anon_choice_lhs = [
-    `Lhs of lhs
-  | `Left_assign_list of left_assignment_list
-]
-
-and anon_choice_lhs_ = [
+and anon_choice_lhs_3a98eae = [
     `Lhs of lhs
   | `Rest_assign of (Token.t (* "*" *) * lhs option)
   | `Dest_left_assign of (
@@ -232,25 +227,30 @@ and anon_choice_lhs_ = [
     )
 ]
 
-and anon_choice_pair = [
+and anon_choice_lhs_6f12f8f = [
+    `Lhs of lhs
+  | `Left_assign_list of left_assignment_list
+]
+
+and anon_choice_pair_a4f33e2 = [
     `Pair of pair
   | `Hash_splat_arg of hash_splat_argument
 ]
 
-and anon_choice_term = [ `Term of terminator | `Then of then_ ]
+and anon_choice_term_b9e1843 = [ `Term of terminator | `Then of then_ ]
 
-and anon_choice_var = [
+and anon_choice_var_56bd3f5 = [
     `Var of variable
   | `Scope_resol of scope_resolution
   | `Call of call
 ]
 
-and anon_formal_param_rep_COMMA_formal_param = (
+and anon_formal_param_rep_COMMA_formal_param_fcb57c2 = (
     formal_parameter
   * (Token.t (* "," *) * formal_parameter) list (* zero or more *)
 )
 
-and anon_lit_content_rep_pat_3d340f6_lit_content = (
+and anon_lit_content_rep_pat_3d340f6_lit_content_3d2b44e = (
     literal_contents
   * (pat_3d340f6 (*tok*) * literal_contents) list (* zero or more *)
 )
@@ -258,7 +258,7 @@ and anon_lit_content_rep_pat_3d340f6_lit_content = (
 and arg = [
     `Prim of primary
   | `Assign of assignment
-  | `Op_assign of (lhs * anon_choice_PLUSEQ * arg)
+  | `Op_assign of (lhs * anon_choice_PLUSEQ_6a24756 * arg)
   | `Cond of (arg * Token.t (* "?" *) * arg * Token.t (* ":" *) * arg)
   | `Range of (
         arg
@@ -291,7 +291,7 @@ and argument_list_with_trailing_comma = (
 
 and assignment = [
   `Choice_lhs_EQ_choice_arg of (
-      anon_choice_lhs
+      anon_choice_lhs_6f12f8f
     * Token.t (* "=" *)
     * [
           `Arg of arg
@@ -370,7 +370,7 @@ and block = (
 
 and block_parameters = (
     Token.t (* "|" *)
-  * anon_formal_param_rep_COMMA_formal_param option
+  * anon_formal_param_rep_COMMA_formal_param_fcb57c2 option
   * Token.t (* "," *) option
   * (
         Token.t (* ";" *)
@@ -408,16 +408,20 @@ and command_argument_list = [
 ]
 
 and command_assignment = [
-  `Choice_lhs_EQ_exp of (anon_choice_lhs * Token.t (* "=" *) * expression)
+  `Choice_lhs_EQ_exp of (
+      anon_choice_lhs_6f12f8f * Token.t (* "=" *) * expression
+  )
 ]
 
 and command_call = [
-    `Choice_var_cmd_arg_list of (anon_choice_var * command_argument_list)
+    `Choice_var_cmd_arg_list of (
+        anon_choice_var_56bd3f5 * command_argument_list
+    )
   | `Choice_var_cmd_arg_list_blk of (
-        anon_choice_var * command_argument_list * block
+        anon_choice_var_56bd3f5 * command_argument_list * block
     )
   | `Choice_var_cmd_arg_list_do_blk of (
-        anon_choice_var * command_argument_list * do_block
+        anon_choice_var_56bd3f5 * command_argument_list * do_block
     )
 ]
 
@@ -446,7 +450,7 @@ and expression = [
       * expression
     )
   | `Cmd_assign of command_assignment
-  | `Cmd_op_assign of (lhs * anon_choice_PLUSEQ * expression)
+  | `Cmd_op_assign of (lhs * anon_choice_PLUSEQ_6a24756 * expression)
   | `Cmd_call of command_call
   | `Ret_cmd of (Token.t (* "return" *) * command_argument_list)
   | `Yield_cmd of (Token.t (* "yield" *) * command_argument_list)
@@ -493,13 +497,15 @@ and literal_contents =
     list (* one or more *)
 
 and method_call = [
-    `Choice_var_arg_list of (anon_choice_var * argument_list)
-  | `Choice_var_arg_list_blk of (anon_choice_var * argument_list * block)
-  | `Choice_var_arg_list_do_blk of (
-        anon_choice_var * argument_list * do_block
+    `Choice_var_arg_list of (anon_choice_var_56bd3f5 * argument_list)
+  | `Choice_var_arg_list_blk of (
+        anon_choice_var_56bd3f5 * argument_list * block
     )
-  | `Choice_var_blk of (anon_choice_var * block)
-  | `Choice_var_do_blk of (anon_choice_var * do_block)
+  | `Choice_var_arg_list_do_blk of (
+        anon_choice_var_56bd3f5 * argument_list * do_block
+    )
+  | `Choice_var_blk of (anon_choice_var_56bd3f5 * block)
+  | `Choice_var_do_blk of (anon_choice_var_56bd3f5 * do_block)
 ]
 
 and method_name = [
@@ -523,8 +529,8 @@ and method_rest = (
 )
 
 and mlhs = (
-    anon_choice_lhs_
-  * (Token.t (* "," *) * anon_choice_lhs_) list (* zero or more *)
+    anon_choice_lhs_3a98eae
+  * (Token.t (* "," *) * anon_choice_lhs_3a98eae) list (* zero or more *)
   * Token.t (* "," *) option
 )
 
@@ -544,7 +550,7 @@ and pair = [
 
 and parameters = (
     Token.t (* "(" *)
-  * anon_formal_param_rep_COMMA_formal_param option
+  * anon_formal_param_rep_COMMA_formal_param_fcb57c2 option
   * Token.t (* ")" *)
 )
 
@@ -567,22 +573,23 @@ and primary = [
   | `Str_array of (
         string_array_start (*tok*)
       * pat_3d340f6 (*tok*) option
-      * anon_lit_content_rep_pat_3d340f6_lit_content option
+      * anon_lit_content_rep_pat_3d340f6_lit_content_3d2b44e option
       * pat_3d340f6 (*tok*) option
       * string_end (*tok*)
     )
   | `Symb_array of (
         symbol_array_start (*tok*)
       * pat_3d340f6 (*tok*) option
-      * anon_lit_content_rep_pat_3d340f6_lit_content option
+      * anon_lit_content_rep_pat_3d340f6_lit_content_3d2b44e option
       * pat_3d340f6 (*tok*) option
       * string_end (*tok*)
     )
   | `Hash of (
         Token.t (* "{" *)
       * (
-            anon_choice_pair
-          * (Token.t (* "," *) * anon_choice_pair) list (* zero or more *)
+            anon_choice_pair_a4f33e2
+          * (Token.t (* "," *) * anon_choice_pair_a4f33e2)
+              list (* zero or more *)
           * Token.t (* "," *) option
         )
           option
@@ -623,7 +630,7 @@ and primary = [
     )
   | `Class of (
         Token.t (* "class" *)
-      * anon_choice_cst
+      * anon_choice_cst_c1a97cb
       * superclass option
       * terminator
       * body_statement
@@ -635,7 +642,7 @@ and primary = [
     )
   | `Module of (
         Token.t (* "module" *)
-      * anon_choice_cst
+      * anon_choice_cst_c1a97cb
       * [
             `Term_body_stmt of (terminator * body_statement)
           | `End of Token.t (* "end" *)
@@ -659,15 +666,15 @@ and primary = [
   | `If of (
         Token.t (* "if" *)
       * statement
-      * anon_choice_term
-      * anon_choice_else option
+      * anon_choice_term_b9e1843
+      * anon_choice_else_4cfa13b option
       * Token.t (* "end" *)
     )
   | `Unless of (
         Token.t (* "unless" *)
       * statement
-      * anon_choice_term
-      * anon_choice_else option
+      * anon_choice_term_b9e1843
+      * anon_choice_else_4cfa13b option
       * Token.t (* "end" *)
     )
   | `For of (
@@ -698,7 +705,7 @@ and primary = [
       * parenthesized_statements
     )
   | `Un_lit of (
-        anon_choice_un_minus
+        anon_choice_un_minus_157a1bc
       * [ `Int of integer (*tok*) | `Float of float_ (*tok*) ]
     )
   | `Here_begin of heredoc_beginning (*tok*)
@@ -708,7 +715,7 @@ and rescue = (
     Token.t (* "rescue" *)
   * exceptions option
   * exception_variable option
-  * anon_choice_term
+  * anon_choice_term_b9e1843
 )
 
 and right_assignment_list = (
@@ -803,7 +810,7 @@ and then_ = [
 and unary = [
     `Defi_arg of (Token.t (* "defined?" *) * arg)
   | `Not_arg of (Token.t (* "not" *) * arg)
-  | `Choice_un_minus_arg of (anon_choice_un_minus * arg)
+  | `Choice_un_minus_arg of (anon_choice_un_minus_157a1bc * arg)
   | `Choice_BANG_arg of (
         [ `BANG of Token.t (* "!" *) | `TILDE of Token.t (* "~" *) ]
       * arg
@@ -814,7 +821,7 @@ and when_ = (
     Token.t (* "when" *)
   * pattern
   * (Token.t (* "," *) * pattern) list (* zero or more *)
-  * anon_choice_term
+  * anon_choice_term_b9e1843
 )
 [@@deriving sexp_of]
 
@@ -871,7 +878,7 @@ type rational (* inlined *) = (integer (*tok*) * Token.t (* "r" *))
 [@@deriving sexp_of]
 
 type unary_literal (* inlined *) = (
-    anon_choice_un_minus
+    anon_choice_un_minus_157a1bc
   * [ `Int of integer (*tok*) | `Float of float_ (*tok*) ]
 )
 [@@deriving sexp_of]
@@ -933,7 +940,7 @@ type chained_string (* inlined *) = (
 
 type class_ (* inlined *) = (
     Token.t (* "class" *)
-  * anon_choice_cst
+  * anon_choice_cst_c1a97cb
   * superclass option
   * terminator
   * body_statement
@@ -948,7 +955,7 @@ type command_binary (* inlined *) = (
 [@@deriving sexp_of]
 
 type command_operator_assignment (* inlined *) = (
-    lhs * anon_choice_PLUSEQ * expression
+    lhs * anon_choice_PLUSEQ_6a24756 * expression
 )
 [@@deriving sexp_of]
 
@@ -973,8 +980,8 @@ type element_reference (* inlined *) = (
 type elsif (* inlined *) = (
     Token.t (* "elsif" *)
   * statement
-  * anon_choice_term
-  * anon_choice_else option
+  * anon_choice_term_b9e1843
+  * anon_choice_else_4cfa13b option
 )
 [@@deriving sexp_of]
 
@@ -999,8 +1006,9 @@ type for_ (* inlined *) = (
 type hash (* inlined *) = (
     Token.t (* "{" *)
   * (
-        anon_choice_pair
-      * (Token.t (* "," *) * anon_choice_pair) list (* zero or more *)
+        anon_choice_pair_a4f33e2
+      * (Token.t (* "," *) * anon_choice_pair_a4f33e2)
+          list (* zero or more *)
       * Token.t (* "," *) option
     )
       option
@@ -1011,8 +1019,8 @@ type hash (* inlined *) = (
 type if_ (* inlined *) = (
     Token.t (* "if" *)
   * statement
-  * anon_choice_term
-  * anon_choice_else option
+  * anon_choice_term_b9e1843
+  * anon_choice_else_4cfa13b option
   * Token.t (* "end" *)
 )
 [@@deriving sexp_of]
@@ -1041,7 +1049,7 @@ type method_ (* inlined *) = (Token.t (* "def" *) * method_rest)
 
 type module_ (* inlined *) = (
     Token.t (* "module" *)
-  * anon_choice_cst
+  * anon_choice_cst_c1a97cb
   * [
         `Term_body_stmt of (terminator * body_statement)
       | `End of Token.t (* "end" *)
@@ -1057,7 +1065,9 @@ type next_command (* inlined *) = (
 )
 [@@deriving sexp_of]
 
-type operator_assignment (* inlined *) = (lhs * anon_choice_PLUSEQ * arg)
+type operator_assignment (* inlined *) = (
+    lhs * anon_choice_PLUSEQ_6a24756 * arg
+)
 [@@deriving sexp_of]
 
 type optional_parameter (* inlined *) = (
@@ -1127,7 +1137,7 @@ type singleton_method (* inlined *) = (
 type string_array (* inlined *) = (
     string_array_start (*tok*)
   * pat_3d340f6 (*tok*) option
-  * anon_lit_content_rep_pat_3d340f6_lit_content option
+  * anon_lit_content_rep_pat_3d340f6_lit_content_3d2b44e option
   * pat_3d340f6 (*tok*) option
   * string_end (*tok*)
 )
@@ -1143,7 +1153,7 @@ type subshell (* inlined *) = (
 type symbol_array (* inlined *) = (
     symbol_array_start (*tok*)
   * pat_3d340f6 (*tok*) option
-  * anon_lit_content_rep_pat_3d340f6_lit_content option
+  * anon_lit_content_rep_pat_3d340f6_lit_content_3d2b44e option
   * pat_3d340f6 (*tok*) option
   * string_end (*tok*)
 )
@@ -1159,8 +1169,8 @@ type undef (* inlined *) = (
 type unless (* inlined *) = (
     Token.t (* "unless" *)
   * statement
-  * anon_choice_term
-  * anon_choice_else option
+  * anon_choice_term_b9e1843
+  * anon_choice_else_4cfa13b option
   * Token.t (* "end" *)
 )
 [@@deriving sexp_of]

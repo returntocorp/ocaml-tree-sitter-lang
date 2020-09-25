@@ -14,7 +14,7 @@ type identifier = Token.t
 type raw_string_literal = Token.t
 [@@deriving sexp_of]
 
-type anon_choice_LF = [
+type anon_choice_LF_249c99f = [
     `LF of Token.t (* "\n" *)
   | `SEMI of Token.t (* ";" *)
 ]
@@ -23,7 +23,7 @@ type anon_choice_LF = [
 type int_literal = Token.t
 [@@deriving sexp_of]
 
-type anon_choice_new = [
+type anon_choice_new_0342769 = [
     `New of Token.t (* "new" *)
   | `Make of Token.t (* "make" *)
 ]
@@ -41,7 +41,7 @@ type rune_literal = Token.t
 type escape_sequence = Token.t
 [@@deriving sexp_of]
 
-type anon_choice_EQ = [
+type anon_choice_EQ_4ccabd6 = [
     `EQ of Token.t (* "=" *)
   | `COLONEQ of Token.t (* ":=" *)
 ]
@@ -89,7 +89,7 @@ type import_spec = (
 )
 [@@deriving sexp_of]
 
-type anon_choice_elem = [
+type anon_choice_elem_c42cd9b = [
     `Elem of element
   | `Keyed_elem of (
         [
@@ -101,22 +101,22 @@ type anon_choice_elem = [
     )
 ]
 
-and anon_choice_exp = [
+and anon_choice_exp_047b57a = [
     `Exp of expression
   | `Vari_arg of (expression * Token.t (* "..." *))
 ]
 
-and anon_choice_field_id = [
+and anon_choice_field_id_ccb7464 = [
     `Id of identifier (*tok*)
   | `Qual_type of qualified_type
   | `Meth_spec of (
         identifier (*tok*)
       * parameter_list
-      * anon_choice_param_list option
+      * anon_choice_param_list_29faba4 option
     )
 ]
 
-and anon_choice_param_decl = [
+and anon_choice_param_decl_18823e5 = [
     `Param_decl of (field_name_list option * type_)
   | `Vari_param_decl of (
         identifier (*tok*) option
@@ -125,7 +125,7 @@ and anon_choice_param_decl = [
     )
 ]
 
-and anon_choice_param_list = [
+and anon_choice_param_list_29faba4 = [
     `Param_list of parameter_list
   | `Simple_type of simple_type
 ]
@@ -133,8 +133,8 @@ and anon_choice_param_list = [
 and argument_list = (
     Token.t (* "(" *)
   * (
-        anon_choice_exp
-      * (Token.t (* "," *) * anon_choice_exp) list (* zero or more *)
+        anon_choice_exp_047b57a
+      * (Token.t (* "," *) * anon_choice_exp_047b57a) list (* zero or more *)
       * Token.t (* "," *) option
     )
       option
@@ -186,7 +186,9 @@ and binary_expression = [
 and block = (Token.t (* "{" *) * statement_list option * Token.t (* "}" *))
 
 and call_expression = [
-    `Choice_new_spec_arg_list of (anon_choice_new * special_argument_list)
+    `Choice_new_spec_arg_list of (
+        anon_choice_new_0342769 * special_argument_list
+    )
   | `Exp_arg_list of (expression * argument_list)
 ]
 
@@ -220,7 +222,7 @@ and declaration = [
             `Const_spec of const_spec
           | `LPAR_rep_const_spec_choice_LF_RPAR of (
                 Token.t (* "(" *)
-              * (const_spec * anon_choice_LF) list (* zero or more *)
+              * (const_spec * anon_choice_LF_249c99f) list (* zero or more *)
               * Token.t (* ")" *)
             )
         ]
@@ -234,7 +236,7 @@ and declaration = [
                 Token.t (* "(" *)
               * (
                     [ `Type_spec of type_spec | `Type_alias of type_alias ]
-                  * anon_choice_LF
+                  * anon_choice_LF_249c99f
                 )
                   list (* zero or more *)
               * Token.t (* ")" *)
@@ -247,7 +249,7 @@ and declaration = [
             `Var_spec of var_spec
           | `LPAR_rep_var_spec_choice_LF_RPAR of (
                 Token.t (* "(" *)
-              * (var_spec * anon_choice_LF) list (* zero or more *)
+              * (var_spec * anon_choice_LF_249c99f) list (* zero or more *)
               * Token.t (* ")" *)
             )
         ]
@@ -312,7 +314,7 @@ and expression = [
       * Token.t (* ")" *)
     )
   | `Id of identifier (*tok*)
-  | `Choice_new of anon_choice_new
+  | `Choice_new of anon_choice_new_0342769
   | `Comp_lit of (
         [
             `Map_type of map_type
@@ -328,7 +330,7 @@ and expression = [
   | `Func_lit of (
         Token.t (* "func" *)
       * parameter_list
-      * anon_choice_param_list option
+      * anon_choice_param_list_29faba4 option
       * block
     )
   | `Choice_raw_str_lit of string_literal
@@ -373,8 +375,8 @@ and field_declaration_list = (
     Token.t (* "{" *)
   * (
         field_declaration
-      * (anon_choice_LF * field_declaration) list (* zero or more *)
-      * anon_choice_LF option
+      * (anon_choice_LF_249c99f * field_declaration) list (* zero or more *)
+      * anon_choice_LF_249c99f option
     )
       option
   * Token.t (* "}" *)
@@ -404,8 +406,9 @@ and implicit_length_array_type = (
 and literal_value = (
     Token.t (* "{" *)
   * (
-        anon_choice_elem
-      * (Token.t (* "," *) * anon_choice_elem) list (* zero or more *)
+        anon_choice_elem_c42cd9b
+      * (Token.t (* "," *) * anon_choice_elem_c42cd9b)
+          list (* zero or more *)
       * Token.t (* "," *) option
     )
       option
@@ -420,9 +423,10 @@ and map_type = (
 and method_spec_list = (
     Token.t (* "{" *)
   * (
-        anon_choice_field_id
-      * (anon_choice_LF * anon_choice_field_id) list (* zero or more *)
-      * anon_choice_LF option
+        anon_choice_field_id_ccb7464
+      * (anon_choice_LF_249c99f * anon_choice_field_id_ccb7464)
+          list (* zero or more *)
+      * anon_choice_LF_249c99f option
     )
       option
   * Token.t (* "}" *)
@@ -432,8 +436,8 @@ and parameter_list = (
     Token.t (* "(" *)
   * (
         (
-            anon_choice_param_decl
-          * (Token.t (* "," *) * anon_choice_param_decl)
+            anon_choice_param_decl_18823e5
+          * (Token.t (* "," *) * anon_choice_param_decl_18823e5)
               list (* zero or more *)
         )
           option
@@ -444,13 +448,13 @@ and parameter_list = (
 )
 
 and range_clause = (
-    (expression_list * anon_choice_EQ) option
+    (expression_list * anon_choice_EQ_4ccabd6) option
   * Token.t (* "range" *)
   * expression
 )
 
 and receive_statement = (
-    (expression_list * anon_choice_EQ) option
+    (expression_list * anon_choice_EQ_4ccabd6) option
   * expression
 )
 
@@ -497,7 +501,7 @@ and simple_type = [
   | `Func_type of (
         Token.t (* "func" *)
       * parameter_list
-      * anon_choice_param_list option
+      * anon_choice_param_list_29faba4 option
     )
 ]
 
@@ -564,8 +568,8 @@ and statement = [
 and statement_list = [
     `Stmt_rep_choice_LF_stmt_opt_choice_LF_opt_empty_labe_stmt of (
         statement
-      * (anon_choice_LF * statement) list (* zero or more *)
-      * (anon_choice_LF * empty_labeled_statement option) option
+      * (anon_choice_LF_249c99f * statement) list (* zero or more *)
+      * (anon_choice_LF_249c99f * empty_labeled_statement option) option
     )
   | `Empty_labe_stmt of empty_labeled_statement
 ]
@@ -614,7 +618,7 @@ and var_spec = (
 
 type import_spec_list = (
     Token.t (* "(" *)
-  * (import_spec * anon_choice_LF) list (* zero or more *)
+  * (import_spec * anon_choice_LF_249c99f) list (* zero or more *)
   * Token.t (* ")" *)
 )
 [@@deriving sexp_of]
@@ -625,7 +629,7 @@ type top_level_declaration = [
         Token.t (* "func" *)
       * identifier (*tok*)
       * parameter_list
-      * anon_choice_param_list option
+      * anon_choice_param_list_29faba4 option
       * block option
     )
   | `Meth_decl of (
@@ -633,7 +637,7 @@ type top_level_declaration = [
       * parameter_list
       * identifier (*tok*)
       * parameter_list
-      * anon_choice_param_list option
+      * anon_choice_param_list_29faba4 option
       * block option
     )
   | `Import_decl of (
@@ -648,10 +652,10 @@ type top_level_declaration = [
 
 type source_file =
   [
-      `Stmt_choice_LF of (statement * anon_choice_LF)
+      `Stmt_choice_LF of (statement * anon_choice_LF_249c99f)
     | `Choice_pack_clause_opt_choice_LF of (
           top_level_declaration
-        * anon_choice_LF option
+        * anon_choice_LF_249c99f option
       )
   ]
     list (* zero or more *)
@@ -763,7 +767,7 @@ type const_declaration (* inlined *) = (
         `Const_spec of const_spec
       | `LPAR_rep_const_spec_choice_LF_RPAR of (
             Token.t (* "(" *)
-          * (const_spec * anon_choice_LF) list (* zero or more *)
+          * (const_spec * anon_choice_LF_249c99f) list (* zero or more *)
           * Token.t (* ")" *)
         )
     ]
@@ -802,7 +806,7 @@ type for_statement (* inlined *) = (
 type func_literal (* inlined *) = (
     Token.t (* "func" *)
   * parameter_list
-  * anon_choice_param_list option
+  * anon_choice_param_list_29faba4 option
   * block
 )
 [@@deriving sexp_of]
@@ -810,7 +814,7 @@ type func_literal (* inlined *) = (
 type function_type (* inlined *) = (
     Token.t (* "func" *)
   * parameter_list
-  * anon_choice_param_list option
+  * anon_choice_param_list_29faba4 option
 )
 [@@deriving sexp_of]
 
@@ -848,7 +852,7 @@ type labeled_statement (* inlined *) = (
 type method_spec (* inlined *) = (
     identifier (*tok*)
   * parameter_list
-  * anon_choice_param_list option
+  * anon_choice_param_list_29faba4 option
 )
 [@@deriving sexp_of]
 
@@ -938,7 +942,7 @@ type type_declaration (* inlined *) = (
             Token.t (* "(" *)
           * (
                 [ `Type_spec of type_spec | `Type_alias of type_alias ]
-              * anon_choice_LF
+              * anon_choice_LF_249c99f
             )
               list (* zero or more *)
           * Token.t (* ")" *)
@@ -977,7 +981,7 @@ type var_declaration (* inlined *) = (
         `Var_spec of var_spec
       | `LPAR_rep_var_spec_choice_LF_RPAR of (
             Token.t (* "(" *)
-          * (var_spec * anon_choice_LF) list (* zero or more *)
+          * (var_spec * anon_choice_LF_249c99f) list (* zero or more *)
           * Token.t (* ")" *)
         )
     ]
@@ -998,7 +1002,7 @@ type function_declaration (* inlined *) = (
     Token.t (* "func" *)
   * identifier (*tok*)
   * parameter_list
-  * anon_choice_param_list option
+  * anon_choice_param_list_29faba4 option
   * block option
 )
 [@@deriving sexp_of]
@@ -1008,7 +1012,7 @@ type method_declaration (* inlined *) = (
   * parameter_list
   * identifier (*tok*)
   * parameter_list
-  * anon_choice_param_list option
+  * anon_choice_param_list_29faba4 option
   * block option
 )
 [@@deriving sexp_of]

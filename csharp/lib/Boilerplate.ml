@@ -190,7 +190,7 @@ let map_join_into_clause (env : env) ((v1, v2) : CST.join_into_clause) =
   let v2 = token env v2 (* identifier *) in
   todo env (v1, v2)
 
-let map_anon_choice_id (env : env) (x : CST.anon_choice_id) =
+let map_anon_choice_id_43fe74f (env : env) (x : CST.anon_choice_id_43fe74f) =
   (match x with
   | `Id tok -> token env tok (* identifier *)
   | `Disc tok -> token env tok (* "_" *)
@@ -228,11 +228,11 @@ let rec map_variable_designation (env : env) (x : CST.variable_designation) =
 
 let map_tuple_pattern (env : env) ((v1, v2, v3, v4) : CST.tuple_pattern) =
   let v1 = token env v1 (* "(" *) in
-  let v2 = map_anon_choice_id env v2 in
+  let v2 = map_anon_choice_id_43fe74f env v2 in
   let v3 =
     List.map (fun (v1, v2) ->
       let v1 = token env v1 (* "," *) in
-      let v2 = map_anon_choice_id env v2 in
+      let v2 = map_anon_choice_id_43fe74f env v2 in
       todo env (v1, v2)
     ) v3
   in
@@ -283,7 +283,7 @@ let map_literal (env : env) (x : CST.literal) =
       token env tok (* verbatim_string_literal *)
   )
 
-let rec map_anon_choice_param (env : env) (x : CST.anon_choice_param) =
+let rec map_anon_choice_param_ce11a32 (env : env) (x : CST.anon_choice_param_ce11a32) =
   (match x with
   | `Param x -> map_parameter env x
   | `Param_array (v1, v2, v3, v4) ->
@@ -294,7 +294,7 @@ let rec map_anon_choice_param (env : env) (x : CST.anon_choice_param) =
       todo env (v1, v2, v3, v4)
   )
 
-and map_anon_opt_cst_pat_rep_interp_alig_clause (env : env) (opt : CST.anon_opt_cst_pat_rep_interp_alig_clause) =
+and map_anon_opt_cst_pat_rep_interp_alig_clause_080fdff (env : env) (opt : CST.anon_opt_cst_pat_rep_interp_alig_clause_080fdff) =
   (match opt with
   | Some (v1, v2) ->
       let v1 = map_constant_pattern env v1 in
@@ -954,11 +954,11 @@ and map_finally_clause (env : env) ((v1, v2) : CST.finally_clause) =
   todo env (v1, v2)
 
 and map_formal_parameter_list (env : env) ((v1, v2) : CST.formal_parameter_list) =
-  let v1 = map_anon_choice_param env v1 in
+  let v1 = map_anon_choice_param_ce11a32 env v1 in
   let v2 =
     List.map (fun (v1, v2) ->
       let v1 = token env v1 (* "," *) in
-      let v2 = map_anon_choice_param env v2 in
+      let v2 = map_anon_choice_param_ce11a32 env v2 in
       todo env (v1, v2)
     ) v2
   in
@@ -989,7 +989,7 @@ and map_function_body (env : env) (x : CST.function_body) =
 and map_initializer_expression (env : env) ((v1, v2, v3, v4) : CST.initializer_expression) =
   let v1 = token env v1 (* "{" *) in
   let v2 =
-    map_anon_opt_cst_pat_rep_interp_alig_clause env v2
+    map_anon_opt_cst_pat_rep_interp_alig_clause_080fdff env v2
   in
   let v3 =
     (match v3 with
@@ -1369,7 +1369,7 @@ and map_statement (env : env) (x : CST.statement) =
       in
       let v6 = token env v6 (* ";" *) in
       let v7 =
-        map_anon_opt_cst_pat_rep_interp_alig_clause env v7
+        map_anon_opt_cst_pat_rep_interp_alig_clause_080fdff env v7
       in
       let v8 = token env v8 (* ")" *) in
       let v9 = map_statement env v9 in
@@ -1780,7 +1780,7 @@ let map_accessor_declaration (env : env) ((v1, v2, v3, v4) : CST.accessor_declar
   let v4 = map_function_body env v4 in
   todo env (v1, v2, v3, v4)
 
-let map_anon_subp_rep_COMMA_subp (env : env) ((v1, v2) : CST.anon_subp_rep_COMMA_subp) =
+let map_anon_subp_rep_COMMA_subp_300d2c5 (env : env) ((v1, v2) : CST.anon_subp_rep_COMMA_subp_300d2c5) =
   let v1 = map_subpattern env v1 in
   let v2 =
     List.map (fun (v1, v2) ->
@@ -1825,7 +1825,7 @@ let map_positional_pattern_clause (env : env) ((v1, v2, v3) : CST.positional_pat
   let v1 = token env v1 (* "(" *) in
   let v2 =
     (match v2 with
-    | Some x -> map_anon_subp_rep_COMMA_subp env x
+    | Some x -> map_anon_subp_rep_COMMA_subp_300d2c5 env x
     | None -> todo env ())
   in
   let v3 = token env v3 (* ")" *) in
@@ -1835,7 +1835,7 @@ let map_property_pattern_clause (env : env) ((v1, v2, v3) : CST.property_pattern
   let v1 = token env v1 (* "{" *) in
   let v2 =
     (match v2 with
-    | Some x -> map_anon_subp_rep_COMMA_subp env x
+    | Some x -> map_anon_subp_rep_COMMA_subp_300d2c5 env x
     | None -> todo env ())
   in
   let v3 = token env v3 (* "}" *) in

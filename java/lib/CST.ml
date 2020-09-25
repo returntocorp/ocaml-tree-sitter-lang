@@ -70,7 +70,7 @@ type inferred_parameters = (
 )
 [@@deriving sexp_of]
 
-type anon_choice_id = [
+type anon_choice_id_0e59f50 = [
     `Id of identifier (*tok*)
   | `Choice_open of reserved_identifier
 ]
@@ -190,7 +190,7 @@ and annotation_type_element_declaration = (
   * Token.t (* ";" *)
 )
 
-and anon_choice_formal_param = [
+and anon_choice_formal_param_3e261ef = [
     `Formal_param of (
         modifiers option
       * unannotated_type
@@ -204,9 +204,12 @@ and anon_choice_formal_param = [
     )
 ]
 
-and anon_choice_prim = [ `Prim of primary | `Super of Token.t (* "super" *) ]
+and anon_choice_prim_a6616f6 = [
+    `Prim of primary
+  | `Super of Token.t (* "super" *)
+]
 
-and anon_choice_type = [
+and anon_choice_type_205a2ac = [
     `Type of type_
   | `Wild of (
         annotation list (* zero or more *)
@@ -215,14 +218,14 @@ and anon_choice_type = [
     )
 ]
 
-and anon_exp_rep_COMMA_exp = (
+and anon_exp_rep_COMMA_exp_0bb260c = (
     expression
   * (Token.t (* "," *) * expression) list (* zero or more *)
 )
 
 and argument_list = (
     Token.t (* "(" *)
-  * anon_exp_rep_COMMA_exp option
+  * anon_exp_rep_COMMA_exp_0bb260c option
   * Token.t (* ")" *)
 )
 
@@ -519,7 +522,7 @@ and expression = [
 and extends_interfaces = (Token.t (* "extends" *) * interface_type_list)
 
 and field_access = (
-    anon_choice_prim
+    anon_choice_prim_a6616f6
   * (Token.t (* "." *) * Token.t (* "super" *)) option
   * Token.t (* "." *)
   * [
@@ -535,8 +538,8 @@ and formal_parameters = (
     Token.t (* "(" *)
   * receiver_parameter option
   * (
-        anon_choice_formal_param
-      * (Token.t (* "," *) * anon_choice_formal_param)
+        anon_choice_formal_param_3e261ef
+      * (Token.t (* "," *) * anon_choice_formal_param_3e261ef)
           list (* zero or more *)
     )
       option
@@ -591,7 +594,7 @@ and method_declaration = (
 )
 
 and method_declarator = (
-    anon_choice_id
+    anon_choice_id_0e59f50
   * formal_parameters
   * dimensions option
 )
@@ -646,13 +649,13 @@ and primary = [
   | `Array_access of array_access
   | `Meth_invo of (
         [
-            `Choice_id of anon_choice_id
+            `Choice_id of anon_choice_id_0e59f50
           | `Choice_prim_DOT_opt_super_DOT_opt_type_args_choice_id of (
-                anon_choice_prim
+                anon_choice_prim_a6616f6
               * Token.t (* "." *)
               * (Token.t (* "super" *) * Token.t (* "." *)) option
               * type_arguments option
-              * anon_choice_id
+              * anon_choice_id_0e59f50
             )
         ]
       * argument_list
@@ -749,13 +752,13 @@ and statement = [
       * [
             `Local_var_decl of local_variable_declaration
           | `Opt_exp_rep_COMMA_exp_SEMI of (
-                anon_exp_rep_COMMA_exp option
+                anon_exp_rep_COMMA_exp_0bb260c option
               * Token.t (* ";" *)
             )
         ]
       * expression option
       * Token.t (* ";" *)
-      * anon_exp_rep_COMMA_exp option
+      * anon_exp_rep_COMMA_exp_0bb260c option
       * Token.t (* ")" *)
       * statement
     )
@@ -852,8 +855,9 @@ and type_ = [
 and type_arguments = (
     Token.t (* "<" *)
   * (
-        anon_choice_type
-      * (Token.t (* "," *) * anon_choice_type) list (* zero or more *)
+        anon_choice_type_205a2ac
+      * (Token.t (* "," *) * anon_choice_type_205a2ac)
+          list (* zero or more *)
     )
       option
   * Token.t (* ">" *)
@@ -910,7 +914,7 @@ and variable_declarator = (
   * (Token.t (* "=" *) * variable_initializer) option
 )
 
-and variable_declarator_id = (anon_choice_id * dimensions option)
+and variable_declarator_id = (anon_choice_id_0e59f50 * dimensions option)
 
 and variable_declarator_list = (
     variable_declarator
@@ -1108,13 +1112,13 @@ type for_statement (* inlined *) = (
   * [
         `Local_var_decl of local_variable_declaration
       | `Opt_exp_rep_COMMA_exp_SEMI of (
-            anon_exp_rep_COMMA_exp option
+            anon_exp_rep_COMMA_exp_0bb260c option
           * Token.t (* ";" *)
         )
     ]
   * expression option
   * Token.t (* ";" *)
-  * anon_exp_rep_COMMA_exp option
+  * anon_exp_rep_COMMA_exp_0bb260c option
   * Token.t (* ")" *)
   * statement
 )
@@ -1158,13 +1162,13 @@ type lambda_expression (* inlined *) = (
 
 type method_invocation (* inlined *) = (
     [
-        `Choice_id of anon_choice_id
+        `Choice_id of anon_choice_id_0e59f50
       | `Choice_prim_DOT_opt_super_DOT_opt_type_args_choice_id of (
-            anon_choice_prim
+            anon_choice_prim_a6616f6
           * Token.t (* "." *)
           * (Token.t (* "super" *) * Token.t (* "." *)) option
           * type_arguments option
-          * anon_choice_id
+          * anon_choice_id_0e59f50
         )
     ]
   * argument_list

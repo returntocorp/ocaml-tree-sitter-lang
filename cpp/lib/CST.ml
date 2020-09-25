@@ -27,7 +27,7 @@ type pat_c3ea183 = Token.t (* pattern #[ 	]*define *)
 type preproc_arg = Token.t
 [@@deriving sexp_of]
 
-type anon_choice_DASHDASH = [
+type anon_choice_DASHDASH_d11def2 = [
     `DASHDASH of Token.t (* "--" *)
   | `PLUSPLUS of Token.t (* "++" *)
 ]
@@ -98,13 +98,13 @@ type pat_25b90ba = Token.t (* pattern #[ 	]*ifdef *)
 type tok_GT = Token.t
 [@@deriving sexp_of]
 
-type anon_choice_DOT = [
+type anon_choice_DOT_2ad1dab = [
     `DOT of Token.t (* "." *)
   | `DASHGT of Token.t (* "->" *)
 ]
 [@@deriving sexp_of]
 
-type anon_choice_BANG = [
+type anon_choice_BANG_67174d6 = [
     `BANG of Token.t (* "!" *)
   | `TILDE of Token.t (* "~" *)
   | `DASH of Token.t (* "-" *)
@@ -133,7 +133,7 @@ type identifier = Token.t (* pattern [a-zA-Z_]\w* *)
 type number_literal = Token.t
 [@@deriving sexp_of]
 
-type anon_choice_type = [
+type anon_choice_type_a2fe5d4 = [
     `Type of Token.t (* "typename" *)
   | `Class of Token.t (* "class" *)
 ]
@@ -142,7 +142,7 @@ type anon_choice_type = [
 type pat_56631e5 = Token.t (* pattern #[ 	]*else *)
 [@@deriving sexp_of]
 
-type anon_choice_public = [
+type anon_choice_public_c9638d9 = [
     `Public of Token.t (* "public" *)
   | `Priv of Token.t (* "private" *)
   | `Prot of Token.t (* "protected" *)
@@ -158,13 +158,13 @@ type imm_tok_pat_c7f65b4 = Token.t (* pattern "[^\\\\\"\\n]+" *)
 type operator_name = Token.t
 [@@deriving sexp_of]
 
-type anon_choice_AMP = [
+type anon_choice_AMP_c92c117 = [
     `AMP of Token.t (* "&" *)
   | `AMPAMP of Token.t (* "&&" *)
 ]
 [@@deriving sexp_of]
 
-type anon_choice_pat_25b90ba = [
+type anon_choice_pat_25b90ba_4a37f8c = [
     `Pat_25b90ba of pat_25b90ba (*tok*)
   | `Pat_9d92f6a of pat_9d92f6a (*tok*)
 ]
@@ -242,14 +242,14 @@ type field_designator = (Token.t (* "." *) * identifier (*tok*))
 [@@deriving sexp_of]
 
 type variadic_type_parameter_declaration = (
-    anon_choice_type
+    anon_choice_type_a2fe5d4
   * Token.t (* "..." *)
   * identifier (*tok*) option
 )
 [@@deriving sexp_of]
 
 type type_parameter_declaration = (
-    anon_choice_type
+    anon_choice_type_a2fe5d4
   * identifier (*tok*) option
 )
 [@@deriving sexp_of]
@@ -260,7 +260,7 @@ type ms_declspec_modifier = (
 )
 [@@deriving sexp_of]
 
-type anon_choice_stmt_id2 = [
+type anon_choice_stmt_id_d3c4b5f = [
     `Id of identifier (*tok*)
   | `DOTDOTDOT of Token.t (* "..." *)
 ]
@@ -282,7 +282,7 @@ type sized_type_specifier = (
 type destructor_name = (Token.t (* "~" *) * identifier (*tok*))
 [@@deriving sexp_of]
 
-type anon_choice_raw_str_lit = [
+type anon_choice_raw_str_lit_28125b5 = [
     `Raw_str_lit of raw_string_literal (*tok*)
   | `Str_lit of string_literal
 ]
@@ -363,7 +363,7 @@ and preproc_expression = [
   | `Num_lit of number_literal (*tok*)
   | `Char_lit of char_literal
   | `Prep_defi of preproc_defined
-  | `Prep_un_exp of (anon_choice_BANG * preproc_expression)
+  | `Prep_un_exp of (anon_choice_BANG_67174d6 * preproc_expression)
   | `Prep_bin_exp of preproc_binary_expression
   | `Prep_paren_exp of (
         Token.t (* "(" *) * preproc_expression * Token.t (* ")" *)
@@ -380,15 +380,16 @@ type variadic_reference_declarator = (
 type preproc_params = (
     Token.t (* "(" *)
   * (
-        anon_choice_stmt_id2
-      * (Token.t (* "," *) * anon_choice_stmt_id2) list (* zero or more *)
+        anon_choice_stmt_id_d3c4b5f
+      * (Token.t (* "," *) * anon_choice_stmt_id_d3c4b5f)
+          list (* zero or more *)
     )
       option
   * Token.t (* ")" *)
 )
 [@@deriving sexp_of]
 
-type anon_choice_stmt_id4 = [
+type anon_choice_stmt_id_efddc5b = [
     `Id of identifier (*tok*)
   | `Op_name of operator_name (*tok*)
   | `Dest_name of destructor_name
@@ -396,8 +397,8 @@ type anon_choice_stmt_id4 = [
 [@@deriving sexp_of]
 
 type concatenated_string = (
-    anon_choice_raw_str_lit
-  * anon_choice_raw_str_lit list (* one or more *)
+    anon_choice_raw_str_lit_28125b5
+  * anon_choice_raw_str_lit_28125b5 list (* one or more *)
 )
 [@@deriving sexp_of]
 
@@ -426,7 +427,7 @@ type abstract_array_declarator = (
     abstract_declarator option
   * Token.t (* "[" *)
   * type_qualifier list (* zero or more *)
-  * anon_choice_exp_ option
+  * anon_choice_exp_508611b option
   * Token.t (* "]" *)
 )
 
@@ -437,7 +438,7 @@ and abstract_declarator = [
       | `Abst_array_decl of abstract_array_declarator
       | `Abst_paren_decl of abstract_parenthesized_declarator
     ]
-  | `Abst_ref_decl of (anon_choice_AMP * abstract_declarator option)
+  | `Abst_ref_decl of (anon_choice_AMP_c92c117 * abstract_declarator option)
 ]
 
 and abstract_function_declarator = (
@@ -467,12 +468,12 @@ and alias_declaration = (
   * type_descriptor * Token.t (* ";" *)
 )
 
-and anon_choice_arg_list = [
+and anon_choice_arg_list_e4b6f8f = [
     `Arg_list of argument_list
   | `Init_list of initializer_list
 ]
 
-and anon_choice_class_name = [
+and anon_choice_class_name_d6703e6 = [
     `Class_name of class_name
   | `Opt_class_name_opt_virt_spec_opt_base_class_clause_field_decl_list of (
         class_name option
@@ -482,7 +483,7 @@ and anon_choice_class_name = [
     )
 ]
 
-and anon_choice_comp_stmt = [
+and anon_choice_comp_stmt_be91723 = [
     `Comp_stmt of compound_statement
   | `Defa_meth_clause of (
         Token.t (* "=" *) * Token.t (* "default" *) * Token.t (* ";" *)
@@ -492,21 +493,27 @@ and anon_choice_comp_stmt = [
     )
 ]
 
-and anon_choice_decl = [
+and anon_choice_decl_f8b0ff3 = [
     `Decl of declarator
   | `Init_decl of init_declarator
 ]
 
-and anon_choice_exp = [ `Exp of expression | `Init_list of initializer_list ]
-
-and anon_choice_exp2 = [
+and anon_choice_exp_3078596 = [
     `Exp of expression
-  | `Comma_exp of (expression * Token.t (* "," *) * anon_choice_exp2)
+  | `Init_list of initializer_list
 ]
 
-and anon_choice_exp_ = [ `Exp of expression | `STAR of Token.t (* "*" *) ]
+and anon_choice_exp_508611b = [
+    `Exp of expression
+  | `STAR of Token.t (* "*" *)
+]
 
-and anon_choice_init_pair = [
+and anon_choice_exp_55b4dba = [
+    `Exp of expression
+  | `Comma_exp of (expression * Token.t (* "," *) * anon_choice_exp_55b4dba)
+]
+
+and anon_choice_init_pair_1a6981e = [
     `Init_pair of (
         [
             `Subs_desi of subscript_designator
@@ -514,20 +521,13 @@ and anon_choice_init_pair = [
         ]
           list (* one or more *)
       * Token.t (* "=" *)
-      * anon_choice_exp
+      * anon_choice_exp_3078596
     )
   | `Exp of expression
   | `Init_list of initializer_list
 ]
 
-and anon_choice_param_decl = [
-    `Param_decl of parameter_declaration
-  | `Opt_param_decl of optional_parameter_declaration
-  | `Vari_param_decl of variadic_parameter_declaration
-  | `DOTDOTDOT of Token.t (* "..." *)
-]
-
-and anon_choice_param_decl_ = [
+and anon_choice_param_decl_13b5913 = [
     `Param_decl of parameter_declaration
   | `Opt_param_decl of optional_parameter_declaration
   | `Type_param_decl of type_parameter_declaration
@@ -545,18 +545,25 @@ and anon_choice_param_decl_ = [
     )
 ]
 
-and anon_choice_prep_else = [
+and anon_choice_param_decl_d9083af = [
+    `Param_decl of parameter_declaration
+  | `Opt_param_decl of optional_parameter_declaration
+  | `Vari_param_decl of variadic_parameter_declaration
+  | `DOTDOTDOT of Token.t (* "..." *)
+]
+
+and anon_choice_prep_else_8b52b0f = [
     `Prep_else of (pat_56631e5 (*tok*) * translation_unit)
   | `Prep_elif of (
         pat_bfeb4bb (*tok*)
       * preproc_expression
       * Token.t (* "\n" *)
       * translation_unit
-      * anon_choice_prep_else option
+      * anon_choice_prep_else_8b52b0f option
     )
 ]
 
-and anon_choice_prep_else_in_field_decl_list = [
+and anon_choice_prep_else_in_field_decl_list_97ea65e = [
     `Prep_else_in_field_decl_list of (
         pat_56631e5 (*tok*)
       * field_declaration_list_item list (* zero or more *)
@@ -566,50 +573,50 @@ and anon_choice_prep_else_in_field_decl_list = [
       * preproc_expression
       * Token.t (* "\n" *)
       * field_declaration_list_item list (* zero or more *)
-      * anon_choice_prep_else_in_field_decl_list option
+      * anon_choice_prep_else_in_field_decl_list_97ea65e option
     )
 ]
 
-and anon_choice_stmt_id = [
+and anon_choice_stmt_id_ae28a26 = [
     `Id of identifier (*tok*)
   | `Scoped_field_id of (
-        anon_choice_stmt_id3 option
+        anon_choice_stmt_id_ec78ce4 option
       * Token.t (* "::" *)
-      * anon_choice_stmt_id4
+      * anon_choice_stmt_id_efddc5b
     )
 ]
 
-and anon_choice_stmt_id3 = [
+and anon_choice_stmt_id_ec78ce4 = [
     `Id of identifier (*tok*)
   | `Temp_type of template_type
   | `Scoped_name_id of scoped_namespace_identifier
 ]
 
-and anon_choice_stmt_id_ = [
+and anon_choice_stmt_id_f1f5a37 = [
     `Id of identifier (*tok*)
   | `Scoped_id of scoped_identifier
 ]
 
-and anon_choice_stor_class_spec = [
-    `Stor_class_spec of storage_class_specifier
-  | `Type_qual of type_qualifier
-  | `Attr_spec of attribute_specifier
-]
-
-and anon_choice_stor_class_spec_ = [
+and anon_choice_stor_class_spec_5764fed = [
     `Stor_class_spec of storage_class_specifier
   | `Type_qual of type_qualifier
   | `Attr_spec of attribute_specifier
   | `Ms_decl_modi of ms_declspec_modifier
 ]
 
-and anon_choice_type_desc = [
+and anon_choice_stor_class_spec_74adcb0 = [
+    `Stor_class_spec of storage_class_specifier
+  | `Type_qual of type_qualifier
+  | `Attr_spec of attribute_specifier
+]
+
+and anon_choice_type_desc_4d9cafa = [
     `Type_desc of type_descriptor
   | `Type_param_pack_expa of (type_descriptor * Token.t (* "..." *))
   | `Exp of expression
 ]
 
-and anon_choice_type_qual = [
+and anon_choice_type_qual_01506e0 = [
     `Type_qual of type_qualifier
   | `Virt_spec of virtual_specifier
   | `Noex of noexcept
@@ -617,7 +624,7 @@ and anon_choice_type_qual = [
   | `Trai_ret_type of trailing_return_type
 ]
 
-and anon_choice_virt_func_spec = [
+and anon_choice_virt_func_spec_3025abc = [
     `Virt_func_spec of virtual_function_specifier
   | `Expl_func_spec of explicit_function_specifier
 ]
@@ -625,8 +632,8 @@ and anon_choice_virt_func_spec = [
 and argument_list = (
     Token.t (* "(" *)
   * (
-        anon_choice_exp
-      * (Token.t (* "," *) * anon_choice_exp) list (* zero or more *)
+        anon_choice_exp_3078596
+      * (Token.t (* "," *) * anon_choice_exp_3078596) list (* zero or more *)
     )
       option
   * Token.t (* ")" *)
@@ -636,7 +643,7 @@ and array_declarator = (
     declarator
   * Token.t (* "[" *)
   * type_qualifier list (* zero or more *)
-  * anon_choice_exp_ option
+  * anon_choice_exp_508611b option
   * Token.t (* "]" *)
 )
 
@@ -644,7 +651,7 @@ and array_field_declarator = (
     field_declarator
   * Token.t (* "[" *)
   * type_qualifier list (* zero or more *)
-  * anon_choice_exp_ option
+  * anon_choice_exp_508611b option
   * Token.t (* "]" *)
 )
 
@@ -692,12 +699,12 @@ and attribute_specifier = (
 
 and base_class_clause = (
     Token.t (* ":" *)
-  * anon_choice_public option
+  * anon_choice_public_c9638d9 option
   * class_name
   * Token.t (* "..." *) option
   * (
         Token.t (* "," *)
-      * anon_choice_public option
+      * anon_choice_public_c9638d9 option
       * class_name
       * Token.t (* "..." *) option
     )
@@ -785,7 +792,7 @@ and condition_clause = (
         `Opt_choice_decl_choice_exp of (
             [ `Decl of declaration | `Exp_stmt of expression_statement ]
               option
-          * anon_choice_exp2
+          * anon_choice_exp_55b4dba
         )
       | `Cond_decl of condition_declaration
     ]
@@ -807,18 +814,18 @@ and conditional_expression = (
 )
 
 and constructor_or_destructor_definition = (
-    anon_choice_stor_class_spec list (* zero or more *)
-  * anon_choice_virt_func_spec option
+    anon_choice_stor_class_spec_74adcb0 list (* zero or more *)
+  * anon_choice_virt_func_spec_3025abc option
   * function_declarator
   * field_initializer_list option
-  * anon_choice_comp_stmt
+  * anon_choice_comp_stmt_be91723
 )
 
 and declaration = (
     attribute list (* zero or more *)
   * declaration_specifiers
-  * anon_choice_decl
-  * (Token.t (* "," *) * anon_choice_decl) list (* zero or more *)
+  * anon_choice_decl_f8b0ff3
+  * (Token.t (* "," *) * anon_choice_decl_f8b0ff3) list (* zero or more *)
   * Token.t (* ";" *)
 )
 
@@ -827,9 +834,9 @@ and declaration_list = (
 )
 
 and declaration_specifiers = (
-    anon_choice_stor_class_spec_ list (* zero or more *)
+    anon_choice_stor_class_spec_5764fed list (* zero or more *)
   * type_specifier
-  * anon_choice_stor_class_spec_ list (* zero or more *)
+  * anon_choice_stor_class_spec_5764fed list (* zero or more *)
 )
 
 and declarator = [
@@ -840,7 +847,7 @@ and declarator = [
       | `Paren_decl of parenthesized_declarator
       | `Id of identifier (*tok*)
     ]
-  | `Ref_decl of (anon_choice_AMP * declarator)
+  | `Ref_decl of (anon_choice_AMP_c92c117 * declarator)
   | `Scoped_id of scoped_identifier
   | `Temp_func of template_function
   | `Op_name of operator_name (*tok*)
@@ -917,7 +924,7 @@ and expression = [
       * argument_list option
       * type_specifier
       * new_declarator option
-      * anon_choice_arg_list option
+      * anon_choice_arg_list_e4b6f8f option
     )
   | `Delete_exp of (
         Token.t (* "::" *) option
@@ -936,7 +943,10 @@ and expression = [
   | `Raw_str_lit of raw_string_literal (*tok*)
 ]
 
-and expression_statement = (anon_choice_exp2 option * Token.t (* ";" *))
+and expression_statement = (
+    anon_choice_exp_55b4dba option
+  * Token.t (* ";" *)
+)
 
 and field_declaration = (
     attribute list (* zero or more *)
@@ -950,7 +960,7 @@ and field_declaration = (
   * [
         `Bitf_clause of bitfield_clause
       | `Init_list of initializer_list
-      | `EQ_choice_exp of (Token.t (* "=" *) * anon_choice_exp)
+      | `EQ_choice_exp of (Token.t (* "=" *) * anon_choice_exp_3078596)
     ]
       option
   * Token.t (* ";" *)
@@ -978,11 +988,11 @@ and field_declaration_list_item = [
       * virtual_function_specifier option
       * declaration_specifiers
       * field_declarator
-      * anon_choice_comp_stmt
+      * anon_choice_comp_stmt_be91723
     )
   | `Cons_or_dest_defi of constructor_or_destructor_definition
   | `Cons_or_dest_decl of (
-        anon_choice_virt_func_spec option
+        anon_choice_virt_func_spec_3025abc option
       * function_declarator
       * Token.t (* ";" *)
     )
@@ -1005,7 +1015,7 @@ and field_declaration_list_item = [
             )
         ]
     )
-  | `Access_spec of (anon_choice_public * Token.t (* ":" *))
+  | `Access_spec of (anon_choice_public_c9638d9 * Token.t (* ":" *))
   | `Alias_decl of alias_declaration
   | `Using_decl of using_declaration
   | `Type_defi of type_definition
@@ -1020,22 +1030,24 @@ and field_declarator = [
       | `Paren_field_decl of parenthesized_field_declarator
       | `Id of identifier (*tok*)
     ]
-  | `Ref_field_decl of (anon_choice_AMP * field_declarator)
+  | `Ref_field_decl of (anon_choice_AMP_c92c117 * field_declarator)
   | `Temp_meth of template_method
   | `Op_name of operator_name (*tok*)
 ]
 
 and field_expression = [
-    `Exp_choice_DOT_id of (expression * anon_choice_DOT * identifier (*tok*))
+    `Exp_choice_DOT_id of (
+        expression * anon_choice_DOT_2ad1dab * identifier (*tok*)
+    )
   | `Exp_choice_DOT_choice_dest_name of (
         expression
-      * anon_choice_DOT
+      * anon_choice_DOT_2ad1dab
       * [ `Dest_name of destructor_name | `Temp_meth of template_method ]
     )
 ]
 
 and field_initializer = (
-    anon_choice_stmt_id
+    anon_choice_stmt_id_ae28a26
   * [ `Init_list of initializer_list | `Arg_list of argument_list ]
   * Token.t (* "..." *) option
 )
@@ -1050,7 +1062,7 @@ and function_declarator = (
     declarator
   * parameter_list
   * attribute_specifier list (* zero or more *)
-  * anon_choice_type_qual list (* zero or more *)
+  * anon_choice_type_qual_01506e0 list (* zero or more *)
 )
 
 and function_definition = (
@@ -1064,7 +1076,7 @@ and function_definition = (
 and function_field_declarator = (
     field_declarator
   * parameter_list
-  * anon_choice_type_qual list (* zero or more *)
+  * anon_choice_type_qual_01506e0 list (* zero or more *)
 )
 
 and init_declarator = [
@@ -1073,14 +1085,15 @@ and init_declarator = [
       * Token.t (* "=" *)
       * [ `Init_list of initializer_list | `Exp of expression ]
     )
-  | `Decl_choice_arg_list of (declarator * anon_choice_arg_list)
+  | `Decl_choice_arg_list of (declarator * anon_choice_arg_list_e4b6f8f)
 ]
 
 and initializer_list = (
     Token.t (* "{" *)
   * (
-        anon_choice_init_pair
-      * (Token.t (* "," *) * anon_choice_init_pair) list (* zero or more *)
+        anon_choice_init_pair_1a6981e
+      * (Token.t (* "," *) * anon_choice_init_pair_1a6981e)
+          list (* zero or more *)
     )
       option
   * Token.t (* "," *) option
@@ -1161,7 +1174,7 @@ and non_case_statement = [
         ]
       * expression option
       * Token.t (* ";" *)
-      * anon_choice_exp2 option
+      * anon_choice_exp_55b4dba option
       * Token.t (* ")" *)
       * statement
     )
@@ -1174,24 +1187,24 @@ and non_case_statement = [
 ]
 
 and operator_cast = (
-    (anon_choice_stmt_id3 option * Token.t (* "::" *)) option
+    (anon_choice_stmt_id_ec78ce4 option * Token.t (* "::" *)) option
   * Token.t (* "operator" *)
   * declaration_specifiers
   * abstract_declarator
 )
 
 and operator_cast_declaration = (
-    anon_choice_virt_func_spec option
+    anon_choice_virt_func_spec_3025abc option
   * operator_cast
   * (Token.t (* "=" *) * expression) option
   * Token.t (* ";" *)
 )
 
 and operator_cast_definition = (
-    anon_choice_stor_class_spec list (* zero or more *)
-  * anon_choice_virt_func_spec option
+    anon_choice_stor_class_spec_74adcb0 list (* zero or more *)
+  * anon_choice_virt_func_spec_3025abc option
   * operator_cast
-  * anon_choice_comp_stmt
+  * anon_choice_comp_stmt_be91723
 )
 
 and optional_parameter_declaration = (
@@ -1202,7 +1215,7 @@ and optional_parameter_declaration = (
 )
 
 and optional_type_parameter_declaration = (
-    anon_choice_type
+    anon_choice_type_a2fe5d4
   * identifier (*tok*) option
   * Token.t (* "=" *)
   * type_specifier
@@ -1217,8 +1230,9 @@ and parameter_declaration = (
 and parameter_list = (
     Token.t (* "(" *)
   * (
-        anon_choice_param_decl
-      * (Token.t (* "," *) * anon_choice_param_decl) list (* zero or more *)
+        anon_choice_param_decl_d9083af
+      * (Token.t (* "," *) * anon_choice_param_decl_d9083af)
+          list (* zero or more *)
     )
       option
   * Token.t (* ")" *)
@@ -1229,7 +1243,7 @@ and parenthesized_declarator = (
 )
 
 and parenthesized_expression = (
-    Token.t (* "(" *) * anon_choice_exp2 * Token.t (* ")" *)
+    Token.t (* "(" *) * anon_choice_exp_55b4dba * Token.t (* ")" *)
 )
 
 and parenthesized_field_declarator = (
@@ -1262,7 +1276,7 @@ and preproc_if = (
   * preproc_expression
   * Token.t (* "\n" *)
   * translation_unit
-  * anon_choice_prep_else option
+  * anon_choice_prep_else_8b52b0f option
   * pat_c46d1b2 (*tok*)
 )
 
@@ -1271,30 +1285,30 @@ and preproc_if_in_field_declaration_list = (
   * preproc_expression
   * Token.t (* "\n" *)
   * field_declaration_list_item list (* zero or more *)
-  * anon_choice_prep_else_in_field_decl_list option
+  * anon_choice_prep_else_in_field_decl_list_97ea65e option
   * pat_c46d1b2 (*tok*)
 )
 
 and preproc_ifdef = (
-    anon_choice_pat_25b90ba
+    anon_choice_pat_25b90ba_4a37f8c
   * identifier (*tok*)
   * translation_unit
-  * anon_choice_prep_else option
+  * anon_choice_prep_else_8b52b0f option
   * pat_c46d1b2 (*tok*)
 )
 
 and preproc_ifdef_in_field_declaration_list = (
-    anon_choice_pat_25b90ba
+    anon_choice_pat_25b90ba_4a37f8c
   * identifier (*tok*)
   * field_declaration_list_item list (* zero or more *)
-  * anon_choice_prep_else_in_field_decl_list option
+  * anon_choice_prep_else_in_field_decl_list_97ea65e option
   * pat_c46d1b2 (*tok*)
 )
 
 and return_statement = [
     `Ret_opt_choice_exp_SEMI of (
         Token.t (* "return" *)
-      * anon_choice_exp2 option
+      * anon_choice_exp_55b4dba option
       * Token.t (* ";" *)
     )
   | `Ret_init_list_SEMI of (
@@ -1303,19 +1317,19 @@ and return_statement = [
 ]
 
 and scoped_identifier = (
-    anon_choice_stmt_id3 option
+    anon_choice_stmt_id_ec78ce4 option
   * Token.t (* "::" *)
-  * anon_choice_stmt_id4
+  * anon_choice_stmt_id_efddc5b
 )
 
 and scoped_namespace_identifier = (
-    anon_choice_stmt_id3 option
+    anon_choice_stmt_id_ec78ce4 option
   * Token.t (* "::" *)
   * identifier (*tok*)
 )
 
 and scoped_type_identifier = (
-    anon_choice_stmt_id3 option
+    anon_choice_stmt_id_ec78ce4 option
   * Token.t (* "::" *)
   * identifier (*tok*)
 )
@@ -1343,8 +1357,8 @@ and statement = [
     ]
   | `For_range_loop of (
         Token.t (* "for" *) * Token.t (* "(" *) * declaration_specifiers
-      * declarator * Token.t (* ":" *) * anon_choice_exp * Token.t (* ")" *)
-      * statement
+      * declarator * Token.t (* ":" *) * anon_choice_exp_3078596
+      * Token.t (* ")" *) * statement
     )
   | `Try_stmt of (
         Token.t (* "try" *)
@@ -1386,8 +1400,9 @@ and subscript_expression = (
 and template_argument_list = (
     Token.t (* "<" *)
   * (
-        anon_choice_type_desc
-      * (Token.t (* "," *) * anon_choice_type_desc) list (* zero or more *)
+        anon_choice_type_desc_4d9cafa
+      * (Token.t (* "," *) * anon_choice_type_desc_4d9cafa)
+          list (* zero or more *)
     )
       option
   * tok_GT (*tok*)
@@ -1407,15 +1422,18 @@ and template_declaration = (
     ]
 )
 
-and template_function = (anon_choice_stmt_id_ * template_argument_list)
+and template_function = (
+    anon_choice_stmt_id_f1f5a37 * template_argument_list
+)
 
-and template_method = (anon_choice_stmt_id * template_argument_list)
+and template_method = (anon_choice_stmt_id_ae28a26 * template_argument_list)
 
 and template_parameter_list = (
     Token.t (* "<" *)
   * (
-        anon_choice_param_decl_
-      * (Token.t (* "," *) * anon_choice_param_decl_) list (* zero or more *)
+        anon_choice_param_decl_13b5913
+      * (Token.t (* "," *) * anon_choice_param_decl_13b5913)
+          list (* zero or more *)
     )
       option
   * tok_GT (*tok*)
@@ -1494,7 +1512,7 @@ and type_declarator = [
         type_declarator
       * Token.t (* "[" *)
       * type_qualifier list (* zero or more *)
-      * anon_choice_exp_ option
+      * anon_choice_exp_508611b option
       * Token.t (* "]" *)
     )
   | `Paren_type_decl of (
@@ -1523,12 +1541,12 @@ and type_specifier = [
     `Struct_spec of (
         Token.t (* "struct" *)
       * ms_declspec_modifier option
-      * anon_choice_class_name
+      * anon_choice_class_name_d6703e6
     )
   | `Union_spec of (
         Token.t (* "union" *)
       * ms_declspec_modifier option
-      * anon_choice_class_name
+      * anon_choice_class_name_d6703e6
     )
   | `Enum_spec of (
         Token.t (* "enum" *)
@@ -1549,7 +1567,7 @@ and type_specifier = [
   | `Class_spec of (
         Token.t (* "class" *)
       * ms_declspec_modifier option
-      * anon_choice_class_name
+      * anon_choice_class_name_d6703e6
     )
   | `Sized_type_spec of sized_type_specifier
   | `Prim_type of primitive_type (*tok*)
@@ -1566,17 +1584,17 @@ and type_specifier = [
     ]
 ]
 
-and unary_expression = (anon_choice_BANG * expression)
+and unary_expression = (anon_choice_BANG_67174d6 * expression)
 
 and update_expression = [
-    `Choice_DASHDASH_exp of (anon_choice_DASHDASH * expression)
-  | `Exp_choice_DASHDASH of (expression * anon_choice_DASHDASH)
+    `Choice_DASHDASH_exp of (anon_choice_DASHDASH_d11def2 * expression)
+  | `Exp_choice_DASHDASH of (expression * anon_choice_DASHDASH_d11def2)
 ]
 
 and using_declaration = (
     Token.t (* "using" *)
   * Token.t (* "namespace" *) option
-  * anon_choice_stmt_id_
+  * anon_choice_stmt_id_f1f5a37
   * Token.t (* ";" *)
 )
 
@@ -1649,7 +1667,7 @@ type namespace_identifier (* inlined *) = identifier (*tok*)
 [@@deriving sexp_of]
 
 type access_specifier (* inlined *) = (
-    anon_choice_public * Token.t (* ":" *)
+    anon_choice_public_c9638d9 * Token.t (* ":" *)
 )
 [@@deriving sexp_of]
 
@@ -1672,17 +1690,17 @@ type preproc_parenthesized_expression (* inlined *) = (
 [@@deriving sexp_of]
 
 type preproc_unary_expression (* inlined *) = (
-    anon_choice_BANG * preproc_expression
+    anon_choice_BANG_67174d6 * preproc_expression
 )
 [@@deriving sexp_of]
 
 type abstract_reference_declarator (* inlined *) = (
-    anon_choice_AMP
+    anon_choice_AMP_c92c117
   * abstract_declarator option
 )
 [@@deriving sexp_of]
 
-type anon_opt_class_name_opt_virt_spec_opt_base_class_clause_field_decl_list (* inlined *) = (
+type anon_opt_class_name_opt_virt_spec_opt_base_class_clause_field_decl_list_89302cc (* inlined *) = (
     class_name option
   * virtual_specifier option
   * base_class_clause option
@@ -1694,7 +1712,7 @@ type array_type_declarator (* inlined *) = (
     type_declarator
   * Token.t (* "[" *)
   * type_qualifier list (* zero or more *)
-  * anon_choice_exp_ option
+  * anon_choice_exp_508611b option
   * Token.t (* "]" *)
 )
 [@@deriving sexp_of]
@@ -1702,17 +1720,17 @@ type array_type_declarator (* inlined *) = (
 type class_specifier (* inlined *) = (
     Token.t (* "class" *)
   * ms_declspec_modifier option
-  * anon_choice_class_name
+  * anon_choice_class_name_d6703e6
 )
 [@@deriving sexp_of]
 
 type comma_expression (* inlined *) = (
-    expression * Token.t (* "," *) * anon_choice_exp2
+    expression * Token.t (* "," *) * anon_choice_exp_55b4dba
 )
 [@@deriving sexp_of]
 
 type constructor_or_destructor_declaration (* inlined *) = (
-    anon_choice_virt_func_spec option
+    anon_choice_virt_func_spec_3025abc option
   * function_declarator
   * Token.t (* ";" *)
 )
@@ -1760,8 +1778,8 @@ type enum_specifier (* inlined *) = (
 
 type for_range_loop (* inlined *) = (
     Token.t (* "for" *) * Token.t (* "(" *) * declaration_specifiers
-  * declarator * Token.t (* ":" *) * anon_choice_exp * Token.t (* ")" *)
-  * statement
+  * declarator * Token.t (* ":" *) * anon_choice_exp_3078596
+  * Token.t (* ")" *) * statement
 )
 [@@deriving sexp_of]
 
@@ -1771,7 +1789,7 @@ type for_statement (* inlined *) = (
   * [ `Decl of declaration | `Opt_choice_exp_SEMI of expression_statement ]
   * expression option
   * Token.t (* ";" *)
-  * anon_choice_exp2 option
+  * anon_choice_exp_55b4dba option
   * Token.t (* ")" *)
   * statement
 )
@@ -1814,7 +1832,7 @@ type initializer_pair (* inlined *) = (
     [ `Subs_desi of subscript_designator | `Field_desi of field_designator ]
       list (* one or more *)
   * Token.t (* "=" *)
-  * anon_choice_exp
+  * anon_choice_exp_3078596
 )
 [@@deriving sexp_of]
 
@@ -1823,7 +1841,7 @@ type inline_method_definition (* inlined *) = (
   * virtual_function_specifier option
   * declaration_specifiers
   * field_declarator
-  * anon_choice_comp_stmt
+  * anon_choice_comp_stmt_be91723
 )
 [@@deriving sexp_of]
 
@@ -1852,7 +1870,7 @@ type new_expression (* inlined *) = (
   * argument_list option
   * type_specifier
   * new_declarator option
-  * anon_choice_arg_list option
+  * anon_choice_arg_list_e4b6f8f option
 )
 [@@deriving sexp_of]
 
@@ -1880,7 +1898,7 @@ type preproc_elif (* inlined *) = (
   * preproc_expression
   * Token.t (* "\n" *)
   * translation_unit
-  * anon_choice_prep_else option
+  * anon_choice_prep_else_8b52b0f option
 )
 [@@deriving sexp_of]
 
@@ -1889,7 +1907,7 @@ type preproc_elif_in_field_declaration_list (* inlined *) = (
   * preproc_expression
   * Token.t (* "\n" *)
   * field_declaration_list_item list (* zero or more *)
-  * anon_choice_prep_else_in_field_decl_list option
+  * anon_choice_prep_else_in_field_decl_list_97ea65e option
 )
 [@@deriving sexp_of]
 
@@ -1902,25 +1920,27 @@ type preproc_else_in_field_declaration_list (* inlined *) = (
 )
 [@@deriving sexp_of]
 
-type reference_declarator (* inlined *) = (anon_choice_AMP * declarator)
+type reference_declarator (* inlined *) = (
+    anon_choice_AMP_c92c117 * declarator
+)
 [@@deriving sexp_of]
 
 type reference_field_declarator (* inlined *) = (
-    anon_choice_AMP * field_declarator
+    anon_choice_AMP_c92c117 * field_declarator
 )
 [@@deriving sexp_of]
 
 type scoped_field_identifier (* inlined *) = (
-    anon_choice_stmt_id3 option
+    anon_choice_stmt_id_ec78ce4 option
   * Token.t (* "::" *)
-  * anon_choice_stmt_id4
+  * anon_choice_stmt_id_efddc5b
 )
 [@@deriving sexp_of]
 
 type struct_specifier (* inlined *) = (
     Token.t (* "struct" *)
   * ms_declspec_modifier option
-  * anon_choice_class_name
+  * anon_choice_class_name_d6703e6
 )
 [@@deriving sexp_of]
 
@@ -1970,7 +1990,7 @@ type type_parameter_pack_expansion (* inlined *) = (
 type union_specifier (* inlined *) = (
     Token.t (* "union" *)
   * ms_declspec_modifier option
-  * anon_choice_class_name
+  * anon_choice_class_name_d6703e6
 )
 [@@deriving sexp_of]
 
