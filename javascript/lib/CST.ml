@@ -8,7 +8,7 @@
 open! Sexplib.Conv
 open Tree_sitter_run
 
-type imm_tok_pat_3e57880 = Token.t (* pattern "[^'\\\\\\n]+|\\\\\\r?\\n" *)
+type imm_tok_pat_3f3cd4d = Token.t (* pattern "[^\"\\\\\\n]+|\\\\?\\r?\\n" *)
 [@@deriving sexp_of]
 
 type identifier = Token.t
@@ -59,7 +59,7 @@ type escape_sequence = Token.t
 type template_chars = Token.t
 [@@deriving sexp_of]
 
-type imm_tok_pat_de5d470 = Token.t (* pattern "[^\"\\\\\\n]+|\\\\\\r?\\n" *)
+type imm_tok_pat_a3af5dd = Token.t (* pattern "[^'\\\\\\n]+|\\\\?\\r?\\n" *)
 [@@deriving sexp_of]
 
 type import_export_specifier = (
@@ -115,19 +115,19 @@ type anon_choice_id_0e3c97f = [
 [@@deriving sexp_of]
 
 type string_ = [
-    `DQUOT_rep_choice_imm_tok_pat_de5d470_DQUOT of (
+    `DQUOT_rep_choice_imm_tok_pat_3f3cd4d_DQUOT of (
         Token.t (* "\"" *)
       * [
-            `Imm_tok_pat_de5d470 of imm_tok_pat_de5d470 (*tok*)
+            `Imm_tok_pat_3f3cd4d of imm_tok_pat_3f3cd4d (*tok*)
           | `Esc_seq of escape_sequence (*tok*)
         ]
           list (* zero or more *)
       * Token.t (* "\"" *)
     )
-  | `SQUOT_rep_choice_imm_tok_pat_3e57880_SQUOT of (
+  | `SQUOT_rep_choice_imm_tok_pat_a3af5dd_SQUOT of (
         Token.t (* "'" *)
       * [
-            `Imm_tok_pat_3e57880 of imm_tok_pat_3e57880 (*tok*)
+            `Imm_tok_pat_a3af5dd of imm_tok_pat_a3af5dd (*tok*)
           | `Esc_seq of escape_sequence (*tok*)
         ]
           list (* zero or more *)
@@ -498,6 +498,7 @@ and jsx_attribute_value = [
 and jsx_child = [
     `Jsx_text of jsx_text (*tok*)
   | `Choice_jsx_elem of jsx_element_
+  | `Jsx_frag of jsx_fragment
   | `Jsx_exp of jsx_expression
 ]
 

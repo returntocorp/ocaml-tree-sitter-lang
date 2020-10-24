@@ -2,6 +2,7 @@ const PREC = {
   ACCESSIBILITY: 1,
   DEFINITION: 1,
   DECLARATION: 1,
+  TUPLE_TYPE: 1,
   INTERSECTION: 2,
   UNION: 2,
   PLUS: 4,
@@ -75,6 +76,7 @@ module.exports = function defineGrammar(dialect) {
       .concat([
         $._type_identifier,
         $._enum_member,
+        $._jsx_start_opening_element,
       ]),
 
     rules: {
@@ -136,8 +138,7 @@ module.exports = function defineGrammar(dialect) {
         return choice(...choices);
       },
 
-      // This rule is only referenced by _expression when the dialect is 'tsx'
-      jsx_opening_element: $ => prec.dynamic(-1, seq(
+      _jsx_start_opening_element: $ => seq(
         '<',
         choice(
           field('name', choice(
@@ -152,7 +153,19 @@ module.exports = function defineGrammar(dialect) {
             field('type_arguments', optional($.type_arguments))
           )
         ),
-        repeat(field('attribute', $._jsx_attribute)),
+        repeat(field('attribute', $._jsx_attribute))
+      ),
+
+      // This rule is only referenced by _expression when the dialect is 'tsx'
+      jsx_opening_element: $ => prec.dynamic(-1, seq(
+        $._jsx_start_opening_element,
+        '>'
+      )),
+
+      // tsx only. See jsx_opening_element.
+      jsx_self_closing_element: $ => prec.dynamic(-1, seq(
+        $._jsx_start_opening_element,
+        '/',
         '>'
       )),
 
@@ -182,10 +195,17 @@ module.exports = function defineGrammar(dialect) {
         $._expression, '!'
       )),
 
-      variable_declarator: $ => seq(
-        field('name', choice($.identifier, $._destructuring_pattern)),
-        field('type', optional($.type_annotation)),
-        optional($._initializer)
+      variable_declarator: $ => choice(
+        seq(
+          field('name', choice($.identifier, $._destructuring_pattern)),
+          field('type', optional($.type_annotation)),
+          optional($._initializer)
+        ),
+        prec(PREC.DECLARATION, seq(
+          field('name', $.identifier),
+          '!',
+          field('type', $.type_annotation)
+        ))
       ),
 
       method_signature: $ => seq(
@@ -459,6 +479,15 @@ module.exports = function defineGrammar(dialect) {
 
       type_annotation: $ => seq(':', $._type),
 
+      asserts: $ => seq(
+        ':',
+        'asserts',
+        choice(
+          $.identifier,
+          seq($.identifier, 'is', $._type)
+        )
+      ),
+
       _type: $ => choice(
         $._primary_type,
         $.union_type,
@@ -599,7 +628,9 @@ module.exports = function defineGrammar(dialect) {
       _call_signature: $ => seq(
         field('type_parameters', optional($.type_parameters)),
         field('parameters', $.formal_parameters),
-        field('return_type', optional($.type_annotation))
+        field('return_type', optional(
+          choice($.type_annotation, $.asserts)
+        ))
       ),
 
       type_parameters: $ => seq(
@@ -630,6 +661,7 @@ module.exports = function defineGrammar(dialect) {
       ),
 
       index_signature: $ => seq(
+        optional($.readonly),
         '[',
         choice(
           seq(
@@ -646,12 +678,14 @@ module.exports = function defineGrammar(dialect) {
         $.type_annotation
       ),
 
-      array_type: $ => prec.right(PREC.ARRAY_TYPE, seq(
-        $._primary_type, '[', ']'
+      array_type: $ => prec(PREC.ARRAY_TYPE, choice(
+        seq($.readonly, $._primary_type, '[', ']'),
+        prec(PREC.ARRAY_TYPE+1, seq($._primary_type, '[', ']'))
       )),
 
-      tuple_type: $ => seq(
-        '[', commaSep1($._type), ']'
+      tuple_type: $ => choice(
+        seq($.readonly, '[', commaSep1($._type), ']'),
+        prec(PREC.TUPLE_TYPE, seq('[', commaSep1($._type), ']'))
       ),
 
       union_type: $ => prec.left(PREC.UNION, seq(

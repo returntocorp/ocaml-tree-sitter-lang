@@ -11,7 +11,11 @@ open Tree_sitter_run
 type escape_sequence = Token.t
 [@@deriving sexp_of]
 
-type number = Token.t
+type identifier = Token.t
+[@@deriving sexp_of]
+
+type jsx_identifier =
+  Token.t (* pattern [a-zA-Z_$][a-zA-Z\d_$]*-[a-zA-Z\d_$\-]* *)
 [@@deriving sexp_of]
 
 type anon_choice_get_8fb02de = [
@@ -21,22 +25,13 @@ type anon_choice_get_8fb02de = [
 ]
 [@@deriving sexp_of]
 
-type regex_flags = Token.t (* pattern [a-z]+ *)
+type imm_tok_pat_3f3cd4d = Token.t (* pattern "[^\"\\\\\\n]+|\\\\?\\r?\\n" *)
 [@@deriving sexp_of]
 
-type anon_choice_type_2b11f6b = [
-    `Type of Token.t (* "type" *)
-  | `Typeof of Token.t (* "typeof" *)
-]
-[@@deriving sexp_of]
-
-type imm_tok_pat_de5d470 = Token.t (* pattern "[^\"\\\\\\n]+|\\\\\\r?\\n" *)
+type automatic_semicolon = Token.t
 [@@deriving sexp_of]
 
 type regex_pattern = Token.t
-[@@deriving sexp_of]
-
-type template_chars = Token.t
 [@@deriving sexp_of]
 
 type accessibility_modifier = [
@@ -46,32 +41,7 @@ type accessibility_modifier = [
 ]
 [@@deriving sexp_of]
 
-type import = Token.t
-[@@deriving sexp_of]
-
-type hash_bang_line = Token.t (* pattern #!.* *)
-[@@deriving sexp_of]
-
-type anon_choice_PLUSPLUS_e498e28 = [
-    `PLUSPLUS of Token.t (* "++" *)
-  | `DASHDASH of Token.t (* "--" *)
-]
-[@@deriving sexp_of]
-
-type identifier = Token.t
-[@@deriving sexp_of]
-
-type imm_tok_pat_3e57880 = Token.t (* pattern "[^'\\\\\\n]+|\\\\\\r?\\n" *)
-[@@deriving sexp_of]
-
-type jsx_text = Token.t (* pattern [^{}<>]+ *)
-[@@deriving sexp_of]
-
-type automatic_semicolon = Token.t
-[@@deriving sexp_of]
-
-type jsx_identifier =
-  Token.t (* pattern [a-zA-Z_$][a-zA-Z\d_$]*-[a-zA-Z\d_$\-]* *)
+type imm_tok_pat_a3af5dd = Token.t (* pattern "[^'\\\\\\n]+|\\\\?\\r?\\n" *)
 [@@deriving sexp_of]
 
 type predefined_type = [
@@ -82,6 +52,36 @@ type predefined_type = [
   | `Symb of Token.t (* "symbol" *)
   | `Void of Token.t (* "void" *)
 ]
+[@@deriving sexp_of]
+
+type jsx_text = Token.t (* pattern [^{}<>]+ *)
+[@@deriving sexp_of]
+
+type anon_choice_PLUSPLUS_e498e28 = [
+    `PLUSPLUS of Token.t (* "++" *)
+  | `DASHDASH of Token.t (* "--" *)
+]
+[@@deriving sexp_of]
+
+type hash_bang_line = Token.t (* pattern #!.* *)
+[@@deriving sexp_of]
+
+type regex_flags = Token.t (* pattern [a-z]+ *)
+[@@deriving sexp_of]
+
+type template_chars = Token.t
+[@@deriving sexp_of]
+
+type anon_choice_type_2b11f6b = [
+    `Type of Token.t (* "type" *)
+  | `Typeof of Token.t (* "typeof" *)
+]
+[@@deriving sexp_of]
+
+type number = Token.t
+[@@deriving sexp_of]
+
+type import = Token.t
 [@@deriving sexp_of]
 
 type reserved_identifier = [
@@ -108,20 +108,26 @@ type reserved_identifier = [
 ]
 [@@deriving sexp_of]
 
+type semicolon = [
+    `Auto_semi of automatic_semicolon (*tok*)
+  | `SEMI of Token.t (* ";" *)
+]
+[@@deriving sexp_of]
+
 type string_ = [
-    `DQUOT_rep_choice_imm_tok_pat_de5d470_DQUOT of (
+    `DQUOT_rep_choice_imm_tok_pat_3f3cd4d_DQUOT of (
         Token.t (* "\"" *)
       * [
-            `Imm_tok_pat_de5d470 of imm_tok_pat_de5d470 (*tok*)
+            `Imm_tok_pat_3f3cd4d of imm_tok_pat_3f3cd4d (*tok*)
           | `Esc_seq of escape_sequence (*tok*)
         ]
           list (* zero or more *)
       * Token.t (* "\"" *)
     )
-  | `SQUOT_rep_choice_imm_tok_pat_3e57880_SQUOT of (
+  | `SQUOT_rep_choice_imm_tok_pat_a3af5dd_SQUOT of (
         Token.t (* "'" *)
       * [
-            `Imm_tok_pat_3e57880 of imm_tok_pat_3e57880 (*tok*)
+            `Imm_tok_pat_a3af5dd of imm_tok_pat_a3af5dd (*tok*)
           | `Esc_seq of escape_sequence (*tok*)
         ]
           list (* zero or more *)
@@ -130,23 +136,32 @@ type string_ = [
 ]
 [@@deriving sexp_of]
 
-type semicolon = [
-    `Auto_semi of automatic_semicolon (*tok*)
-  | `SEMI of Token.t (* ";" *)
+type import_export_specifier = (
+    anon_choice_type_2b11f6b option
+  * identifier (*tok*)
+  * (Token.t (* "as" *) * identifier (*tok*)) option
+)
+[@@deriving sexp_of]
+
+type anon_choice_type_id_42c0412 = [
+    `Id of identifier (*tok*)
+  | `Nested_id of nested_identifier
 ]
+
+and nested_identifier = (
+    anon_choice_type_id_42c0412 * Token.t (* "." *) * identifier (*tok*)
+)
+[@@deriving sexp_of]
+
+type namespace_import = (
+    Token.t (* "*" *) * Token.t (* "as" *) * identifier (*tok*)
+)
 [@@deriving sexp_of]
 
 type jsx_identifier_ = [
     `Jsx_id of jsx_identifier (*tok*)
   | `Id of identifier (*tok*)
 ]
-[@@deriving sexp_of]
-
-type import_export_specifier = (
-    anon_choice_type_2b11f6b option
-  * identifier (*tok*)
-  * (Token.t (* "as" *) * identifier (*tok*)) option
-)
 [@@deriving sexp_of]
 
 type anon_choice_type_id_b8f8ced = [
@@ -171,28 +186,19 @@ type anon_choice_type_id_dd17e7d = [
 ]
 [@@deriving sexp_of]
 
-type namespace_import = (
-    Token.t (* "*" *) * Token.t (* "as" *) * identifier (*tok*)
-)
+type anon_choice_COMMA_5194cb4 = [
+    `COMMA of Token.t (* "," *)
+  | `Choice_auto_semi of semicolon
+]
 [@@deriving sexp_of]
 
-type anon_choice_type_id_42c0412 = [
-    `Id of identifier (*tok*)
-  | `Nested_id of nested_identifier
-]
-
-and nested_identifier = (
-    anon_choice_type_id_42c0412 * Token.t (* "." *) * identifier (*tok*)
-)
+type from_clause = (Token.t (* "from" *) * string_)
 [@@deriving sexp_of]
 
 type import_require_clause = (
     identifier (*tok*) * Token.t (* "=" *) * Token.t (* "require" *)
   * Token.t (* "(" *) * string_ * Token.t (* ")" *)
 )
-[@@deriving sexp_of]
-
-type from_clause = (Token.t (* "from" *) * string_)
 [@@deriving sexp_of]
 
 type literal_type = [
@@ -207,17 +213,6 @@ type literal_type = [
 ]
 [@@deriving sexp_of]
 
-type anon_choice_COMMA_5194cb4 = [
-    `COMMA of Token.t (* "," *)
-  | `Choice_auto_semi of semicolon
-]
-[@@deriving sexp_of]
-
-type jsx_namespace_name = (
-    jsx_identifier_ * Token.t (* ":" *) * jsx_identifier_
-)
-[@@deriving sexp_of]
-
 type anon_import_export_spec_rep_COMMA_import_export_spec_3a1421d = (
     import_export_specifier
   * (Token.t (* "," *) * import_export_specifier) list (* zero or more *)
@@ -226,6 +221,27 @@ type anon_import_export_spec_rep_COMMA_import_export_spec_3a1421d = (
 
 type nested_type_identifier = (
     anon_choice_type_id_42c0412 * Token.t (* "." *) * identifier (*tok*)
+)
+[@@deriving sexp_of]
+
+type jsx_namespace_name = (
+    jsx_identifier_ * Token.t (* ":" *) * jsx_identifier_
+)
+[@@deriving sexp_of]
+
+type named_imports = (
+    Token.t (* "{" *)
+  * anon_import_export_spec_rep_COMMA_import_export_spec_3a1421d option
+  * Token.t (* "," *) option
+  * Token.t (* "}" *)
+)
+[@@deriving sexp_of]
+
+type export_clause = (
+    Token.t (* "{" *)
+  * anon_import_export_spec_rep_COMMA_import_export_spec_3a1421d option
+  * Token.t (* "," *) option
+  * Token.t (* "}" *)
 )
 [@@deriving sexp_of]
 
@@ -240,28 +256,6 @@ type jsx_attribute_name = [
     `Choice_jsx_id of jsx_identifier_
   | `Jsx_name_name of jsx_namespace_name
 ]
-[@@deriving sexp_of]
-
-type export_clause = (
-    Token.t (* "{" *)
-  * anon_import_export_spec_rep_COMMA_import_export_spec_3a1421d option
-  * Token.t (* "," *) option
-  * Token.t (* "}" *)
-)
-[@@deriving sexp_of]
-
-type named_imports = (
-    Token.t (* "{" *)
-  * anon_import_export_spec_rep_COMMA_import_export_spec_3a1421d option
-  * Token.t (* "," *) option
-  * Token.t (* "}" *)
-)
-[@@deriving sexp_of]
-
-type jsx_closing_element = (
-    Token.t (* "<" *) * Token.t (* "/" *) * jsx_element_name
-  * Token.t (* ">" *)
-)
 [@@deriving sexp_of]
 
 type import_clause = [
@@ -279,6 +273,12 @@ type import_clause = [
           option
     )
 ]
+[@@deriving sexp_of]
+
+type jsx_closing_element = (
+    Token.t (* "<" *) * Token.t (* "/" *) * jsx_element_name
+  * Token.t (* ">" *)
+)
 [@@deriving sexp_of]
 
 type abstract_method_signature = (
@@ -401,6 +401,22 @@ and array_ = (
   * Token.t (* "]" *)
 )
 
+and array_type = [
+    `Read_prim_type_LBRACK_RBRACK of (
+        Token.t (* "readonly" *) * primary_type * Token.t (* "[" *)
+      * Token.t (* "]" *)
+    )
+  | `Prim_type_LBRACK_RBRACK of (
+        primary_type * Token.t (* "[" *) * Token.t (* "]" *)
+    )
+]
+
+and asserts = (
+    Token.t (* ":" *)
+  * Token.t (* "asserts" *)
+  * [ `Id of identifier (*tok*) | `Id_is_type of type_predicate ]
+)
+
 and binary_expression = [
     `Exp_AMPAMP_exp of (expression * Token.t (* "&&" *) * expression)
   | `Exp_BARBAR_exp of (expression * Token.t (* "||" *) * expression)
@@ -446,7 +462,7 @@ and call_expression = [
 and call_signature = (
     type_parameters option
   * formal_parameters
-  * type_annotation option
+  * [ `Type_anno of type_annotation | `Asserts of asserts ] option
 )
 
 and call_signature_ = call_signature
@@ -769,7 +785,8 @@ and implements_clause = (
 )
 
 and index_signature = (
-    Token.t (* "[" *)
+    Token.t (* "readonly" *) option
+  * Token.t (* "[" *)
   * [
         `Choice_id_COLON_pred_type of (
             anon_choice_type_id_dd17e7d * Token.t (* ":" *) * predefined_type
@@ -951,15 +968,10 @@ and primary_type = [
   | `Id of identifier (*tok*)
   | `Nested_type_id of nested_type_identifier
   | `Gene_type of generic_type
-  | `Type_pred of (identifier (*tok*) * Token.t (* "is" *) * type_)
+  | `Type_pred of type_predicate
   | `Obj_type of object_type
-  | `Array_type of (primary_type * Token.t (* "[" *) * Token.t (* "]" *))
-  | `Tuple_type of (
-        Token.t (* "[" *)
-      * type_
-      * (Token.t (* "," *) * type_) list (* zero or more *)
-      * Token.t (* "]" *)
-    )
+  | `Array_type of array_type
+  | `Tuple_type of tuple_type
   | `Flow_maybe_type of (Token.t (* "?" *) * primary_type)
   | `Type_query of (Token.t (* "typeof" *) * anon_choice_type_id_42c0412)
   | `Index_type_query of (
@@ -1147,6 +1159,22 @@ and template_substitution = (
     Token.t (* "${" *) * expressions * Token.t (* "}" *)
 )
 
+and tuple_type = [
+    `Read_LBRACK_type_rep_COMMA_type_RBRACK of (
+        Token.t (* "readonly" *)
+      * Token.t (* "[" *)
+      * type_
+      * (Token.t (* "," *) * type_) list (* zero or more *)
+      * Token.t (* "]" *)
+    )
+  | `LBRACK_type_rep_COMMA_type_RBRACK of (
+        Token.t (* "[" *)
+      * type_
+      * (Token.t (* "," *) * type_) list (* zero or more *)
+      * Token.t (* "]" *)
+    )
+]
+
 and type_ = [
     `Prim_type of primary_type
   | `Union_type of (type_ option * Token.t (* "|" *) * type_)
@@ -1190,6 +1218,8 @@ and type_parameters = (
   * Token.t (* ">" *)
 )
 
+and type_predicate = (identifier (*tok*) * Token.t (* "is" *) * type_)
+
 and unary_expression = [
     `BANG_exp of (Token.t (* "!" *) * expression)
   | `TILDE_exp of (Token.t (* "~" *) * expression)
@@ -1212,17 +1242,31 @@ and variable_declaration = (
   * semicolon
 )
 
-and variable_declarator = (
-    anon_choice_type_id_21dd422
-  * type_annotation option
-  * initializer_ option
-)
+and variable_declarator = [
+    `Choice_id_opt_type_anno_opt_init of (
+        anon_choice_type_id_21dd422
+      * type_annotation option
+      * initializer_ option
+    )
+  | `Id_BANG_type_anno of (
+        identifier (*tok*) * Token.t (* "!" *) * type_annotation
+    )
+]
 [@@deriving sexp_of]
 
 type program = (
     hash_bang_line (*tok*) option
   * statement list (* zero or more *)
 )
+[@@deriving sexp_of]
+
+type anon_choice_jsx_attr_name_b052322 = [
+    `Choice_choice_jsx_id of jsx_attribute_name
+  | `Choice_id_opt_type_args of (
+        anon_choice_type_id_42c0412
+      * type_arguments option
+    )
+]
 [@@deriving sexp_of]
 
 type jsx_expression = (
@@ -1249,19 +1293,13 @@ and jsx_attribute_value = [
     `Str of string_
   | `Jsx_exp of jsx_expression
   | `Choice_jsx_elem of jsx_element_
-  | `Jsx_frag of (
-        Token.t (* "<" *)
-      * Token.t (* ">" *)
-      * jsx_child list (* zero or more *)
-      * Token.t (* "<" *)
-      * Token.t (* "/" *)
-      * Token.t (* ">" *)
-    )
+  | `Jsx_frag of jsx_fragment
 ]
 
 and jsx_child = [
     `Jsx_text of jsx_text (*tok*)
   | `Choice_jsx_elem of jsx_element_
+  | `Jsx_frag of jsx_fragment
   | `Jsx_exp of jsx_expression
 ]
 
@@ -1273,22 +1311,25 @@ and jsx_element_ = [
     )
   | `Jsx_self_clos_elem of (
         Token.t (* "<" *)
-      * jsx_element_name
+      * anon_choice_jsx_attr_name_b052322
       * jsx_attribute_ list (* zero or more *)
       * Token.t (* "/" *)
       * Token.t (* ">" *)
     )
 ]
 
+and jsx_fragment = (
+    Token.t (* "<" *)
+  * Token.t (* ">" *)
+  * jsx_child list (* zero or more *)
+  * Token.t (* "<" *)
+  * Token.t (* "/" *)
+  * Token.t (* ">" *)
+)
+
 and jsx_opening_element = (
     Token.t (* "<" *)
-  * [
-        `Choice_choice_jsx_id of jsx_attribute_name
-      | `Choice_id_opt_type_args of (
-            anon_choice_type_id_42c0412
-          * type_arguments option
-        )
-    ]
+  * anon_choice_jsx_attr_name_b052322
   * jsx_attribute_ list (* zero or more *)
   * Token.t (* ">" *)
 )
@@ -1297,27 +1338,16 @@ and jsx_opening_element = (
 type existential_type (* inlined *) = Token.t (* "*" *)
 [@@deriving sexp_of]
 
-type imm_tok_SLASH (* inlined *) = Token.t (* "/" *)
-[@@deriving sexp_of]
-
-type this (* inlined *) = Token.t (* "this" *)
-[@@deriving sexp_of]
-
-type super (* inlined *) = Token.t (* "super" *)
-[@@deriving sexp_of]
-
 type null (* inlined *) = Token.t (* "null" *)
+[@@deriving sexp_of]
+
+type empty_statement (* inlined *) = Token.t (* ";" *)
 [@@deriving sexp_of]
 
 type readonly (* inlined *) = Token.t (* "readonly" *)
 [@@deriving sexp_of]
 
-type meta_property (* inlined *) = (
-    Token.t (* "new" *) * Token.t (* "." *) * Token.t (* "target" *)
-)
-[@@deriving sexp_of]
-
-type empty_statement (* inlined *) = Token.t (* ";" *)
+type super (* inlined *) = Token.t (* "super" *)
 [@@deriving sexp_of]
 
 type comment (* inlined *) = Token.t
@@ -1326,16 +1356,24 @@ type comment (* inlined *) = Token.t
 type true_ (* inlined *) = Token.t (* "true" *)
 [@@deriving sexp_of]
 
-type undefined (* inlined *) = Token.t (* "undefined" *)
-[@@deriving sexp_of]
-
 type false_ (* inlined *) = Token.t (* "false" *)
 [@@deriving sexp_of]
 
-type number_ (* inlined *) = (
-    [ `DASH of Token.t (* "-" *) | `PLUS of Token.t (* "+" *) ]
-  * number (*tok*)
+type this (* inlined *) = Token.t (* "this" *)
+[@@deriving sexp_of]
+
+type undefined (* inlined *) = Token.t (* "undefined" *)
+[@@deriving sexp_of]
+
+type imm_tok_SLASH (* inlined *) = Token.t (* "/" *)
+[@@deriving sexp_of]
+
+type meta_property (* inlined *) = (
+    Token.t (* "new" *) * Token.t (* "." *) * Token.t (* "target" *)
 )
+[@@deriving sexp_of]
+
+type type_identifier (* inlined *) = identifier (*tok*)
 [@@deriving sexp_of]
 
 type regex (* inlined *) = (
@@ -1346,7 +1384,10 @@ type regex (* inlined *) = (
 )
 [@@deriving sexp_of]
 
-type type_identifier (* inlined *) = identifier (*tok*)
+type number_ (* inlined *) = (
+    [ `DASH of Token.t (* "-" *) | `PLUS of Token.t (* "+" *) ]
+  * number (*tok*)
+)
 [@@deriving sexp_of]
 
 type continue_statement (* inlined *) = (
@@ -1411,11 +1452,6 @@ type ambient_declaration (* inlined *) = (
           * Token.t (* ":" *) * type_
         )
     ]
-)
-[@@deriving sexp_of]
-
-type array_type (* inlined *) = (
-    primary_type * Token.t (* "[" *) * Token.t (* "]" *)
 )
 [@@deriving sexp_of]
 
@@ -1725,14 +1761,6 @@ type try_statement (* inlined *) = (
 )
 [@@deriving sexp_of]
 
-type tuple_type (* inlined *) = (
-    Token.t (* "[" *)
-  * type_
-  * (Token.t (* "," *) * type_) list (* zero or more *)
-  * Token.t (* "]" *)
-)
-[@@deriving sexp_of]
-
 type type_alias_declaration (* inlined *) = (
     Token.t (* "type" *)
   * identifier (*tok*)
@@ -1744,11 +1772,6 @@ type type_alias_declaration (* inlined *) = (
 [@@deriving sexp_of]
 
 type type_assertion (* inlined *) = (type_arguments * expression)
-[@@deriving sexp_of]
-
-type type_predicate (* inlined *) = (
-    identifier (*tok*) * Token.t (* "is" *) * type_
-)
 [@@deriving sexp_of]
 
 type union_type (* inlined *) = (type_ option * Token.t (* "|" *) * type_)
@@ -1792,22 +1815,19 @@ type jsx_element (* inlined *) = (
 )
 [@@deriving sexp_of]
 
-type jsx_fragment (* inlined *) = (
+type jsx_self_closing_element (* inlined *) = (
     Token.t (* "<" *)
-  * Token.t (* ">" *)
-  * jsx_child list (* zero or more *)
-  * Token.t (* "<" *)
+  * anon_choice_jsx_attr_name_b052322
+  * jsx_attribute_ list (* zero or more *)
   * Token.t (* "/" *)
   * Token.t (* ">" *)
 )
 [@@deriving sexp_of]
 
-type jsx_self_closing_element (* inlined *) = (
+type jsx_start_opening_element (* inlined *) = (
     Token.t (* "<" *)
-  * jsx_element_name
+  * anon_choice_jsx_attr_name_b052322
   * jsx_attribute_ list (* zero or more *)
-  * Token.t (* "/" *)
-  * Token.t (* ">" *)
 )
 [@@deriving sexp_of]
 
