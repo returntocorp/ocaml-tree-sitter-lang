@@ -39,7 +39,7 @@ let map_line_break (env : env) (tok : CST.line_break) =
   token env tok (* line_break *)
 
 let map_global_variable (env : env) (tok : CST.global_variable) =
-  token env tok (* pattern "\\$-?(([!@&`'+~=\\/\\\\,;.<>*$?:\"])|([0-9]*\
+  token env tok (* pattern "\\$-?(([!@&`'+~=/\\\\,;.<>*$?:\"])|([0-9]*\
   )|([a-zA-Z_][a-zA-Z0-9_]*\
   ))" *)
 
@@ -208,7 +208,7 @@ let map_variable (env : env) (x : CST.variable) =
   | `Inst_var tok -> token env tok (* instance_variable *)
   | `Class_var tok -> token env tok (* class_variable *)
   | `Global_var tok ->
-      token env tok (* pattern "\\$-?(([!@&`'+~=\\/\\\\,;.<>*$?:\"])|([0-9]*\
+      token env tok (* pattern "\\$-?(([!@&`'+~=/\\\\,;.<>*$?:\"])|([0-9]*\
   )|([a-zA-Z_][a-zA-Z0-9_]*\
   ))" *)
   | `Id tok -> token env tok (* identifier *)
@@ -820,7 +820,7 @@ and map_method_name (env : env) (x : CST.method_name) =
   | `Inst_var tok -> token env tok (* instance_variable *)
   | `Class_var tok -> token env tok (* class_variable *)
   | `Global_var tok ->
-      token env tok (* pattern "\\$-?(([!@&`'+~=\\/\\\\,;.<>*$?:\"])|([0-9]*\
+      token env tok (* pattern "\\$-?(([!@&`'+~=/\\\\,;.<>*$?:\"])|([0-9]*\
   )|([a-zA-Z_][a-zA-Z0-9_]*\
   ))" *)
   )
