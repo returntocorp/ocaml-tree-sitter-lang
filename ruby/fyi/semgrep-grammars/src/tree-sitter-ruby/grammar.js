@@ -27,9 +27,9 @@ const PREC = {
   COMPLEMENT: 85,
 };
 
-const IDENTIFIER_CHARS = /[^\s:;`"'@$#.,|^&<=>+\-*/\\%?!~()\[\]{}]*/;
-const LOWER_ALPHA_CHAR = /[^\sA-Z0-9:;`"'@$#.,|^&<=>+\-*/\\%?!~()\[\]{}]/;
-const ALPHA_CHAR = /[^\s0-9:;`"'@$#.,|^&<=>+\-*/\\%?!~()\[\]{}]/;
+const IDENTIFIER_CHARS = /[^\x00-\x1F\s:;`"'@$#.,|^&<=>+\-*/\\%?!~()\[\]{}]*/;
+const LOWER_ALPHA_CHAR = /[^\x00-\x1F\sA-Z0-9:;`"'@$#.,|^&<=>+\-*/\\%?!~()\[\]{}]/;
+const ALPHA_CHAR = /[^\x00-\x1F\s0-9:;`"'@$#.,|^&<=>+\-*/\\%?!~()\[\]{}]/;
 
 module.exports = grammar({
   name: 'ruby',
@@ -46,8 +46,8 @@ module.exports = grammar({
     $._string_array_start,
     $._symbol_array_start,
     $._heredoc_body_start,
-    $._string_content,
-    $._heredoc_content,
+    $.string_content,
+    $.heredoc_content,
     $._string_end,
     $.heredoc_end,
     $.heredoc_beginning,
@@ -213,7 +213,7 @@ module.exports = grammar({
       $._body_statement
     ),
 
-    superclass: $ => seq('<', $._arg),
+    superclass: $ => seq('<', $._expression),
 
     singleton_class: $ => seq(
       'class',
@@ -275,35 +275,37 @@ module.exports = grammar({
 
     while: $ => seq(
       'while',
-      field('condition', $._arg),
-      $._do,
-      optional($._statements),
-      'end'
+      field('condition', $._statement),
+      field('body', $.do)
     ),
 
     until: $ => seq(
       'until',
-      field('condition', $._arg),
-      $._do,
-      optional($._statements),
-      'end'
+      field('condition', $._statement),
+      field('body', $.do)
     ),
 
     for: $ => seq(
       'for',
-      field('pattern', $._mlhs),
+      commaSep1(field('pattern', choice(
+        $._lhs,
+        $.rest_assignment,
+        $.destructured_left_assignment
+      ))),
       field('value', $.in),
-      $._do,
+      field('body', $.do)
+    ),
+
+    in: $ => seq('in', $._arg),
+    do: $ => seq(
+      choice('do', $._terminator),
       optional($._statements),
       'end'
     ),
 
-    in: $ => seq('in', $._arg),
-    _do: $ => choice('do', $._terminator),
-
     case: $ => seq(
       'case',
-      field('value', optional($._arg)),
+      field('value', optional($._statement)),
       $._terminator,
       repeat(';'),
       repeat($.when),
@@ -322,7 +324,7 @@ module.exports = grammar({
     if: $ => seq(
       'if',
       field('condition', $._statement),
-      field('consequence', choice($._terminator, $.then)),
+      choice($._terminator, field('consequence', $.then)),
       field('alternative', optional(choice($.else, $.elsif))),
       'end'
     ),
@@ -330,7 +332,7 @@ module.exports = grammar({
     unless: $ => seq(
       'unless',
       field('condition', $._statement),
-      field('consequence', choice($._terminator, $.then)),
+      choice($._terminator, field('consequence', $.then)),
       field('alternative', optional(choice($.else, $.elsif))),
       'end'
     ),
@@ -338,13 +340,13 @@ module.exports = grammar({
     elsif: $ => seq(
       'elsif',
       field('condition', $._statement),
-      field('consequence', choice($._terminator, $.then)),
+      choice($._terminator, field('consequence', $.then)),
       field('alternative', optional(choice($.else, $.elsif)))
     ),
 
     else: $ => seq(
       'else',
-      field('condition', optional($._terminator)),
+      optional($._terminator),
       optional($._statements)
     ),
 
@@ -384,11 +386,29 @@ module.exports = grammar({
       'end'
     ),
 
+    // Method calls without parentheses (aka "command calls") are only allowed
+    // in certain positions, like the top-level of a statement, the condition
+    // of a postfix control-flow operator like `if`, or as the value of a
+    // control-flow statement like `return`. In many other places, they're not
+    // allowed.
+    //
+    // Because of this distinction, a lot of rules have two variants: the
+    // normal variant, which can appear anywhere that an expression is valid,
+    // and the "command" varaint, which is only valid in a more limited set of
+    // positions, because it can contain "command calls".
+    //
+    // The `_expression` rule can appear in relatively few places, but can
+    // contain command calls. The `_arg` rule can appear in many more places,
+    // but cannot contain command calls (unless they are wrapped in parens).
+    // This naming convention is based on Ruby's standard grammar.
     _expression: $ => choice(
       alias($.command_binary, $.binary),
+      alias($.command_unary, $.unary),
       alias($.command_assignment, $.assignment),
       alias($.command_operator_assignment, $.operator_assignment),
       alias($.command_call, $.method_call),
+      alias($.command_call_with_block, $.method_call),
+      prec.left(alias($.chained_command_call, $.call)),
       alias($.return_command, $.return),
       alias($.yield_command, $.yield),
       alias($.break_command, $.break),
@@ -470,20 +490,39 @@ module.exports = grammar({
       field('method', choice($.identifier, $.operator, $.constant, $.argument_list))
     )),
 
-    command_call: $ => {
+    command_call: $ => seq(
+      field('method', choice(
+        $._variable,
+        $.scope_resolution,
+        $.call,
+        alias($.chained_command_call, $.call)
+      )),
+      field('arguments', alias($.command_argument_list, $.argument_list))
+    ),
+
+    command_call_with_block: $ => {
       const receiver = field('method', choice($._variable, $.scope_resolution, $.call))
       const arguments = field('arguments', alias($.command_argument_list, $.argument_list))
       const block = field('block', $.block)
       const doBlock = field('block', $.do_block)
       return choice(
-        seq(receiver, arguments),
         seq(receiver, prec(PREC.CURLY_BLOCK, seq(arguments, block))),
         seq(receiver, prec(PREC.DO_BLOCK, seq(arguments, doBlock))),
       )
     },
 
+    chained_command_call: $ => seq(
+      field('receiver', alias($.command_call_with_block, $.method_call)),
+      choice('.', '&.'),
+      field('method', choice($.identifier, $.operator, $.constant, $.argument_list))
+    ),
+
     method_call: $ => {
-      const receiver = field('method', choice($._variable, $.scope_resolution, $.call))
+      const receiver = field('method', choice(
+        $._variable,
+        $.scope_resolution,
+        $.call
+      ))
       const arguments = field('arguments', $.argument_list)
       const block = field('block', $.block)
       const doBlock = field('block', $.do_block)
@@ -496,10 +535,7 @@ module.exports = grammar({
       )
     },
 
-    command_argument_list: $ => choice(
-      commaSep1($._argument),
-      $.command_call,
-    ),
+    command_argument_list: $ => prec.right(commaSep1($._argument)),
 
     argument_list: $ => prec.right(seq(
       token.immediate('('),
@@ -512,13 +548,13 @@ module.exports = grammar({
       optional(',')
     )),
 
-    _argument: $ => choice(
-      $._arg,
+    _argument: $ => prec.left(choice(
+      $._expression,
       $.splat_argument,
       $.hash_splat_argument,
       $.block_argument,
       $.pair
-    ),
+    )),
 
     splat_argument: $ => seq(alias($._splat_star, '*'), $._arg),
     hash_splat_argument: $ => seq('**', $._arg),
@@ -565,9 +601,9 @@ module.exports = grammar({
     )),
 
     command_operator_assignment: $ => prec.right(PREC.ASSIGN, seq(
-      $._lhs,
+      field('left', $._lhs),
       choice('+=', '-=', '*=', '**=', '/=', '||=', '|=', '&&=', '&=', '%=', '>>=', '<<=', '^='),
-      $._expression
+      field('right', $._expression)
     )),
 
     conditional: $ => prec.right(PREC.CONDITIONAL, seq(
@@ -578,7 +614,11 @@ module.exports = grammar({
       field('alternative', $._arg)
     )),
 
-    range: $ => prec.right(PREC.RANGE, seq($._arg, choice('..', '...'), $._arg)),
+    range: $ => prec.right(PREC.RANGE, choice(
+      seq($._arg, choice('..', '...'), $._arg),
+      seq(choice('..', '...'), $._arg),
+      seq($._arg, choice('..', '...')),
+    )),
 
     binary: $ => {
       const operators = [
@@ -609,21 +649,40 @@ module.exports = grammar({
       field('right', $._expression)
     )),
 
-    unary: $ => choice(
-      prec(PREC.DEFINED, seq('defined?', $._arg)),
-      prec.right(PREC.NOT, seq('not', $._arg)),
-      prec.right(PREC.UNARY_MINUS, seq(choice(alias($._unary_minus, '-'), '+'), $._arg)),
-      prec.right(PREC.COMPLEMENT, seq(choice('!', '~'), $._arg))
-    ),
+    unary: $ => {
+      const operators = [
+        [prec, PREC.DEFINED, 'defined?'],
+        [prec.right, PREC.NOT, 'not'],
+        [prec.right, PREC.UNARY_MINUS, choice(alias($._unary_minus, '-'), '+')],
+        [prec.right, PREC.COMPLEMENT, choice('!', '~')]
+      ];
+      return choice(...operators.map(([fn, precedence, operator]) => fn(precedence, seq(
+        field('operator', operator),
+        field('operand', $._arg)
+      ))));
+    },
+
+    command_unary: $ => {
+      const operators = [
+        [prec, PREC.DEFINED, 'defined?'],
+        [prec.right, PREC.NOT, 'not'],
+        [prec.right, PREC.UNARY_MINUS, choice(alias($._unary_minus, '-'), '+')],
+        [prec.right, PREC.COMPLEMENT, choice('!', '~')]
+      ];
+      return choice(...operators.map(([fn, precedence, operator]) => fn(precedence, seq(
+        field('operator', operator),
+        field('operand', $._expression)
+      ))));
+    },
 
     parenthesized_unary: $ => prec(PREC.CALL, seq(
-      choice('defined?', 'not'),
-      $.parenthesized_statements
+      field('operator', choice('defined?', 'not')),
+      field('operand', $.parenthesized_statements)
     )),
 
     unary_literal: $ => prec.right(PREC.UNARY_MINUS, seq(
-      choice(alias($._unary_minus, '-'), '+'),
-      choice($.integer, $.float)
+      field('operator', choice(alias($._unary_minus, '-'), '+')),
+      field('operand', choice($.integer, $.float))
     )),
 
     right_assignment_list: $ => prec(-1, commaSep1(choice($._arg, $.splat_argument))),
@@ -657,16 +716,6 @@ module.exports = grammar({
       $.identifier,
       $.constant
     )),
-
-    constant: $ => token(seq(/[A-Z]/, IDENTIFIER_CHARS, /(\?|\!)?/)),
-
-    identifier: $ => token(seq(LOWER_ALPHA_CHAR, IDENTIFIER_CHARS, /(\?|\!)?/)),
-
-    instance_variable: $ => token(seq('@', ALPHA_CHAR, IDENTIFIER_CHARS)),
-
-    class_variable: $ => token(seq('@@', ALPHA_CHAR, IDENTIFIER_CHARS)),
-
-    global_variable: $ => /\$-?(([!@&`'+~=/\\,;.<>*$?:"])|([0-9]*)|([a-zA-Z_][a-zA-Z0-9_]*))/,
 
     operator: $ => choice(
       '..', '|', '^', '&', '<=>', '==', '===', '=~', '>', '>=', '<', '<=', '+',
@@ -712,10 +761,17 @@ module.exports = grammar({
     complex: $ => /(\d+)?(\+|-)?(\d+)i/,
     rational: $ => seq($.integer, 'r'),
     super: $ => 'super',
-    true: $ => choice('true', 'TRUE'),
-    false: $ => choice('false', 'FALSE'),
     self: $ => 'self',
-    nil: $ => choice('nil', 'NIL'),
+    true: $ => token(choice('true', 'TRUE')),
+    false: $ => token(choice('false', 'FALSE')),
+    nil: $ => token(choice('nil', 'NIL')),
+
+    constant: $ => token(seq(/[A-Z]/, IDENTIFIER_CHARS, /(\?|\!)?/)),
+    identifier: $ => token(seq(LOWER_ALPHA_CHAR, IDENTIFIER_CHARS, /(\?|\!)?/)),
+    instance_variable: $ => token(seq('@', ALPHA_CHAR, IDENTIFIER_CHARS)),
+    class_variable: $ => token(seq('@@', ALPHA_CHAR, IDENTIFIER_CHARS)),
+
+    global_variable: $ => /\$-?(([!@&`'+~=/\\,;.<>*$?:"])|([0-9]*)|([a-zA-Z_][a-zA-Z0-9_]*))/,
 
     chained_string: $ => seq($.string, repeat1($.string)),
 
@@ -768,7 +824,7 @@ module.exports = grammar({
     heredoc_body: $ => seq(
       $._heredoc_body_start,
       repeat(choice(
-        $._heredoc_content,
+        $.heredoc_content,
         $.interpolation,
         $.escape_sequence
       )),
@@ -776,7 +832,7 @@ module.exports = grammar({
     ),
 
     _literal_contents: $ => repeat1(choice(
-      $._string_content,
+      $.string_content,
       $.interpolation,
       $.escape_sequence
     )),

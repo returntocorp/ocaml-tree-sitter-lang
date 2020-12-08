@@ -6303,7 +6303,8 @@ let parse_input_tree input_tree =
   let errors = Run.extract_errors src orig_root_node in
   let root_node = Run.remove_extras ~extras orig_root_node in
   let matched_tree = Run.match_tree children_regexps src root_node in
-  (Option.map trans_program matched_tree, errors)
+  let opt_program = Option.map trans_program matched_tree in
+  Parsing_result.create src opt_program errors
 
 let string ?src_file contents =
   let input_tree = parse_source_string ?src_file contents in

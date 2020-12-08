@@ -8,28 +8,54 @@
 open! Sexplib.Conv
 open Tree_sitter_run
 
-type heredoc_content = Token.t
+type symbol_start = Token.t
+[@@deriving sexp_of]
+
+type float_ =
+  Token.t (* pattern \d(_?\d)*(\.\d)?(_?\d)*([eE][\+-]?\d(_?\d)*\
+  )? *)
+[@@deriving sexp_of]
+
+type global_variable =
+  Token.t (* pattern "\\$-?(([!@&`'+~=\\/\\\\,;.<>*$?:\"])|([0-9]*\
+  )|([a-zA-Z_][a-zA-Z0-9_]*\
+  ))" *)
+[@@deriving sexp_of]
+
+type instance_variable = Token.t
+[@@deriving sexp_of]
+
+type string_start = Token.t
+[@@deriving sexp_of]
+
+type false_ = Token.t
+[@@deriving sexp_of]
+
+type anon_choice_BANG_b88b9c5 = [
+    `BANG of Token.t (* "!" *)
+  | `TILDE of Token.t (* "~" *)
+]
+[@@deriving sexp_of]
+
+type symbol_array_start = Token.t
+[@@deriving sexp_of]
+
+type heredoc_end = Token.t
+[@@deriving sexp_of]
+
+type heredoc_body_start = Token.t
+[@@deriving sexp_of]
+
+type regex_start = Token.t
 [@@deriving sexp_of]
 
 type string_array_start = Token.t
 [@@deriving sexp_of]
 
-type true_ = [
-    `True of Token.t (* "true" *)
-  | `TRUE of Token.t (* "TRUE" *)
-]
+type string_end = Token.t
 [@@deriving sexp_of]
 
-type heredoc_beginning = Token.t
-[@@deriving sexp_of]
-
-type line_break = Token.t
-[@@deriving sexp_of]
-
-type global_variable =
-  Token.t (* pattern "\\$-?(([!@&`'+~=/\\\\,;.<>*$?:\"])|([0-9]*\
-  )|([a-zA-Z_][a-zA-Z0-9_]*\
-  ))" *)
+type singleton_class_left_angle_left_langle = Token.t
 [@@deriving sexp_of]
 
 type anon_choice_PLUSEQ_6a24756 = [
@@ -49,85 +75,32 @@ type anon_choice_PLUSEQ_6a24756 = [
 ]
 [@@deriving sexp_of]
 
-type identifier_hash_key = Token.t
-[@@deriving sexp_of]
-
-type heredoc_end = Token.t
-[@@deriving sexp_of]
-
-type string_end = Token.t
-[@@deriving sexp_of]
-
-type subshell_start = Token.t
-[@@deriving sexp_of]
-
-type symbol_start = Token.t
-[@@deriving sexp_of]
-
-type splat_star = Token.t
-[@@deriving sexp_of]
-
-type binary_star = Token.t
-[@@deriving sexp_of]
-
-type block_ampersand = Token.t
-[@@deriving sexp_of]
-
-type instance_variable = Token.t
-[@@deriving sexp_of]
-
-type binary_minus = Token.t
-[@@deriving sexp_of]
-
-type float_ =
-  Token.t (* pattern \d(_?\d)*(\.\d)?(_?\d)*([eE][\+-]?\d(_?\d)*\
-  )? *)
-[@@deriving sexp_of]
-
-type identifier = Token.t
+type anon_choice_DOT_5431c66 = [
+    `DOT of Token.t (* "." *)
+  | `AMPDOT of Token.t (* "&." *)
+]
 [@@deriving sexp_of]
 
 type escape_sequence = Token.t
 [@@deriving sexp_of]
 
-type heredoc_body_start = Token.t
-[@@deriving sexp_of]
-
-type nil = [ `Nil of Token.t (* "nil" *) | `NIL of Token.t (* "NIL" *) ]
-[@@deriving sexp_of]
-
-type false_ = [
-    `False of Token.t (* "false" *)
-  | `FALSE of Token.t (* "FALSE" *)
-]
-[@@deriving sexp_of]
-
-type uninterpreted = Token.t (* pattern (.|\s)* *)
-[@@deriving sexp_of]
-
-type simple_symbol = Token.t
-[@@deriving sexp_of]
-
-type unary_minus = Token.t
-[@@deriving sexp_of]
-
-type regex_start = Token.t
-[@@deriving sexp_of]
-
-type complex = Token.t (* pattern (\d+)?(\+|-)?(\d+)i *)
-[@@deriving sexp_of]
-
-type singleton_class_left_angle_left_langle = Token.t
+type heredoc_content = Token.t
 [@@deriving sexp_of]
 
 type constant = Token.t
+[@@deriving sexp_of]
+
+type heredoc_beginning = Token.t
+[@@deriving sexp_of]
+
+type uninterpreted = Token.t (* pattern (.|\s)* *)
 [@@deriving sexp_of]
 
 type integer =
   Token.t (* pattern 0[bB][01](_?[01])*|0[oO]?[0-7](_?[0-7])*|(0[dD])?\d(_?\d)*|0x[0-9a-fA-F](_?[0-9a-fA-F])* *)
 [@@deriving sexp_of]
 
-type string_content = Token.t
+type pat_3d340f6 = Token.t (* pattern \s+ *)
 [@@deriving sexp_of]
 
 type operator = [
@@ -162,6 +135,18 @@ type operator = [
 ]
 [@@deriving sexp_of]
 
+type binary_minus = Token.t
+[@@deriving sexp_of]
+
+type identifier_hash_key = Token.t
+[@@deriving sexp_of]
+
+type true_ = Token.t
+[@@deriving sexp_of]
+
+type identifier = Token.t
+[@@deriving sexp_of]
+
 type character =
   Token.t (* pattern \?(\\\S({[0-9]*}|[0-9]*|-\S([MC]-\S)?)?|\S) *)
 [@@deriving sexp_of]
@@ -169,24 +154,39 @@ type character =
 type class_variable = Token.t
 [@@deriving sexp_of]
 
-type symbol_array_start = Token.t
+type unary_minus = Token.t
 [@@deriving sexp_of]
 
-type pat_3d340f6 = Token.t (* pattern \s+ *)
+type splat_star = Token.t
 [@@deriving sexp_of]
 
-type string_start = Token.t
+type complex = Token.t (* pattern (\d+)?(\+|-)?(\d+)i *)
 [@@deriving sexp_of]
 
-type terminator = [
-    `Line_brk of line_break (*tok*)
-  | `SEMI of Token.t (* ";" *)
-]
+type line_break = Token.t
 [@@deriving sexp_of]
 
-type anon_choice_un_minus_157a1bc = [
-    `Un_minus of unary_minus (*tok*)
-  | `PLUS of Token.t (* "+" *)
+type binary_star = Token.t
+[@@deriving sexp_of]
+
+type block_ampersand = Token.t
+[@@deriving sexp_of]
+
+type subshell_start = Token.t
+[@@deriving sexp_of]
+
+type nil = Token.t
+[@@deriving sexp_of]
+
+type string_content = Token.t
+[@@deriving sexp_of]
+
+type simple_symbol = Token.t
+[@@deriving sexp_of]
+
+type anon_choice_DOTDOT_ed078ec = [
+    `DOTDOT of Token.t (* ".." *)
+  | `DOTDOTDOT of Token.t (* "..." *)
 ]
 [@@deriving sexp_of]
 
@@ -201,7 +201,16 @@ type variable = [
 ]
 [@@deriving sexp_of]
 
-type do_ = [ `Do of Token.t (* "do" *) | `Term of terminator ]
+type anon_choice_un_minus_157a1bc = [
+    `Un_minus of unary_minus (*tok*)
+  | `PLUS of Token.t (* "+" *)
+]
+[@@deriving sexp_of]
+
+type terminator = [
+    `Line_brk of line_break (*tok*)
+  | `SEMI of Token.t (* ";" *)
+]
 [@@deriving sexp_of]
 
 type anon_choice_cst_c1a97cb = [
@@ -217,6 +226,13 @@ and anon_choice_else_4cfa13b = [
       * anon_choice_term_b9e1843
       * anon_choice_else_4cfa13b option
     )
+]
+
+and anon_choice_id_5ca805c = [
+    `Id of identifier (*tok*)
+  | `Op of operator
+  | `Cst of constant (*tok*)
+  | `Arg_list of argument_list
 ]
 
 and anon_choice_lhs_3a98eae = [
@@ -260,17 +276,13 @@ and arg = [
   | `Assign of assignment
   | `Op_assign of (lhs * anon_choice_PLUSEQ_6a24756 * arg)
   | `Cond of (arg * Token.t (* "?" *) * arg * Token.t (* ":" *) * arg)
-  | `Range of (
-        arg
-      * [ `DOTDOT of Token.t (* ".." *) | `DOTDOTDOT of Token.t (* "..." *) ]
-      * arg
-    )
+  | `Range of range
   | `Bin of binary
   | `Un of unary
 ]
 
 and argument = [
-    `Arg of arg
+    `Exp of expression
   | `Splat_arg of splat_argument
   | `Hash_splat_arg of hash_splat_argument
   | `Blk_arg of (block_ampersand (*tok*) * arg)
@@ -388,24 +400,17 @@ and body_statement = (
   * Token.t (* "end" *)
 )
 
-and call = (
-    primary
-  * [ `DOT of Token.t (* "." *) | `AMPDOT of Token.t (* "&." *) ]
-  * [
-        `Id of identifier (*tok*)
-      | `Op of operator
-      | `Cst of constant (*tok*)
-      | `Arg_list of argument_list
-    ]
+and call = (primary * anon_choice_DOT_5431c66 * anon_choice_id_5ca805c)
+
+and chained_command_call = (
+    command_call_with_block * anon_choice_DOT_5431c66
+  * anon_choice_id_5ca805c
 )
 
-and command_argument_list = [
-    `Arg_rep_COMMA_arg of (
-        argument
-      * (Token.t (* "," *) * argument) list (* zero or more *)
-    )
-  | `Cmd_call of command_call
-]
+and command_argument_list = (
+    argument
+  * (Token.t (* "," *) * argument) list (* zero or more *)
+)
 
 and command_assignment = [
   `Choice_lhs_EQ_exp of (
@@ -413,17 +418,27 @@ and command_assignment = [
   )
 ]
 
-and command_call = [
-    `Choice_var_cmd_arg_list of (
-        anon_choice_var_56bd3f5 * command_argument_list
-    )
-  | `Choice_var_cmd_arg_list_blk of (
+and command_call_with_block = [
+    `Choice_var_cmd_arg_list_blk of (
         anon_choice_var_56bd3f5 * command_argument_list * block
     )
   | `Choice_var_cmd_arg_list_do_blk of (
         anon_choice_var_56bd3f5 * command_argument_list * do_block
     )
 ]
+
+and command_unary = [
+    `Defi_exp of (Token.t (* "defined?" *) * expression)
+  | `Not_exp of (Token.t (* "not" *) * expression)
+  | `Choice_un_minus_exp of (anon_choice_un_minus_157a1bc * expression)
+  | `Choice_BANG_exp of (anon_choice_BANG_b88b9c5 * expression)
+]
+
+and do_ = (
+    [ `Do of Token.t (* "do" *) | `Term of terminator ]
+  * statements option
+  * Token.t (* "end" *)
+)
 
 and do_block = (
     Token.t (* "do" *)
@@ -449,9 +464,20 @@ and expression = [
       * [ `Or of Token.t (* "or" *) | `And of Token.t (* "and" *) ]
       * expression
     )
+  | `Cmd_un of command_unary
   | `Cmd_assign of command_assignment
   | `Cmd_op_assign of (lhs * anon_choice_PLUSEQ_6a24756 * expression)
-  | `Cmd_call of command_call
+  | `Cmd_call of (
+        [
+            `Var of variable
+          | `Scope_resol of scope_resolution
+          | `Call of call
+          | `Chai_cmd_call of chained_command_call
+        ]
+      * command_argument_list
+    )
+  | `Cmd_call_with_blk of command_call_with_block
+  | `Chai_cmd_call of chained_command_call
   | `Ret_cmd of (Token.t (* "return" *) * command_argument_list)
   | `Yield_cmd of (Token.t (* "yield" *) * command_argument_list)
   | `Brk_cmd of (Token.t (* "break" *) * command_argument_list)
@@ -474,9 +500,9 @@ and left_assignment_list = mlhs
 
 and lhs = [
     `Var of variable
-  | `True of true_
-  | `False of false_
-  | `Nil of nil
+  | `True of true_ (*tok*)
+  | `False of false_ (*tok*)
+  | `Nil of nil (*tok*)
   | `Scope_resol of scope_resolution
   | `Elem_ref of (
         primary
@@ -649,20 +675,8 @@ and primary = [
         ]
     )
   | `Begin of (Token.t (* "begin" *) * terminator option * body_statement)
-  | `While of (
-        Token.t (* "while" *)
-      * arg
-      * do_
-      * statements option
-      * Token.t (* "end" *)
-    )
-  | `Until of (
-        Token.t (* "until" *)
-      * arg
-      * do_
-      * statements option
-      * Token.t (* "end" *)
-    )
+  | `While of (Token.t (* "while" *) * statement * do_)
+  | `Until of (Token.t (* "until" *) * statement * do_)
   | `If of (
         Token.t (* "if" *)
       * statement
@@ -679,15 +693,14 @@ and primary = [
     )
   | `For of (
         Token.t (* "for" *)
-      * left_assignment_list
+      * anon_choice_lhs_3a98eae
+      * (Token.t (* "," *) * anon_choice_lhs_3a98eae) list (* zero or more *)
       * in_
       * do_
-      * statements option
-      * Token.t (* "end" *)
     )
   | `Case of (
         Token.t (* "case" *)
-      * arg option
+      * statement option
       * terminator
       * Token.t (* ";" *) list (* zero or more *)
       * when_ list (* zero or more *)
@@ -709,6 +722,12 @@ and primary = [
       * [ `Int of integer (*tok*) | `Float of float_ (*tok*) ]
     )
   | `Here_begin of heredoc_beginning (*tok*)
+]
+
+and range = [
+    `Arg_choice_DOTDOT_arg of (arg * anon_choice_DOTDOT_ed078ec * arg)
+  | `Choice_DOTDOT_arg of (anon_choice_DOTDOT_ed078ec * arg)
+  | `Arg_choice_DOTDOT of (arg * anon_choice_DOTDOT_ed078ec)
 ]
 
 and rescue = (
@@ -787,7 +806,7 @@ and string_ = (
   * string_end (*tok*)
 )
 
-and superclass = (Token.t (* "<" *) * arg)
+and superclass = (Token.t (* "<" *) * expression)
 
 and symbol = [
     `Simple_symb of simple_symbol (*tok*)
@@ -811,10 +830,7 @@ and unary = [
     `Defi_arg of (Token.t (* "defined?" *) * arg)
   | `Not_arg of (Token.t (* "not" *) * arg)
   | `Choice_un_minus_arg of (anon_choice_un_minus_157a1bc * arg)
-  | `Choice_BANG_arg of (
-        [ `BANG of Token.t (* "!" *) | `TILDE of Token.t (* "~" *) ]
-      * arg
-    )
+  | `Choice_BANG_arg of (anon_choice_BANG_b88b9c5 * arg)
 ]
 
 and when_ = (
@@ -832,19 +848,13 @@ type program = (
 )
 [@@deriving sexp_of]
 
+type imm_tok_COLON (* inlined *) = Token.t (* ":" *)
+[@@deriving sexp_of]
+
 type super (* inlined *) = Token.t (* "super" *)
 [@@deriving sexp_of]
 
 type imm_tok_LBRACK (* inlined *) = Token.t (* "[" *)
-[@@deriving sexp_of]
-
-type imm_tok_COLONCOLON (* inlined *) = Token.t (* "::" *)
-[@@deriving sexp_of]
-
-type imm_tok_COLON (* inlined *) = Token.t (* ":" *)
-[@@deriving sexp_of]
-
-type comment (* inlined *) = Token.t
 [@@deriving sexp_of]
 
 type empty_statement (* inlined *) = Token.t (* ";" *)
@@ -856,8 +866,17 @@ type self (* inlined *) = Token.t (* "self" *)
 type imm_tok_LPAR (* inlined *) = Token.t (* "(" *)
 [@@deriving sexp_of]
 
-type hash_splat_parameter (* inlined *) = (
-    Token.t (* "**" *)
+type comment (* inlined *) = Token.t
+[@@deriving sexp_of]
+
+type imm_tok_COLONCOLON (* inlined *) = Token.t (* "::" *)
+[@@deriving sexp_of]
+
+type rational (* inlined *) = (integer (*tok*) * Token.t (* "r" *))
+[@@deriving sexp_of]
+
+type splat_parameter (* inlined *) = (
+    Token.t (* "*" *)
   * identifier (*tok*) option
 )
 [@@deriving sexp_of]
@@ -868,13 +887,10 @@ type setter (* inlined *) = (identifier (*tok*) * Token.t (* "=" *))
 type block_parameter (* inlined *) = (Token.t (* "&" *) * identifier (*tok*))
 [@@deriving sexp_of]
 
-type splat_parameter (* inlined *) = (
-    Token.t (* "*" *)
+type hash_splat_parameter (* inlined *) = (
+    Token.t (* "**" *)
   * identifier (*tok*) option
 )
-[@@deriving sexp_of]
-
-type rational (* inlined *) = (integer (*tok*) * Token.t (* "r" *))
 [@@deriving sexp_of]
 
 type unary_literal (* inlined *) = (
@@ -923,7 +939,7 @@ type break_command (* inlined *) = (
 
 type case (* inlined *) = (
     Token.t (* "case" *)
-  * arg option
+  * statement option
   * terminator
   * Token.t (* ";" *) list (* zero or more *)
   * when_ list (* zero or more *)
@@ -951,6 +967,17 @@ type command_binary (* inlined *) = (
     expression
   * [ `Or of Token.t (* "or" *) | `And of Token.t (* "and" *) ]
   * expression
+)
+[@@deriving sexp_of]
+
+type command_call (* inlined *) = (
+    [
+        `Var of variable
+      | `Scope_resol of scope_resolution
+      | `Call of call
+      | `Chai_cmd_call of chained_command_call
+    ]
+  * command_argument_list
 )
 [@@deriving sexp_of]
 
@@ -995,11 +1022,10 @@ type end_block (* inlined *) = (
 
 type for_ (* inlined *) = (
     Token.t (* "for" *)
-  * left_assignment_list
+  * anon_choice_lhs_3a98eae
+  * (Token.t (* "," *) * anon_choice_lhs_3a98eae) list (* zero or more *)
   * in_
   * do_
-  * statements option
-  * Token.t (* "end" *)
 )
 [@@deriving sexp_of]
 
@@ -1078,13 +1104,6 @@ type optional_parameter (* inlined *) = (
 type parenthesized_unary (* inlined *) = (
     [ `Defi of Token.t (* "defined?" *) | `Not of Token.t (* "not" *) ]
   * parenthesized_statements
-)
-[@@deriving sexp_of]
-
-type range (* inlined *) = (
-    arg
-  * [ `DOTDOT of Token.t (* ".." *) | `DOTDOTDOT of Token.t (* "..." *) ]
-  * arg
 )
 [@@deriving sexp_of]
 
@@ -1180,13 +1199,7 @@ type unless_modifier (* inlined *) = (
 )
 [@@deriving sexp_of]
 
-type until (* inlined *) = (
-    Token.t (* "until" *)
-  * arg
-  * do_
-  * statements option
-  * Token.t (* "end" *)
-)
+type until (* inlined *) = (Token.t (* "until" *) * statement * do_)
 [@@deriving sexp_of]
 
 type until_modifier (* inlined *) = (
@@ -1194,13 +1207,7 @@ type until_modifier (* inlined *) = (
 )
 [@@deriving sexp_of]
 
-type while_ (* inlined *) = (
-    Token.t (* "while" *)
-  * arg
-  * do_
-  * statements option
-  * Token.t (* "end" *)
-)
+type while_ (* inlined *) = (Token.t (* "while" *) * statement * do_)
 [@@deriving sexp_of]
 
 type while_modifier (* inlined *) = (
