@@ -107,13 +107,6 @@ let children_regexps : (string * Run.exp option) list = [
   "line_break", None;
   "string_content", None;
   "binary_star", None;
-  "rational",
-  Some (
-    Seq [
-      Token (Name "integer");
-      Token (Literal "r");
-    ];
-  );
   "splat_parameter",
   Some (
     Seq [
@@ -169,6 +162,16 @@ let children_regexps : (string * Run.exp option) list = [
         Token (Name "integer");
         Token (Name "float");
       |];
+    ];
+  );
+  "rational",
+  Some (
+    Seq [
+      Alt [|
+        Token (Name "integer");
+        Token (Name "float");
+      |];
+      Token (Literal "r");
     ];
   );
   "terminator",
@@ -491,9 +494,8 @@ let children_regexps : (string * Run.exp option) list = [
       Opt (
         Token (Name "statement");
       );
-      Token (Name "terminator");
-      Repeat (
-        Token (Literal ";");
+      Opt (
+        Token (Name "terminator");
       );
       Repeat (
         Token (Name "when");
@@ -2050,19 +2052,6 @@ let trans_binary_star ((kind, body) : mt) : CST.binary_star =
   | Children _ -> assert false
 
 
-let trans_rational ((kind, body) : mt) : CST.rational =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1] ->
-          (
-            trans_integer (Run.matcher_token v0),
-            Run.trans_token (Run.matcher_token v1)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
 let trans_splat_parameter ((kind, body) : mt) : CST.splat_parameter =
   match body with
   | Children v ->
@@ -2184,6 +2173,30 @@ let trans_unary_literal ((kind, body) : mt) : CST.unary_literal =
                 )
             | _ -> assert false
             )
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
+let trans_rational ((kind, body) : mt) : CST.rational =
+  match body with
+  | Children v ->
+      (match v with
+      | Seq [v0; v1] ->
+          (
+            (match v0 with
+            | Alt (0, v) ->
+                `Int (
+                  trans_integer (Run.matcher_token v)
+                )
+            | Alt (1, v) ->
+                `Float (
+                  trans_float_ (Run.matcher_token v)
+                )
+            | _ -> assert false
+            )
+            ,
+            Run.trans_token (Run.matcher_token v1)
           )
       | _ -> assert false
       )
@@ -2910,27 +2923,26 @@ and trans_case ((kind, body) : mt) : CST.case =
   match body with
   | Children v ->
       (match v with
-      | Seq [v0; v1; v2; v3; v4; v5; v6] ->
+      | Seq [v0; v1; v2; v3; v4; v5] ->
           (
             Run.trans_token (Run.matcher_token v0),
             Run.opt
               (fun v -> trans_statement (Run.matcher_token v))
               v1
             ,
-            trans_terminator (Run.matcher_token v2),
-            Run.repeat
-              (fun v -> Run.trans_token (Run.matcher_token v))
-              v3
+            Run.opt
+              (fun v -> trans_terminator (Run.matcher_token v))
+              v2
             ,
             Run.repeat
               (fun v -> trans_when_ (Run.matcher_token v))
-              v4
+              v3
             ,
             Run.opt
               (fun v -> trans_else_ (Run.matcher_token v))
-              v5
+              v4
             ,
-            Run.trans_token (Run.matcher_token v6)
+            Run.trans_token (Run.matcher_token v5)
           )
       | _ -> assert false
       )

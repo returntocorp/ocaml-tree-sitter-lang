@@ -306,8 +306,7 @@ module.exports = grammar({
     case: $ => seq(
       'case',
       field('value', optional($._statement)),
-      $._terminator,
-      repeat(';'),
+      optional($._terminator),
       repeat($.when),
       optional($.else),
       'end'
@@ -315,7 +314,7 @@ module.exports = grammar({
 
     when: $ => seq(
       'when',
-      field('pattern', commaSep1($.pattern)),
+      commaSep1(field('pattern', $.pattern)),
       choice($._terminator, field('body', $.then))
     ),
 
@@ -563,13 +562,16 @@ module.exports = grammar({
     do_block: $ => seq(
       'do',
       optional($._terminator),
-      optional(seq($.block_parameters, optional($._terminator))),
+      optional(seq(
+        field('parameters', $.block_parameters),
+        optional($._terminator)
+      )),
       $._body_statement
     ),
 
     block: $ => prec(PREC.CURLY_BLOCK, seq(
       '{',
-      optional($.block_parameters),
+      field('parameters', optional($.block_parameters)),
       optional($._statements),
       '}'
     )),
@@ -596,13 +598,13 @@ module.exports = grammar({
 
     operator_assignment: $ => prec.right(PREC.ASSIGN, seq(
       field('left', $._lhs),
-      choice('+=', '-=', '*=', '**=', '/=', '||=', '|=', '&&=', '&=', '%=', '>>=', '<<=', '^='),
+      field('operator', choice('+=', '-=', '*=', '**=', '/=', '||=', '|=', '&&=', '&=', '%=', '>>=', '<<=', '^=')),
       field('right', $._arg)
     )),
 
     command_operator_assignment: $ => prec.right(PREC.ASSIGN, seq(
       field('left', $._lhs),
-      choice('+=', '-=', '*=', '**=', '/=', '||=', '|=', '&&=', '&=', '%=', '>>=', '<<=', '^='),
+      field('operator', choice('+=', '-=', '*=', '**=', '/=', '||=', '|=', '&&=', '&=', '%=', '>>=', '<<=', '^=')),
       field('right', $._expression)
     )),
 
@@ -732,7 +734,7 @@ module.exports = grammar({
       $.class_variable,
       $.global_variable
     ),
-    setter: $ => seq($.identifier, '='),
+    setter: $ => seq(field('name', $.identifier), '='),
 
     undef: $ => seq('undef', commaSep1($._method_name)),
     alias: $ => seq(
@@ -759,7 +761,7 @@ module.exports = grammar({
 
     float: $ => /\d(_?\d)*(\.\d)?(_?\d)*([eE][\+-]?\d(_?\d)*)?/,
     complex: $ => /(\d+)?(\+|-)?(\d+)i/,
-    rational: $ => seq($.integer, 'r'),
+    rational: $ => seq(choice($.integer, $.float), 'r'),
     super: $ => 'super',
     self: $ => 'self',
     true: $ => token(choice('true', 'TRUE')),
