@@ -8,22 +8,16 @@
 open! Sexplib.Conv
 open Tree_sitter_run
 
-type field_sep = [ `COMMA of Token.t (* "," *) | `SEMI of Token.t (* ";" *) ]
+type string_ = Token.t
 [@@deriving sexp_of]
 
-type number = Token.t
+type field_sep = [ `COMMA of Token.t (* "," *) | `SEMI of Token.t (* ";" *) ]
 [@@deriving sexp_of]
 
 type identifier = Token.t (* pattern [a-zA-Z_][a-zA-Z0-9_]* *)
 [@@deriving sexp_of]
 
-type global_variable = [
-    `X__G of Token.t (* "_G" *)
-  | `X__VERSION of Token.t (* "_VERSION" *)
-]
-[@@deriving sexp_of]
-
-type string_ = Token.t
+type number = Token.t
 [@@deriving sexp_of]
 
 type parameters = (
@@ -116,7 +110,6 @@ and elseif = (
 and expression = [
     `Spread of Token.t (* "..." *)
   | `Prefix of prefix
-  | `Next of Token.t (* "next" *)
   | `Func_defi of (Token.t (* "function" *) * function_body)
   | `Table of table
   | `Bin_oper of binary_operation
@@ -184,15 +177,9 @@ and loop_expression = (
 )
 
 and prefix = [
-    `Self of Token.t (* "self" *)
-  | `Global_var of global_variable
-  | `Var_decl of variable_declarator
+    `Var_decl of variable_declarator
   | `Func_call_stmt of function_call_statement
-  | `LPAR_opt_exp_rep_COMMA_exp_RPAR of (
-        Token.t (* "(" *)
-      * anon_exp_rep_COMMA_exp_0bb260c option
-      * Token.t (* ")" *)
-    )
+  | `LPAR_exp_RPAR of (Token.t (* "(" *) * expression * Token.t (* ")" *))
 ]
 
 and return_statement = (
@@ -285,6 +272,7 @@ and table = (Token.t (* "{" *) * field_sequence option * Token.t (* "}" *))
 
 and variable_declarator = [
     `Id of identifier (*tok*)
+  | `Self of Token.t (* "self" *)
   | `Prefix_LBRACK_exp_RBRACK of (
         prefix * Token.t (* "[" *) * expression * Token.t (* "]" *)
     )
@@ -295,7 +283,7 @@ and variable_declarator = [
 type program = (statement list (* zero or more *) * return_statement option)
 [@@deriving sexp_of]
 
-type self (* inlined *) = Token.t (* "self" *)
+type true_ (* inlined *) = Token.t (* "true" *)
 [@@deriving sexp_of]
 
 type spread (* inlined *) = Token.t (* "..." *)
@@ -310,13 +298,10 @@ type false_ (* inlined *) = Token.t (* "false" *)
 type empty_statement (* inlined *) = Token.t (* ";" *)
 [@@deriving sexp_of]
 
+type self (* inlined *) = Token.t (* "self" *)
+[@@deriving sexp_of]
+
 type nil (* inlined *) = Token.t (* "nil" *)
-[@@deriving sexp_of]
-
-type true_ (* inlined *) = Token.t (* "true" *)
-[@@deriving sexp_of]
-
-type next (* inlined *) = Token.t (* "next" *)
 [@@deriving sexp_of]
 
 type comment (* inlined *) = Token.t
