@@ -14,7 +14,7 @@ type string_ = Token.t
 type field_sep = [ `COMMA of Token.t (* "," *) | `SEMI of Token.t (* ";" *) ]
 [@@deriving sexp_of]
 
-type identifier = Token.t (* pattern [a-zA-Z_][a-zA-Z0-9_]* *)
+type identifier = Token.t (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
 [@@deriving sexp_of]
 
 type number = Token.t
