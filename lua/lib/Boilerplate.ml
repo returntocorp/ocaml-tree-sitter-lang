@@ -30,7 +30,7 @@ let map_field_sep (env : env) (x : CST.field_sep) =
   )
 
 let map_identifier (env : env) (tok : CST.identifier) =
-  token env tok (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+  token env tok (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
 
 let map_number (env : env) (tok : CST.number) =
   token env tok (* number *)
@@ -45,14 +45,14 @@ let map_parameters (env : env) ((v1, v2, v3) : CST.parameters) =
           | `Self tok -> token env tok (* "self" *)
           | `Spread tok -> token env tok (* "..." *)
           | `Id tok ->
-              token env tok (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+              token env tok (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
           )
         in
         let v2 =
           List.map (fun (v1, v2) ->
             let v1 = token env v1 (* "," *) in
             let v2 =
-              token env v2 (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+              token env v2 (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
             in
             todo env (v1, v2)
           ) v2
@@ -73,13 +73,13 @@ let map_parameters (env : env) ((v1, v2, v3) : CST.parameters) =
 
 let map_local_variable_declarator (env : env) ((v1, v2) : CST.local_variable_declarator) =
   let v1 =
-    token env v1 (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+    token env v1 (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
   in
   let v2 =
     List.map (fun (v1, v2) ->
       let v1 = token env v1 (* "," *) in
       let v2 =
-        token env v2 (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+        token env v2 (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
       in
       todo env (v1, v2)
     ) v2
@@ -88,13 +88,13 @@ let map_local_variable_declarator (env : env) ((v1, v2) : CST.local_variable_dec
 
 let map_function_name_field (env : env) ((v1, v2) : CST.function_name_field) =
   let v1 =
-    token env v1 (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+    token env v1 (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
   in
   let v2 =
     List.map (fun (v1, v2) ->
       let v1 = token env v1 (* "." *) in
       let v2 =
-        token env v2 (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+        token env v2 (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
       in
       todo env (v1, v2)
     ) v2
@@ -105,7 +105,7 @@ let map_function_name (env : env) ((v1, v2) : CST.function_name) =
   let v1 =
     (match v1 with
     | `Id tok ->
-        token env tok (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+        token env tok (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
     | `Func_name_field x -> map_function_name_field env x
     )
   in
@@ -114,7 +114,7 @@ let map_function_name (env : env) ((v1, v2) : CST.function_name) =
     | Some (v1, v2) ->
         let v1 = token env v1 (* ":" *) in
         let v2 =
-          token env v2 (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+          token env v2 (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
         in
         todo env (v1, v2)
     | None -> todo env ())
@@ -305,7 +305,7 @@ and map_expression (env : env) (x : CST.expression) =
   | `True tok -> token env tok (* "true" *)
   | `False tok -> token env tok (* "false" *)
   | `Id tok ->
-      token env tok (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+      token env tok (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
   )
 
 and map_field (env : env) (x : CST.field) =
@@ -319,7 +319,7 @@ and map_field (env : env) (x : CST.field) =
       todo env (v1, v2, v3, v4, v5)
   | `Id_EQ_exp (v1, v2, v3) ->
       let v1 =
-        token env v1 (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+        token env v1 (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
       in
       let v2 = token env v2 (* "=" *) in
       let v3 = map_expression env v3 in
@@ -364,7 +364,7 @@ and map_function_call_statement (env : env) (x : CST.function_call_statement) =
       let v1 = map_prefix env v1 in
       let v2 = token env v2 (* ":" *) in
       let v3 =
-        token env v3 (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+        token env v3 (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
       in
       let v4 = map_arguments env v4 in
       todo env (v1, v2, v3, v4)
@@ -372,13 +372,13 @@ and map_function_call_statement (env : env) (x : CST.function_call_statement) =
 
 and map_in_loop_expression (env : env) ((v1, v2, v3, v4, v5) : CST.in_loop_expression) =
   let v1 =
-    token env v1 (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+    token env v1 (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
   in
   let v2 =
     List.map (fun (v1, v2) ->
       let v1 = token env v1 (* "," *) in
       let v2 =
-        token env v2 (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+        token env v2 (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
       in
       todo env (v1, v2)
     ) v2
@@ -396,7 +396,7 @@ and map_in_loop_expression (env : env) ((v1, v2, v3, v4, v5) : CST.in_loop_expre
 
 and map_loop_expression (env : env) ((v1, v2, v3, v4, v5, v6) : CST.loop_expression) =
   let v1 =
-    token env v1 (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+    token env v1 (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
   in
   let v2 = token env v2 (* "=" *) in
   let v3 = map_expression env v3 in
@@ -556,14 +556,14 @@ and map_statement (env : env) (x : CST.statement) =
   | `Goto_stmt (v1, v2) ->
       let v1 = token env v1 (* "goto" *) in
       let v2 =
-        token env v2 (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+        token env v2 (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
       in
       todo env (v1, v2)
   | `Brk_stmt tok -> token env tok (* "break" *)
   | `Label_stmt (v1, v2, v3) ->
       let v1 = token env v1 (* "::" *) in
       let v2 =
-        token env v2 (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+        token env v2 (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
       in
       let v3 = token env v3 (* "::" *) in
       todo env (v1, v2, v3)
@@ -577,7 +577,7 @@ and map_statement (env : env) (x : CST.statement) =
       let v1 = token env v1 (* "local" *) in
       let v2 = token env v2 (* "function" *) in
       let v3 =
-        token env v3 (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+        token env v3 (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
       in
       let v4 = map_function_body env v4 in
       todo env (v1, v2, v3, v4)
@@ -597,7 +597,7 @@ and map_table (env : env) ((v1, v2, v3) : CST.table) =
 and map_variable_declarator (env : env) (x : CST.variable_declarator) =
   (match x with
   | `Id tok ->
-      token env tok (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+      token env tok (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
   | `Self tok -> token env tok (* "self" *)
   | `Prefix_LBRACK_exp_RBRACK (v1, v2, v3, v4) ->
       let v1 = map_prefix env v1 in
@@ -609,7 +609,7 @@ and map_variable_declarator (env : env) (x : CST.variable_declarator) =
       let v1 = map_prefix env v1 in
       let v2 = token env v2 (* "." *) in
       let v3 =
-        token env v3 (* pattern \$[a-zA-Z_][a-zA-Z0-9_]* *)
+        token env v3 (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
       in
       todo env (v1, v2, v3)
   )
