@@ -1232,7 +1232,7 @@ and map_foreign_block_item (env : env) ((v1, v2, v3) : CST.foreign_block_item) =
   in
   todo env (v1, v2, v3)
 
-and map_foreign_item_static (env : env) ((v1, v2, v3, v4, v5) : CST.foreign_item_static) =
+and map_foreign_item_static (env : env) ((v1, v2, v3, v4, v5, v6) : CST.foreign_item_static) =
   let v1 = token env v1 (* "static" *) in
   let v2 =
     (match v2 with
@@ -1244,7 +1244,8 @@ and map_foreign_item_static (env : env) ((v1, v2, v3, v4, v5) : CST.foreign_item
   in
   let v4 = token env v4 (* ":" *) in
   let v5 = map_type_ env v5 in
-  todo env (v1, v2, v3, v4, v5)
+  let v6 = token env v6 (* ";" *) in
+  todo env (v1, v2, v3, v4, v5, v6)
 
 and map_foreign_mod_block (env : env) ((v1, v2, v3, v4) : CST.foreign_mod_block) =
   let v1 = token env v1 (* "{" *) in

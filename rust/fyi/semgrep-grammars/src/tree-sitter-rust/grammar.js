@@ -280,7 +280,8 @@ module.exports = grammar({
       optional($.mutable_specifier),
       field('name', $.identifier),
       ':',
-      field('type', $._type)
+      field('type', $._type),
+      ';'
     ),
 
     foreign_item_type: $ => seq(
@@ -1514,7 +1515,7 @@ module.exports = grammar({
       alias(choice(...primitive_types), $.identifier),
       $.metavariable,
       $.super,
-      $.crate,
+      prec(1, $.crate),
       $.identifier,
       $.scoped_identifier
     ),

@@ -769,6 +769,7 @@ and foreign_item_static = (
   * identifier (*tok*)
   * Token.t (* ":" *)
   * type_
+  * Token.t (* ";" *)
 )
 
 and foreign_mod_block = (

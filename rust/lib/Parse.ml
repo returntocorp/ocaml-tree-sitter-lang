@@ -1405,6 +1405,7 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Name "identifier");
       Token (Literal ":");
       Token (Name "type");
+      Token (Literal ";");
     ];
   );
   "foreign_mod_block",
@@ -6776,7 +6777,7 @@ and trans_foreign_item_static ((kind, body) : mt) : CST.foreign_item_static =
   match body with
   | Children v ->
       (match v with
-      | Seq [v0; v1; v2; v3; v4] ->
+      | Seq [v0; v1; v2; v3; v4; v5] ->
           (
             Run.trans_token (Run.matcher_token v0),
             Run.opt
@@ -6785,7 +6786,8 @@ and trans_foreign_item_static ((kind, body) : mt) : CST.foreign_item_static =
             ,
             trans_identifier (Run.matcher_token v2),
             Run.trans_token (Run.matcher_token v3),
-            trans_type_ (Run.matcher_token v4)
+            trans_type_ (Run.matcher_token v4),
+            Run.trans_token (Run.matcher_token v5)
           )
       | _ -> assert false
       )
