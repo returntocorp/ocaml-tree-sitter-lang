@@ -20,20 +20,26 @@ let blank (env : env) () =
 let todo (env : env) _ =
    failwith "not implemented"
 
-let map_string_ (env : env) (tok : CST.string_) =
-  token env tok (* string *)
-
 let map_field_sep (env : env) (x : CST.field_sep) =
   (match x with
   | `COMMA tok -> token env tok (* "," *)
   | `SEMI tok -> token env tok (* ";" *)
   )
 
+let map_number (env : env) (tok : CST.number) =
+  token env tok (* number *)
+
 let map_identifier (env : env) (tok : CST.identifier) =
   token env tok (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
 
-let map_number (env : env) (tok : CST.number) =
-  token env tok (* number *)
+let map_global_variable (env : env) (x : CST.global_variable) =
+  (match x with
+  | `X__G tok -> token env tok (* "_G" *)
+  | `X__VERSION tok -> token env tok (* "_VERSION" *)
+  )
+
+let map_string_ (env : env) (tok : CST.string_) =
+  token env tok (* string *)
 
 let map_parameters (env : env) ((v1, v2, v3) : CST.parameters) =
   let v1 = token env v1 (* "(" *) in
@@ -282,6 +288,7 @@ and map_expression (env : env) (x : CST.expression) =
   (match x with
   | `Spread tok -> token env tok (* "..." *)
   | `Prefix x -> map_prefix env x
+  | `Next tok -> token env tok (* "next" *)
   | `Func_defi (v1, v2) ->
       let v1 = token env v1 (* "function" *) in
       let v2 = map_function_body env v2 in
@@ -414,6 +421,8 @@ and map_loop_expression (env : env) ((v1, v2, v3, v4, v5, v6) : CST.loop_express
 
 and map_prefix (env : env) (x : CST.prefix) =
   (match x with
+  | `Self tok -> token env tok (* "self" *)
+  | `Global_var x -> map_global_variable env x
   | `Var_decl x -> map_variable_declarator env x
   | `Func_call_stmt x -> map_function_call_statement env x
   | `LPAR_exp_RPAR (v1, v2, v3) ->
@@ -598,7 +607,6 @@ and map_variable_declarator (env : env) (x : CST.variable_declarator) =
   (match x with
   | `Id tok ->
       token env tok (* pattern \$?[a-zA-Z_][a-zA-Z0-9_]* *)
-  | `Self tok -> token env tok (* "self" *)
   | `Prefix_LBRACK_exp_RBRACK (v1, v2, v3, v4) ->
       let v1 = map_prefix env v1 in
       let v2 = token env v2 (* "[" *) in

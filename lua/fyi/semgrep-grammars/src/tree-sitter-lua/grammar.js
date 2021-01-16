@@ -90,7 +90,6 @@ module.exports = grammar({
 
     _variable_declarator: $ => choice(
       $.identifier,
-      $.self,
       seq($._prefix, '[', $._expression, ']'),
       $.field_expression
     ),
@@ -259,6 +258,8 @@ module.exports = grammar({
       $.spread,
       $._prefix,
 
+      $.next,
+
       $.function_definition,
 
       $.table,
@@ -279,7 +280,13 @@ module.exports = grammar({
 
     self: $ => 'self',
 
+    next: $ => 'next',
+
+    global_variable: $ => choice('_G', '_VERSION'),
+
     _prefix: $ => choice(
+      $.self,
+      $.global_variable,
       $._variable_declarator,
       prec(-1, alias($.function_call_statement, $.function_call)),
       seq('(', $._expression, ')')
