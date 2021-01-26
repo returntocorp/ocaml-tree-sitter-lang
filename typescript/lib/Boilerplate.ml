@@ -36,8 +36,8 @@ let map_anon_choice_get_8fb02de (env : env) (x : CST.anon_choice_get_8fb02de) =
   | `STAR tok -> token env tok (* "*" *)
   )
 
-let map_imm_tok_pat_3f3cd4d (env : env) (tok : CST.imm_tok_pat_3f3cd4d) =
-  token env tok (* pattern "[^\"\\\\\\n]+|\\\\?\\r?\\n" *)
+let map_imm_tok_pat_3e57880 (env : env) (tok : CST.imm_tok_pat_3e57880) =
+  token env tok (* pattern "[^'\\\\\\n]+|\\\\\\r?\\n" *)
 
 let map_automatic_semicolon (env : env) (tok : CST.automatic_semicolon) =
   token env tok (* automatic_semicolon *)
@@ -52,8 +52,8 @@ let map_accessibility_modifier (env : env) (x : CST.accessibility_modifier) =
   | `Prot tok -> token env tok (* "protected" *)
   )
 
-let map_imm_tok_pat_a3af5dd (env : env) (tok : CST.imm_tok_pat_a3af5dd) =
-  token env tok (* pattern "[^'\\\\\\n]+|\\\\?\\r?\\n" *)
+let map_imm_tok_pat_de5d470 (env : env) (tok : CST.imm_tok_pat_de5d470) =
+  token env tok (* pattern "[^\"\\\\\\n]+|\\\\\\r?\\n" *)
 
 let map_predefined_type (env : env) (x : CST.predefined_type) =
   (match x with
@@ -128,26 +128,26 @@ let map_semicolon (env : env) (x : CST.semicolon) =
 
 let map_string_ (env : env) (x : CST.string_) =
   (match x with
-  | `DQUOT_rep_choice_imm_tok_pat_3f3cd4d_DQUOT (v1, v2, v3) ->
+  | `DQUOT_rep_choice_imm_tok_pat_de5d470_DQUOT (v1, v2, v3) ->
       let v1 = token env v1 (* "\"" *) in
       let v2 =
         List.map (fun x ->
           (match x with
-          | `Imm_tok_pat_3f3cd4d tok ->
-              token env tok (* pattern "[^\"\\\\\\n]+|\\\\?\\r?\\n" *)
+          | `Imm_tok_pat_de5d470 tok ->
+              token env tok (* pattern "[^\"\\\\\\n]+|\\\\\\r?\\n" *)
           | `Esc_seq tok -> token env tok (* escape_sequence *)
           )
         ) v2
       in
       let v3 = token env v3 (* "\"" *) in
       todo env (v1, v2, v3)
-  | `SQUOT_rep_choice_imm_tok_pat_a3af5dd_SQUOT (v1, v2, v3) ->
+  | `SQUOT_rep_choice_imm_tok_pat_3e57880_SQUOT (v1, v2, v3) ->
       let v1 = token env v1 (* "'" *) in
       let v2 =
         List.map (fun x ->
           (match x with
-          | `Imm_tok_pat_a3af5dd tok ->
-              token env tok (* pattern "[^'\\\\\\n]+|\\\\?\\r?\\n" *)
+          | `Imm_tok_pat_3e57880 tok ->
+              token env tok (* pattern "[^'\\\\\\n]+|\\\\\\r?\\n" *)
           | `Esc_seq tok -> token env tok (* escape_sequence *)
           )
         ) v2
@@ -2340,14 +2340,20 @@ and map_jsx_attribute_value (env : env) (x : CST.jsx_attribute_value) =
   | `Str x -> map_string_ env x
   | `Jsx_exp x -> map_jsx_expression env x
   | `Choice_jsx_elem x -> map_jsx_element_ env x
-  | `Jsx_frag x -> map_jsx_fragment env x
+  | `Jsx_frag (v1, v2, v3, v4, v5, v6) ->
+      let v1 = token env v1 (* "<" *) in
+      let v2 = token env v2 (* ">" *) in
+      let v3 = List.map (map_jsx_child env) v3 in
+      let v4 = token env v4 (* "<" *) in
+      let v5 = token env v5 (* "/" *) in
+      let v6 = token env v6 (* ">" *) in
+      todo env (v1, v2, v3, v4, v5, v6)
   )
 
 and map_jsx_child (env : env) (x : CST.jsx_child) =
   (match x with
   | `Jsx_text tok -> token env tok (* pattern [^{}<>]+ *)
   | `Choice_jsx_elem x -> map_jsx_element_ env x
-  | `Jsx_frag x -> map_jsx_fragment env x
   | `Jsx_exp x -> map_jsx_expression env x
   )
 
@@ -2366,15 +2372,6 @@ and map_jsx_element_ (env : env) (x : CST.jsx_element_) =
       let v5 = token env v5 (* ">" *) in
       todo env (v1, v2, v3, v4, v5)
   )
-
-and map_jsx_fragment (env : env) ((v1, v2, v3, v4, v5, v6) : CST.jsx_fragment) =
-  let v1 = token env v1 (* "<" *) in
-  let v2 = token env v2 (* ">" *) in
-  let v3 = List.map (map_jsx_child env) v3 in
-  let v4 = token env v4 (* "<" *) in
-  let v5 = token env v5 (* "/" *) in
-  let v6 = token env v6 (* ">" *) in
-  todo env (v1, v2, v3, v4, v5, v6)
 
 and map_jsx_opening_element (env : env) ((v1, v2, v3, v4) : CST.jsx_opening_element) =
   let v1 = token env v1 (* "<" *) in

@@ -64,7 +64,7 @@ let children_regexps : (string * Run.exp option) list = [
   );
   "readonly", None;
   "null", None;
-  "imm_tok_pat_a3af5dd", None;
+  "imm_tok_pat_de5d470", None;
   "true", None;
   "undefined", None;
   "escape_sequence", None;
@@ -82,7 +82,7 @@ let children_regexps : (string * Run.exp option) list = [
   "jsx_text", None;
   "jsx_identifier", None;
   "automatic_semicolon", None;
-  "imm_tok_pat_3f3cd4d", None;
+  "imm_tok_pat_3e57880", None;
   "import_export_specifier",
   Some (
     Seq [
@@ -209,7 +209,7 @@ let children_regexps : (string * Run.exp option) list = [
         Token (Literal "\"");
         Repeat (
           Alt [|
-            Token (Name "imm_tok_pat_3f3cd4d");
+            Token (Name "imm_tok_pat_de5d470");
             Token (Name "escape_sequence");
           |];
         );
@@ -219,7 +219,7 @@ let children_regexps : (string * Run.exp option) list = [
         Token (Literal "'");
         Repeat (
           Alt [|
-            Token (Name "imm_tok_pat_a3af5dd");
+            Token (Name "imm_tok_pat_3e57880");
             Token (Name "escape_sequence");
           |];
         );
@@ -1876,7 +1876,6 @@ let children_regexps : (string * Run.exp option) list = [
             Token (Name "jsx_element");
             Token (Name "jsx_self_closing_element");
           |];
-          Token (Name "jsx_fragment");
           Token (Name "jsx_expression");
         |];
       );
@@ -1909,7 +1908,6 @@ let children_regexps : (string * Run.exp option) list = [
             Token (Name "jsx_element");
             Token (Name "jsx_self_closing_element");
           |];
-          Token (Name "jsx_fragment");
           Token (Name "jsx_expression");
         |];
       );
@@ -3367,7 +3365,7 @@ let trans_null ((kind, body) : mt) : CST.null =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_imm_tok_pat_a3af5dd ((kind, body) : mt) : CST.imm_tok_pat_a3af5dd =
+let trans_imm_tok_pat_de5d470 ((kind, body) : mt) : CST.imm_tok_pat_de5d470 =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
@@ -3431,7 +3429,7 @@ let trans_automatic_semicolon ((kind, body) : mt) : CST.automatic_semicolon =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_imm_tok_pat_3f3cd4d ((kind, body) : mt) : CST.imm_tok_pat_3f3cd4d =
+let trans_imm_tok_pat_3e57880 ((kind, body) : mt) : CST.imm_tok_pat_3e57880 =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
@@ -3702,7 +3700,7 @@ let trans_string_ ((kind, body) : mt) : CST.string_ =
   | Children v ->
       (match v with
       | Alt (0, v) ->
-          `DQUOT_rep_choice_imm_tok_pat_3f3cd4d_DQUOT (
+          `DQUOT_rep_choice_imm_tok_pat_de5d470_DQUOT (
             (match v with
             | Seq [v0; v1; v2] ->
                 (
@@ -3711,8 +3709,8 @@ let trans_string_ ((kind, body) : mt) : CST.string_ =
                     (fun v ->
                       (match v with
                       | Alt (0, v) ->
-                          `Imm_tok_pat_3f3cd4d (
-                            trans_imm_tok_pat_3f3cd4d (Run.matcher_token v)
+                          `Imm_tok_pat_de5d470 (
+                            trans_imm_tok_pat_de5d470 (Run.matcher_token v)
                           )
                       | Alt (1, v) ->
                           `Esc_seq (
@@ -3729,7 +3727,7 @@ let trans_string_ ((kind, body) : mt) : CST.string_ =
             )
           )
       | Alt (1, v) ->
-          `SQUOT_rep_choice_imm_tok_pat_a3af5dd_SQUOT (
+          `SQUOT_rep_choice_imm_tok_pat_3e57880_SQUOT (
             (match v with
             | Seq [v0; v1; v2] ->
                 (
@@ -3738,8 +3736,8 @@ let trans_string_ ((kind, body) : mt) : CST.string_ =
                     (fun v ->
                       (match v with
                       | Alt (0, v) ->
-                          `Imm_tok_pat_a3af5dd (
-                            trans_imm_tok_pat_a3af5dd (Run.matcher_token v)
+                          `Imm_tok_pat_3e57880 (
+                            trans_imm_tok_pat_3e57880 (Run.matcher_token v)
                           )
                       | Alt (1, v) ->
                           `Esc_seq (
@@ -8049,10 +8047,6 @@ and trans_jsx_element ((kind, body) : mt) : CST.jsx_element =
                       )
                     )
                 | Alt (2, v) ->
-                    `Jsx_frag (
-                      trans_jsx_fragment (Run.matcher_token v)
-                    )
-                | Alt (3, v) ->
                     `Jsx_exp (
                       trans_jsx_expression (Run.matcher_token v)
                     )
@@ -8130,10 +8124,6 @@ and trans_jsx_fragment ((kind, body) : mt) : CST.jsx_fragment =
                       )
                     )
                 | Alt (2, v) ->
-                    `Jsx_frag (
-                      trans_jsx_fragment (Run.matcher_token v)
-                    )
-                | Alt (3, v) ->
                     `Jsx_exp (
                       trans_jsx_expression (Run.matcher_token v)
                     )
