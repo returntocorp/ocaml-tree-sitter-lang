@@ -1,3 +1,6 @@
+**2021-02-07: This repo is being split into one repo per language e.g.
+https://github.com/returntocorp/semgrep-javascript**
+
 # ocaml-tree-sitter-lang
 
 C/OCaml parsers for multiple programming languages, generated
