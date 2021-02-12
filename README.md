@@ -1,4 +1,4 @@
-**2021-02-07: This repo is being split into one repo per language e.g.
+**2021-02-07: This repo was split into one repo per language e.g.
 https://github.com/returntocorp/semgrep-javascript**
 
 # ocaml-tree-sitter-lang
